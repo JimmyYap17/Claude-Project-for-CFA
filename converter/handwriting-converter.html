@@ -163,7 +163,7 @@ a { color: var(--accent); }
 <script>
 (() => {
   const $ = (id) => document.getElementById(id);
-  let sample = null, canImages = false, mode = "write", photoFile = null, ctl = null;
+  let sample = null, canImages = false, imageCaps = null, mode = "write", photoFile = null, ctl = null;
   let cards = []; // {topic, front, back}
   let exampleShown = false;
 
@@ -237,7 +237,7 @@ a { color: var(--accent); }
       for (let i = 1; i < s.length; i++) { g.lineWidth = 1.4 + 2.6 * ((s[i - 1].p + s[i].p) / 2); g.beginPath(); g.moveTo(s[i - 1].x, s[i - 1].y); g.lineTo(s[i].x, s[i].y); g.stroke(); }
       if (s.length === 1) { g.fillStyle = "#000"; g.beginPath(); g.arc(s[0].x, s[0].y, 1.8, 0, 7); g.fill(); }
     }
-    return new Promise((res) => c.toBlob(res, "image/png"));
+    return new Promise((res) => c.toBlob(res, "image/jpeg", 0.92));
   }
 
   // ---------- mode ----------
@@ -300,17 +300,41 @@ Use \\n inside strings for line breaks.`;
   async function init() {
     for (let i = 0; i < 20 && !(window.claude && window.claude.use); i++) await new Promise((r) => setTimeout(r, 150));
     sample = window.claude && window.claude.use ? await window.claude.use("sample") : null;
-    if (!sample) { $("convert").disabled = true; status("Open this page in Claude (claude.ai or the Claude app) to convert handwriting.", "err"); return; }
+    if (!sample) { status("Claude isn't connected to this page. Open it from claude.ai while signed in, then try again. (no-sample)", "err"); return; }
     const caps = await sample.limits().catch(() => null);
     canImages = !!(caps && caps.images);
-    if (!canImages) { $("convert").disabled = true; status("Converting images isn't available in this view of Claude. Try claude.ai in Safari.", "err"); return; }
-    $("photoInput").accept = caps.images.mediaTypes.join(",");
+    if (!canImages) { status("This view of Claude can't read images. Open the page in Safari at claude.ai and try again. (no-images)", "err"); return; }
+    imageCaps = caps.images;
     status("Ready. The first conversion asks you to allow this page to use Claude.");
   }
 
+  // Every image is re-drawn as a white-background JPEG no larger than 2000px,
+  // the most widely accepted form: pasted handwriting arrives as PNG and
+  // iPad photos can be HEIC or very large.
+  async function toJpeg(blob) {
+    let src, w, h;
+    try { src = await createImageBitmap(blob); w = src.width; h = src.height; }
+    catch {
+      src = await new Promise((res, rej) => { const im = new Image(); im.onload = () => res(im); im.onerror = rej; im.src = URL.createObjectURL(blob); });
+      w = src.naturalWidth; h = src.naturalHeight;
+    }
+    const k = Math.min(1, 2000 / Math.max(w, h));
+    const c = document.createElement("canvas"); c.width = Math.max(1, Math.round(w * k)); c.height = Math.max(1, Math.round(h * k));
+    const g = c.getContext("2d");
+    g.fillStyle = "#FFFFFF"; g.fillRect(0, 0, c.width, c.height);
+    g.drawImage(src, 0, 0, c.width, c.height);
+    const out = await new Promise((res) => c.toBlob(res, "image/jpeg", 0.9));
+    if (!out) throw { code: "image_prepare_failed" };
+    return out;
+  }
+
   $("convert").onclick = async () => {
-    const blob = mode === "write" ? await padBlob() : photoFile;
+    if (!sample || !canImages) { await init(); if (!sample || !canImages) return; }
+    let blob = mode === "write" ? await padBlob() : photoFile;
     if (!blob) { status(mode === "write" ? "Write something on the pad first." : "Choose a photo first.", "err"); return; }
+    try { if (!(mode === "write" && blob.type === "image/jpeg")) blob = await toJpeg(blob); }
+    catch { status("That image couldn't be opened. Try writing it again or choosing a different photo.", "err"); return; }
+    if (imageCaps && imageCaps.maxInputBytes && blob.size > imageCaps.maxInputBytes) { status("That image is too large. Try a smaller photo.", "err"); return; }
     ctl = new AbortController();
     $("convert").disabled = true; $("stop").hidden = false;
     status("Reading your handwriting… this usually takes 10 to 40 seconds.", "", true);
@@ -341,9 +365,10 @@ Use \\n inside strings for line breaks.`;
         empty_completion: "Nothing came back. Try again with a clearer image.",
         invalid_json: "The reply came back in the wrong format. Tap Convert to try again.",
       };
-      status(map[code] || "Something went wrong. Tap Convert to try again.", code === "cancelled" ? "" : "err");
+      // show the code too, so a problem can be reported exactly
+      status((map[code] || "Something went wrong. Tap Convert to try again.") + (code && code !== "cancelled" ? " (" + code + ")" : ""), code === "cancelled" ? "" : "err");
     }
-    ctl = null; $("convert").disabled = !canImages; $("stop").hidden = true;
+    ctl = null; $("convert").disabled = false; $("stop").hidden = true;
   };
   $("stop").onclick = () => { if (ctl) ctl.abort(); };
 

@@ -16,6 +16,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -60,12 +63,12 @@
         <div class="card" id="card" tabindex="0" aria-live="polite">
           <div class="face front">
             <div class="meta"><span id="fTopic"></span><span class="side">Question</span></div>
-            <div class="text" id="fText"></div>
+            <div class="card-text" id="fText"></div>
             <div class="hint">Tap to reveal the answer</div>
           </div>
           <div class="face back">
             <div class="meta"><span id="bTopic"></span><span class="side">Answer</span></div>
-            <div class="text" id="bText"></div>
+            <div class="card-text" id="bText"></div>
             <div class="hint">Swipe right if you got it, left to review again</div>
           </div>
         </div>
@@ -129,6 +132,8 @@ Economics | GDP deflator formula | Nominal GDP / Real GDP × 100</pre>
     <datalist id="topicList"></datalist>
     <label for="fFront">Question<textarea id="fFront" required autocapitalize="sentences"></textarea></label>
     <label for="fBack">Answer<textarea id="fBack" required autocapitalize="sentences"></textarea></label>
+    <p class="field-hint">Put a formula between <code>$$</code> signs to typeset it, for example <code>$$\frac{D_1}{r - g}$$</code>. Use <code>\( … \)</code> for a formula inside a sentence.</p>
+    <div class="preview" id="preview" hidden><span class="preview-label">Preview</span><div id="previewFront"></div><div id="previewBack"></div></div>
     <div class="row">
       <button class="btn good" type="submit" id="save" value="save">Save and add another</button>
       <button class="btn" type="button" id="closeEditor">Done</button>

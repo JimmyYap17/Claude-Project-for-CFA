@@ -79,8 +79,8 @@ button.link { background: none; border: 0; padding: 4px 0; color: var(--accent);
 .face.back { transform: rotateY(180deg); background: linear-gradient(var(--accent-soft), var(--accent-soft)) top/100% 4px no-repeat, var(--surface); }
 .meta { display: flex; justify-content: space-between; gap: 12px; font: 500 11px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
 .meta .side { color: var(--accent); }
-.text { font: 400 22px/1.45 var(--serif); white-space: pre-wrap; overflow-wrap: anywhere; margin: auto 0; max-width: 62ch; }
-.back .text { font-size: 19px; }
+.card-text { font: 400 22px/1.45 var(--serif); white-space: pre-wrap; overflow-wrap: anywhere; margin: auto 0; max-width: 62ch; }
+.back .card-text { font-size: 19px; }
 .hint { font: 12px var(--sans); color: var(--muted); }
 .swipe-tag {
   position: absolute; top: 14px; font: 600 13px var(--sans); padding: 4px 10px; border-radius: 6px;
@@ -132,7 +132,15 @@ dialog::backdrop { background: rgba(10, 20, 17, .45); }
 #fFront, #fBack { min-height: 110px; }
 
 @media (max-width: 520px) {
-  .text { font-size: 19px; } .back .text { font-size: 17px; }
+  .card-text { font-size: 19px; } .back .card-text { font-size: 17px; }
   #search { max-width: none; }
 }
 @media (prefers-reduced-motion: reduce) { .card, .bar i { transition: none; } }
+
+/* formulas */
+.katex { font-size: 1.1em; white-space: nowrap; overflow-wrap: normal; word-break: normal; }
+.katex-display { margin: .5em 0; overflow-x: auto; overflow-y: hidden; padding-block: 2px; }
+.field-hint { margin: -4px 0 0; font-size: 12px; color: var(--muted); }
+.preview { border: 1px dashed var(--line); border-radius: 8px; padding: 10px 12px; display: grid; gap: 8px; font: 17px/1.45 var(--serif); white-space: pre-wrap; overflow-wrap: anywhere; }
+.preview-label { font: 500 11px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+#previewFront { color: var(--muted); }

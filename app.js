@@ -7,6 +7,23 @@ const local = {
   set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} },
 };
 
+// ---------- formulas ----------
+// $$...$$ (own line) and \(...\) (inside a sentence) are typeset with KaTeX.
+// A single $ is left alone so prices like $5 million stay as text.
+const MATH_DELIMS = [
+  { left: "$$", right: "$$", display: true },
+  { left: "\\[", right: "\\]", display: true },
+  { left: "\\(", right: "\\)", display: false },
+];
+function setRich(el, text) {
+  el.textContent = text || "";
+  if (window.renderMathInElement && /\$\$|\\\(|\\\[/.test(el.textContent)) {
+    try { window.renderMathInElement(el, { delimiters: MATH_DELIMS, throwOnError: false }); } catch {}
+  }
+}
+// KaTeX loads with `defer`; re-render once it arrives
+addEventListener("load", () => { if (typeof showCard === "function" && cards.length) { showCard(true); renderList(); } });
+
 // ---------- state ----------
 let fb = null;               // Firebase modules + instances
 let uid = null;
@@ -216,7 +233,7 @@ function showCard(keepFlip) {
   } else {
     card.hidden = false; $("empty").hidden = true;
     $("fTopic").textContent = $("bTopic").textContent = c.topic;
-    $("fText").textContent = c.front; $("bText").textContent = c.back;
+    setRich($("fText"), c.front); setRich($("bText"), c.back);
     if (!keepFlip) {
       // reset without the flip animation, so the next card's answer never shows mid-turn
       card.classList.add("dragging"); setFlip(false); void card.offsetWidth; card.classList.remove("dragging");
@@ -350,9 +367,18 @@ function openEditor(c) {
   $("fFront").value = c ? c.front : "";
   $("fBack").value = c ? c.back : "";
   msg("formMsg", "");
+  updatePreview();
   $("editor").showModal();
   ($("fTopicIn").value ? $("fFront") : $("fTopicIn")).focus();
 }
+function updatePreview() {
+  const f = $("fFront").value, b = $("fBack").value;
+  const has = /\$\$|\\\(|\\\[/.test(f + b);
+  $("preview").hidden = !has;
+  if (has) { setRich($("previewFront"), f); setRich($("previewBack"), b); }
+}
+let previewTimer;
+["fFront", "fBack"].forEach((id) => $(id).addEventListener("input", () => { clearTimeout(previewTimer); previewTimer = setTimeout(updatePreview, 250); }));
 $("fab").onclick = () => openEditor(null);
 $("closeEditor").onclick = () => $("editor").close();
 $("form").addEventListener("submit", (e) => {
@@ -364,7 +390,7 @@ $("form").addEventListener("submit", (e) => {
   saveCard(card);
   if (editingId) { $("editor").close(); return; }
   msg("formMsg", "Saved. Add the next one.");
-  $("fFront").value = ""; $("fBack").value = ""; $("fFront").focus();
+  $("fFront").value = ""; $("fBack").value = ""; updatePreview(); $("fFront").focus();
 });
 let deleteArmed = false;
 $("deleteBtn").onclick = () => {
@@ -400,7 +426,7 @@ function parseNotes(text) {
     return out.map((c) => ({ ...c, front: c.front.trim(), back: c.back.trim() }));
   }
   return text.split(/\r?\n/).filter((l) => l.trim()).map((l) => {
-    const parts = l.split("|").map((s) => s.trim().replace(/\\n/g, "\n"));
+    const parts = l.split("|").map((s) => s.trim().replace(/\\n(?![a-zA-Z])/g, "\n"));
     if (parts.length < 3) throw new Error("Couldn't read this line. Use Topic | Question | Answer, or Q: and A: lines: " + l.slice(0, 60));
     return { topic: parts[0], front: parts[1], back: parts.slice(2).join(" | ") };
   });
@@ -433,7 +459,7 @@ function renderList() {
     const it = document.createElement("button"); it.className = "item"; it.type = "button";
     const t = document.createElement("span"); t.className = "t"; t.textContent = c.topic;
     const go = document.createElement("span"); go.className = "go"; go.textContent = "Edit";
-    const qq = document.createElement("span"); qq.className = "q"; qq.textContent = c.front;
+    const qq = document.createElement("span"); qq.className = "q"; setRich(qq, c.front);
     it.append(t, go, qq);
     it.onclick = () => openEditor(c);
     el.append(it);

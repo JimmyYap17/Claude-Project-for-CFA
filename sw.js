@@ -1,6 +1,6 @@
 // Offline support: keeps the app shell and Firebase SDK cached so the app opens without a connection.
 // Card data itself is cached by Firestore's offline cache, not here.
-const CACHE = "cfa-cards-v2";
+const CACHE = "cfa-cards-v3";
 const SHELL = ["./", "index.html", "styles.css", "app.js", "firebase-config.js", "cards.json", "manifest.webmanifest", "icons/icon-192.png", "icons/apple-touch-icon.png"];
 
 self.addEventListener("install", (e) => {
@@ -14,7 +14,7 @@ self.addEventListener("fetch", (e) => {
   if (req.method !== "GET") return;
   const url = new URL(req.url);
   const sameOrigin = url.origin === self.location.origin;
-  const staticCdn = url.hostname === "www.gstatic.com" || url.hostname === "fonts.googleapis.com" || url.hostname === "fonts.gstatic.com";
+  const staticCdn = url.hostname === "www.gstatic.com" || url.hostname === "fonts.googleapis.com" || url.hostname === "fonts.gstatic.com" || url.hostname === "cdn.jsdelivr.net";
   if (!sameOrigin && !staticCdn) return; // never touch Firestore / Auth traffic
 
   if (staticCdn) {

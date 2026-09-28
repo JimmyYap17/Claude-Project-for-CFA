@@ -1,0 +1,22 @@
+[
+  {"topic": "Ethics", "front": "What are the six components of the CFA Institute Code of Ethics?", "back": "Act with integrity, competence, diligence and respect; place the integrity of the profession and clients' interests above your own; use reasonable care and independent judgment; practice in a professional and ethical manner; promote the integrity and viability of global capital markets; maintain and improve professional competence."},
+  {"topic": "Ethics", "front": "Standard II(A): Material Nonpublic Information. What is the mosaic theory?", "back": "An analyst may reach a conclusion that would be material by combining public information with nonmaterial nonpublic information. Acting on that conclusion does not violate II(A)."},
+  {"topic": "Ethics", "front": "Under GIPS, what is a composite?", "back": "An aggregation of one or more portfolios managed according to a similar investment mandate, objective or strategy. All actual, fee-paying, discretionary portfolios must be included in at least one composite."},
+  {"topic": "Quantitative Methods", "front": "Formula: effective annual rate (EAR) from a stated annual rate with m compounding periods", "back": "EAR = (1 + r/m)^m − 1\nWith continuous compounding: EAR = e^r − 1"},
+  {"topic": "Quantitative Methods", "front": "What does a Type I error mean in hypothesis testing?", "back": "Rejecting a true null hypothesis. Its probability equals the significance level α."},
+  {"topic": "Quantitative Methods", "front": "Sharpe ratio formula", "back": "Sharpe = (Rp − Rf) / σp\nExcess return per unit of total risk."},
+  {"topic": "Economics", "front": "Price elasticity of demand: when is demand elastic?", "back": "When |%ΔQd / %ΔP| > 1. A price cut then raises total revenue."},
+  {"topic": "Economics", "front": "Covered interest rate parity", "back": "F(f/d) = S(f/d) × (1 + i_f × Actual/360) / (1 + i_d × Actual/360)\nThe currency with the higher interest rate trades at a forward discount."},
+  {"topic": "Financial Statement Analysis", "front": "LIFO vs FIFO in a period of rising prices: effect on COGS, inventory and net income", "back": "LIFO: higher COGS, lower ending inventory, lower net income (and lower taxes).\nFIFO: lower COGS, higher inventory, higher net income.\nLIFO is not permitted under IFRS."},
+  {"topic": "Financial Statement Analysis", "front": "DuPont decomposition of ROE (3-step)", "back": "ROE = Net profit margin × Asset turnover × Financial leverage\n= (NI / Sales) × (Sales / Avg assets) × (Avg assets / Avg equity)"},
+  {"topic": "Corporate Issuers", "front": "WACC formula", "back": "WACC = wd × rd × (1 − t) + wp × rp + we × re\nWeights use target (market value) capital structure."},
+  {"topic": "Equity Investments", "front": "Gordon (constant) growth model", "back": "V0 = D1 / (r − g)\nRequires r > g; D1 = D0 × (1 + g)."},
+  {"topic": "Equity Investments", "front": "What are the three forms of market efficiency?", "back": "Weak form: prices reflect all past market data.\nSemi-strong form: prices reflect all public information.\nStrong form: prices reflect all public and private information."},
+  {"topic": "Fixed Income", "front": "Modified duration and the approximate % price change of a bond", "back": "ModDur = MacDur / (1 + r/m)\n%ΔP ≈ −ModDur × Δy + ½ × Convexity × (Δy)²"},
+  {"topic": "Fixed Income", "front": "When does a bond trade at a premium?", "back": "When its coupon rate is above its market discount rate (yield to maturity)."},
+  {"topic": "Derivatives", "front": "Put-call parity (European options)", "back": "S0 + p0 = c0 + X / (1 + r)^T\nFiduciary call = protective put."},
+  {"topic": "Derivatives", "front": "How does a forward contract differ from a futures contract?", "back": "Forwards are private, customized and carry counterparty risk, settling at expiry. Futures are exchange-traded, standardized, marked to market daily and guaranteed by a clearinghouse."},
+  {"topic": "Alternative Investments", "front": "Hedge fund '2 and 20' fee structure", "back": "A 2% management fee on assets under management plus a 20% incentive fee on profits, often subject to a hurdle rate and a high-water mark."},
+  {"topic": "Portfolio Management", "front": "Capital Asset Pricing Model (CAPM)", "back": "E(Ri) = Rf + βi × [E(Rm) − Rf]\nOnly systematic risk (beta) is priced."},
+  {"topic": "Portfolio Management", "front": "Two-asset portfolio variance", "back": "σp² = w1²σ1² + w2²σ2² + 2w1w2ρ12σ1σ2\nLower correlation means greater diversification benefit."}
+]

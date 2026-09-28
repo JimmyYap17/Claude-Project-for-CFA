@@ -32,7 +32,7 @@ You can do all of this in Safari on your iPad.
 
 1. Go to <https://console.firebase.google.com> and sign in with your Google account.
 2. Tap **Create a project**. Name it something like `cfa-flashcards`. Google Analytics isn't needed.
-3. **Turn on sign-in:** go to **Build → Authentication → Get started → Sign-in method**. Choose **Email/Password**, switch on **Enable**, and save.
+3. **Turn on sign-in:** go to **Build → Authentication → Get started → Sign-in method**. Choose **Email/Password**, switch on **Enable**, and save. The app signs in with a username and password, and uses Firebase's Email/Password option behind the scenes.
 4. **Create the database:** go to **Build → Firestore Database → Create database**. Pick a location near you and start in **production mode**.
 5. **Set the security rules:** in Firestore, open the **Rules** tab. Replace everything there with the contents of [`firestore.rules`](firestore.rules) and tap **Publish**. These rules let each signed-in person read and write only their own cards.
 6. **Get the web config:** open **Project settings** (the gear icon) and scroll to **Your apps**. Tap the web icon `</>`, name the app `CFA Cards` and register it. You don't need Firebase Hosting. Firebase then shows a `firebaseConfig` block of values.
@@ -51,8 +51,10 @@ In this repository on GitHub, go to **Settings → Pages**. Under **Build and de
 
 1. Open the app address in **Safari**.
 2. Tap **Share → Add to Home Screen → Add**.
-3. Open **CFA Cards** from your Home Screen and tap **Create account**.
-4. On any other device, open the same address and sign in with the same email and password to see the same deck.
+3. Open **CFA Cards** from your Home Screen. Choose a username and a password of at least 4 characters, then tap **Enter**. The first time, this creates your deck.
+4. On any other device, open the same address and enter the same username and password to see the same deck.
+
+There's no password reset, because usernames aren't linked to an email address. If you forget your password, you can delete the user under **Authentication → Users** in the Firebase console and start again with the same username. That starts a new, empty deck.
 
 A new deck is empty. Tap **Load 20 example cards** to try the app, then delete the examples when you've added your own.
 

@@ -120,35 +120,54 @@ function importCards(list, where) {
 }
 
 // ---------- auth UI ----------
+// Sign-in is username + password. Firebase needs an email, so a plain username
+// maps to a private placeholder address; nothing is ever sent to it.
+const USER_DOMAIN = "users.cfa-flashcards.app";
+function toEmail(name) {
+  name = name.trim().toLowerCase();
+  if (name.includes("@")) return name; // accounts made earlier with a real email still work
+  if (!/^[a-z0-9._-]{2,30}$/.test(name)) throw { code: "app/bad-username" };
+  return name + "@" + USER_DOMAIN;
+}
+// Firebase requires 6+ characters; short passwords (like a PIN) get a fixed suffix.
+const toPassword = (pw) => (pw.length < 6 ? pw + "#cfa-pin" : pw);
+
 function authError(e) {
   const map = {
-    "auth/invalid-credential": "That email and password don't match. Try again or create an account.",
-    "auth/wrong-password": "That password is incorrect.",
-    "auth/user-not-found": "No account uses that email yet. Tap Create account.",
-    "auth/email-already-in-use": "An account already uses that email. Tap Sign in instead.",
-    "auth/weak-password": "Use a password with at least 6 characters.",
-    "auth/invalid-email": "Enter a valid email address.",
+    "app/bad-username": "Use 2 to 30 letters or numbers for your username (dots, dashes and underscores are fine too).",
+    "auth/invalid-credential": "Wrong password for that username. Check it and try again.",
+    "auth/wrong-password": "Wrong password for that username. Check it and try again.",
+    "auth/email-already-in-use": "Wrong password for that username. Check it and try again.",
+    "auth/invalid-email": "Use 2 to 30 letters or numbers for your username.",
     "auth/missing-password": "Enter your password.",
-    "auth/operation-not-allowed": "Email sign-in is off. Turn on Email/Password under Authentication in the Firebase console.",
+    "auth/operation-not-allowed": "Sign-in is off. Turn on Email/Password under Authentication in the Firebase console.",
     "auth/network-request-failed": "No connection. Check your internet and try again.",
-    "auth/too-many-requests": "Too many attempts. Wait a minute and try again.",
+    "auth/too-many-requests": "Too many attempts. Wait a few minutes and try again.",
   };
-  msg("authMsg", map[e.code] || e.message || String(e), true);
+  console.error(e);
+  msg("authMsg", map[e.code] || "Couldn't sign in (" + (e.code || e.message || e) + ").", true);
 }
-$("auth").addEventListener("submit", (e) => {
-  e.preventDefault(); msg("authMsg", "Signing in…");
-  fb.signInWithEmailAndPassword(fb.auth, $("email").value.trim(), $("password").value).then(() => msg("authMsg", "")).catch(authError);
+$("auth").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  let email, password = $("password").value;
+  try { email = toEmail($("username").value); } catch (err) { authError(err); return; }
+  if (password.length < 4) { msg("authMsg", "Use a password with at least 4 characters.", true); return; }
+  $("signIn").disabled = true; msg("authMsg", "Opening your deck…");
+  try {
+    await fb.signInWithEmailAndPassword(fb.auth, email, toPassword(password));
+    msg("authMsg", "");
+  } catch (err) {
+    // Firebase gives the same error for "no such account" and "wrong password",
+    // so try creating the account; if the username is taken, the password was wrong.
+    if (["auth/invalid-credential", "auth/user-not-found", "auth/invalid-login-credentials"].includes(err.code)) {
+      try {
+        await fb.createUserWithEmailAndPassword(fb.auth, email, toPassword(password));
+        msg("authMsg", "");
+      } catch (err2) { authError(err2); }
+    } else authError(err);
+  }
+  $("signIn").disabled = false;
 });
-$("signUp").onclick = () => {
-  if (!$("auth").reportValidity()) return;
-  msg("authMsg", "Creating your account…");
-  fb.createUserWithEmailAndPassword(fb.auth, $("email").value.trim(), $("password").value).then(() => msg("authMsg", "")).catch(authError);
-};
-$("resetPw").onclick = () => {
-  const email = $("email").value.trim();
-  if (!email) { msg("authMsg", "Enter your email first, then tap Forgot password.", true); return; }
-  fb.sendPasswordResetEmail(fb.auth, email).then(() => msg("authMsg", "Reset link sent to " + email)).catch(authError);
-};
 $("signOut").onclick = () => fb.signOut(fb.auth);
 
 // ---------- study ----------

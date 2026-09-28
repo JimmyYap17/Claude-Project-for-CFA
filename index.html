@@ -36,14 +36,12 @@
 
   <!-- Sign in -->
   <form id="auth" class="panel auth" hidden>
-    <h2>Sign in to your deck</h2>
-    <p>Use the same email and password on every device to see the same cards.</p>
-    <label for="email">Email<input id="email" type="email" autocomplete="email" required></label>
-    <label for="password">Password<input id="password" type="password" autocomplete="current-password" minlength="6" required></label>
+    <h2>Open your deck</h2>
+    <p>Pick a username and password. The first time, this creates your deck. After that, enter the same username and password on any device to open it.</p>
+    <label for="username">Username<input id="username" type="text" autocomplete="username" autocapitalize="none" autocorrect="off" spellcheck="false" required placeholder="e.g. jimmy"></label>
+    <label for="password">Password<input id="password" type="password" autocomplete="current-password" minlength="4" required placeholder="At least 4 characters"></label>
     <div class="row">
-      <button class="btn good" type="submit" id="signIn">Sign in</button>
-      <button class="btn" type="button" id="signUp">Create account</button>
-      <button class="link" type="button" id="resetPw">Forgot password?</button>
+      <button class="btn good" type="submit" id="signIn">Enter</button>
     </div>
     <span class="msg" id="authMsg"></span>
   </form>

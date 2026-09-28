@@ -1,26 +1,74 @@
 # CFA Flashcards
 
-A live flashcard app for CFA Level I study.
+An installable flashcard app for CFA Level I study. Add it to your iPad Home Screen and it opens full screen like a regular app. Cards and study progress are stored in your own Firebase project, so they sync live between your iPad, phone and computer.
 
-- **Study**: flip cards (Space), mark "Review again" (1) or "Got it" (2). Cards you miss come back sooner; your progress is kept in your own browser.
-- **Manage cards**: add, edit and delete cards, or bulk-import many at once.
-- **Live sync**: when opened as a published Claude artifact, cards are stored in a shared database and every change appears instantly for everyone who has the page open.
+**App address (after step 3 below):** https://jimmyyap17.github.io/Claude-Project-for-CFA/
 
-## Bulk import format
+## What it does
 
-One card per line:
+- **Study:** tap a card to see the answer. Then swipe right (or tap **Got it**) if you knew it, or swipe left (or tap **Review again**) if you didn't. Cards you miss come back a few cards later. You can filter by topic and track how many cards are New, Learning and Mastered.
+- **Quick add:** tap the round **+** button anywhere in the app. The topic stays filled in, so you can type card after card.
+- **Add from notes:** under **Manage cards**, type or paste your notes and tap **Import**:
 
-```
-Topic | Question | Answer
-```
+  ```
+  # Fixed Income
+  Q: When does a bond trade at a discount?
+  A: When its coupon rate is below its YTM.
 
-or a JSON array of `{"topic": "...", "front": "...", "back": "..."}` objects (same shape as `cards.json`). Use `\n` for a line break inside a line.
+  Q: Macaulay duration
+  A: Weighted average time to receive
+  the bond's cash flows.
+  ```
 
-## Running locally
+  One card per line also works: `Topic | Question | Answer`. So does a JSON list in the same shape as `cards.json`.
+- **Works offline:** you can study and add cards without a connection. Changes sync the next time you're online.
+- **Edit or delete:** tap any card in the list, or tap **Edit card** while studying.
 
-Outside the artifact, the app runs in offline mode: it loads `cards.json` once and saves edits in your browser.
+## One-time setup (about 10 minutes)
+
+You can do all of this in Safari on your iPad.
+
+### 1. Create the Firebase project
+
+1. Go to <https://console.firebase.google.com> and sign in with your Google account.
+2. Tap **Create a project**. Name it something like `cfa-flashcards`. Google Analytics isn't needed.
+3. **Turn on sign-in:** go to **Build → Authentication → Get started → Sign-in method**. Choose **Email/Password**, switch on **Enable**, and save.
+4. **Create the database:** go to **Build → Firestore Database → Create database**. Pick a location near you and start in **production mode**.
+5. **Set the security rules:** in Firestore, open the **Rules** tab. Replace everything there with the contents of [`firestore.rules`](firestore.rules) and tap **Publish**. These rules let each signed-in person read and write only their own cards.
+6. **Get the web config:** open **Project settings** (the gear icon) and scroll to **Your apps**. Tap the web icon `</>`, name the app `CFA Cards` and register it. You don't need Firebase Hosting. Firebase then shows a `firebaseConfig` block of values.
+
+### 2. Paste the config into the app
+
+Open [`firebase-config.js`](firebase-config.js) on GitHub. Tap the pencil icon, replace the placeholder values with your `firebaseConfig` values, and commit the change.
+
+These values only identify your project; they are not passwords. The rules from step 1.5 are what keep your data private.
+
+### 3. Turn on GitHub Pages
+
+In this repository on GitHub, go to **Settings → Pages**. Under **Build and deployment**, choose **Deploy from a branch**, then branch `claude/cfa-flashcard-app-qvxl3g` and folder `/ (root)`, and save. A minute or two later the app is live at the address at the top of this file.
+
+### 4. Install it on your iPad
+
+1. Open the app address in **Safari**.
+2. Tap **Share → Add to Home Screen → Add**.
+3. Open **CFA Cards** from your Home Screen and tap **Create account**.
+4. On any other device, open the same address and sign in with the same email and password to see the same deck.
+
+A new deck is empty. Tap **Load 20 example cards** to try the app, then delete the examples when you've added your own.
+
+## Files
+
+| File | Purpose |
+| --- | --- |
+| `index.html`, `styles.css`, `app.js` | The app |
+| `firebase-config.js` | Your Firebase project settings (step 2) |
+| `firestore.rules` | Database security rules (step 1.5) |
+| `manifest.webmanifest`, `sw.js`, `icons/` | Home Screen install and offline support |
+| `cards.json` | The 20 example cards |
+
+## Running it on a computer
 
 ```
 python3 -m http.server 8000
-# open http://localhost:8000
+# then open http://localhost:8000
 ```

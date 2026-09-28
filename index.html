@@ -1,447 +1,148 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>CFA Flashcards</title>
+<meta name="description" content="CFA Level I flashcards that sync live across your devices.">
+<meta name="theme-color" content="#1F6F5C">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="CFA Cards">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap">
-<style>
-:root {
-  --bg: #F3F5F4;
-  --surface: #FFFFFF;
-  --surface-2: #E8ECEA;
-  --ink: #15231F;
-  --muted: #5B6B66;
-  --line: #D3DAD7;
-  --accent: #1F6F5C;
-  --accent-ink: #FFFFFF;
-  --accent-soft: #DCEDE7;
-  --again: #A8452F;
-  --again-soft: #F5E2DC;
-  --gold: #9A7420;
-  --shadow: 0 1px 2px rgba(21,35,31,.06), 0 8px 24px rgba(21,35,31,.07);
-  --serif: "Source Serif 4", Georgia, "Times New Roman", serif;
-  --sans: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
-  --mono: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
-}
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    color-scheme: dark;
-    --bg: #0E1513; --surface: #16201D; --surface-2: #1E2A26; --ink: #E4ECE9; --muted: #93A49E;
-    --line: #2A3833; --accent: #5CC2A3; --accent-ink: #0B1A15; --accent-soft: #1B3A31;
-    --again: #E08A72; --again-soft: #3A221C; --gold: #D6B062;
-    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.35);
-  }
-}
-:root[data-theme="dark"] {
-  color-scheme: dark;
-  --bg: #0E1513; --surface: #16201D; --surface-2: #1E2A26; --ink: #E4ECE9; --muted: #93A49E;
-  --line: #2A3833; --accent: #5CC2A3; --accent-ink: #0B1A15; --accent-soft: #1B3A31;
-  --again: #E08A72; --again-soft: #3A221C; --gold: #D6B062;
-  --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.35);
-}
-* { box-sizing: border-box; }
-body { background: var(--bg); color: var(--ink); font: 15px/1.5 var(--sans); }
-.wrap { max-width: 880px; margin: 0 auto; padding-inline: 16px; padding-block: 20px 48px; display: grid; gap: 20px; }
-header { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px 16px; }
-h1 { font: 600 26px/1.2 var(--serif); margin: 0; letter-spacing: -.01em; }
-h1 small { font: 500 11px var(--mono); color: var(--muted); letter-spacing: .08em; text-transform: uppercase; margin-left: 8px; }
-.sync { font: 12px var(--mono); color: var(--muted); display: inline-flex; align-items: center; gap: 6px; }
-.dot { width: 8px; height: 8px; border-radius: 50%; background: var(--muted); }
-.sync.live .dot { background: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
-.tabs { display: flex; gap: 4px; border-bottom: 1px solid var(--line); }
-.tab { background: none; border: 0; border-bottom: 2px solid transparent; padding: 8px 12px; font: 500 14px var(--sans); color: var(--muted); cursor: pointer; margin-bottom: -1px; }
-.tab[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--accent); }
-.chips { display: flex; flex-wrap: wrap; gap: 6px; }
-.chip { border: 1px solid var(--line); background: var(--surface); color: var(--ink); border-radius: 999px; padding: 4px 11px; font: 13px var(--sans); cursor: pointer; }
-.chip .n { font: 11px var(--mono); color: var(--muted); margin-left: 4px; }
-.chip[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
-.chip[aria-pressed="true"] .n { color: inherit; opacity: .7; }
-.stats { display: flex; flex-wrap: wrap; gap: 6px 18px; font: 12px var(--mono); color: var(--muted); font-variant-numeric: tabular-nums; }
-.stats b { color: var(--ink); font-weight: 500; }
-.bar { height: 4px; background: var(--surface-2); border-radius: 2px; overflow: hidden; }
-.bar i { display: block; height: 100%; background: var(--accent); width: 0; transition: width .3s; }
-
-.stage { perspective: 1400px; }
-.card { position: relative; min-height: 300px; cursor: pointer; transform-style: preserve-3d; transition: transform .45s cubic-bezier(.2,.7,.2,1); }
-.card.flipped { transform: rotateY(180deg); }
-.face { position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; box-shadow: var(--shadow); padding: 22px 24px 20px; display: flex; flex-direction: column; gap: 14px; overflow: auto; }
-.face.back { transform: rotateY(180deg); background: linear-gradient(var(--accent-soft), var(--accent-soft)) top/100% 4px no-repeat, var(--surface); }
-.meta { display: flex; justify-content: space-between; gap: 12px; font: 500 11px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
-.meta .side { color: var(--accent); }
-.text { font: 400 21px/1.45 var(--serif); white-space: pre-wrap; overflow-wrap: anywhere; margin: auto 0; max-width: 62ch; }
-.back .text { font-size: 18px; }
-.hint { font: 12px var(--sans); color: var(--muted); }
-.controls { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
-button.btn { font: 500 14px var(--sans); border-radius: 8px; padding: 10px 16px; cursor: pointer; border: 1px solid var(--line); background: var(--surface); color: var(--ink); }
-button.btn:disabled { opacity: .45; cursor: default; }
-.btn.again { background: var(--again-soft); border-color: transparent; color: var(--again); }
-.btn.good { background: var(--accent); border-color: transparent; color: var(--accent-ink); }
-.btn.danger { color: var(--again); }
-kbd { font: 11px var(--mono); border: 1px solid var(--line); border-radius: 4px; padding: 0 4px; margin-left: 6px; opacity: .75; }
-button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-.empty { text-align: center; color: var(--muted); padding: 60px 16px; border: 1px dashed var(--line); border-radius: 10px; }
-
-.panel { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 18px; display: grid; gap: 12px; }
-.panel h2 { font: 600 17px var(--serif); margin: 0; }
-.panel p { margin: 0; color: var(--muted); font-size: 13px; max-width: 70ch; }
-label { font: 500 12px var(--sans); color: var(--muted); display: grid; gap: 4px; }
-input, textarea, select { font: 14px var(--sans); color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 6px; padding: 8px 10px; width: 100%; }
-textarea { min-height: 84px; resize: vertical; line-height: 1.45; }
-#bulk { font: 13px var(--mono); min-height: 140px; }
-.row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
-.list { display: grid; gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
-.item { background: var(--surface); padding: 12px 14px; display: grid; grid-template-columns: 1fr auto; gap: 4px 12px; align-items: start; }
-.item .q { font: 15px/1.4 var(--serif); overflow-wrap: anywhere; }
-.item .t { font: 11px var(--mono); color: var(--muted); text-transform: uppercase; letter-spacing: .06em; }
-.item .acts { grid-row: span 2; display: flex; gap: 6px; }
-.item .acts button { font: 12px var(--sans); background: none; border: 1px solid var(--line); border-radius: 6px; padding: 4px 8px; color: var(--ink); cursor: pointer; }
-.msg { font: 13px var(--sans); color: var(--accent); min-height: 1.2em; }
-.msg.err { color: var(--again); }
-.notice { font: 13px var(--sans); color: var(--gold); }
-@media (max-width: 520px) {
-  .text { font-size: 18px; } .back .text { font-size: 16px; }
-  .card { min-height: 340px; }
-  .item { grid-template-columns: 1fr; } .item .acts { grid-row: auto; }
-}
-@media (prefers-reduced-motion: reduce) { .card, .bar i { transition: none; } }
-</style>
-
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
 <div class="wrap">
   <header>
     <h1>CFA Flashcards <small>Level I</small></h1>
-    <span class="sync" id="sync"><span class="dot"></span><span id="syncText">Connecting…</span></span>
+    <div class="head-right">
+      <span class="sync" id="sync"><span class="dot"></span><span id="syncText">Starting…</span></span>
+      <button class="link" id="signOut" hidden>Sign out</button>
+    </div>
   </header>
 
-  <nav class="tabs" role="tablist">
-    <button class="tab" role="tab" id="tabStudy" aria-selected="true">Study</button>
-    <button class="tab" role="tab" id="tabManage" aria-selected="false">Manage cards</button>
-  </nav>
-
-  <section id="study" class="wrap" style="padding:0">
-    <div class="chips" id="topics"></div>
-    <div class="stats" id="stats"></div>
-    <div class="bar"><i id="barFill"></i></div>
-    <div class="stage" id="stage">
-      <div class="card" id="card" tabindex="0" aria-live="polite">
-        <div class="face front">
-          <div class="meta"><span id="fTopic"></span><span class="side">Question</span></div>
-          <div class="text" id="fText"></div>
-          <div class="hint">Tap the card or press Space to reveal the answer</div>
-        </div>
-        <div class="face back">
-          <div class="meta"><span id="bTopic"></span><span class="side">Answer</span></div>
-          <div class="text" id="bText"></div>
-          <div class="hint">How did you do?</div>
-        </div>
-      </div>
-      <div class="empty" id="empty" hidden></div>
-    </div>
-    <div class="controls">
-      <button class="btn" id="prev">Back<kbd>←</kbd></button>
-      <button class="btn again" id="again" disabled>Review again<kbd>1</kbd></button>
-      <button class="btn good" id="good" disabled>Got it<kbd>2</kbd></button>
-      <button class="btn" id="shuffle">Shuffle</button>
-      <button class="btn" id="reset">Reset progress</button>
-    </div>
+  <!-- Shown until firebase-config.js is filled in -->
+  <section id="setup" class="panel" hidden>
+    <h2>Connect your Firebase project</h2>
+    <p>This app stores your cards in your own free Firebase project so they sync live between your iPad and other devices. Open <code>firebase-config.js</code> and paste in your project's web config. The README lists each step.</p>
   </section>
 
-  <section id="manage" hidden style="display:grid;gap:20px">
-    <p class="notice" id="readonly" hidden>You can study these cards, but only people with Contributor access or above can edit them.</p>
-    <form class="panel" id="form">
-      <h2 id="formTitle">Add a card</h2>
-      <label for="fTopicIn">Topic<input id="fTopicIn" list="topicList" required placeholder="e.g. Fixed Income"></label>
-      <datalist id="topicList"></datalist>
-      <label for="fFront">Question (front)<textarea id="fFront" required></textarea></label>
-      <label for="fBack">Answer (back)<textarea id="fBack" required></textarea></label>
-      <div class="row">
-        <button class="btn good" type="submit" id="save">Add card</button>
-        <button class="btn" type="button" id="cancelEdit" hidden>Cancel</button>
-        <span class="msg" id="formMsg"></span>
-      </div>
-    </form>
-
-    <div class="panel">
-      <h2>Bulk import</h2>
-      <p>Paste one card per line as <code>Topic | Question | Answer</code>, or paste a JSON array of <code>{"topic","front","back"}</code> objects. Use <code>\n</code> inside a line for a line break.</p>
-      <label for="bulk">Cards to import<textarea id="bulk" placeholder="Ethics | What does Standard I(B) cover? | Independence and objectivity"></textarea></label>
-      <div class="row"><button class="btn good" id="importBtn">Import cards</button><span class="msg" id="bulkMsg"></span></div>
+  <!-- Sign in -->
+  <form id="auth" class="panel auth" hidden>
+    <h2>Sign in to your deck</h2>
+    <p>Use the same email and password on every device to see the same cards.</p>
+    <label for="email">Email<input id="email" type="email" autocomplete="email" required></label>
+    <label for="password">Password<input id="password" type="password" autocomplete="current-password" minlength="6" required></label>
+    <div class="row">
+      <button class="btn good" type="submit" id="signIn">Sign in</button>
+      <button class="btn" type="button" id="signUp">Create account</button>
+      <button class="link" type="button" id="resetPw">Forgot password?</button>
     </div>
+    <span class="msg" id="authMsg"></span>
+  </form>
 
-    <div class="panel">
-      <div class="row" style="justify-content:space-between">
-        <h2 id="listTitle">All cards</h2>
-        <input id="search" placeholder="Search cards" style="max-width:240px">
+  <div id="app" hidden>
+    <nav class="tabs" role="tablist">
+      <button class="tab" role="tab" id="tabStudy" aria-selected="true">Study</button>
+      <button class="tab" role="tab" id="tabManage" aria-selected="false">Manage cards</button>
+    </nav>
+
+    <section id="study" class="stack">
+      <div class="chips" id="topics"></div>
+      <div class="stats" id="stats"></div>
+      <div class="bar"><i id="barFill"></i></div>
+      <div class="stage">
+        <div class="card" id="card" tabindex="0" aria-live="polite">
+          <div class="face front">
+            <div class="meta"><span id="fTopic"></span><span class="side">Question</span></div>
+            <div class="text" id="fText"></div>
+            <div class="hint">Tap to reveal the answer</div>
+          </div>
+          <div class="face back">
+            <div class="meta"><span id="bTopic"></span><span class="side">Answer</span></div>
+            <div class="text" id="bText"></div>
+            <div class="hint">Swipe right if you got it, left to review again</div>
+          </div>
+        </div>
+        <div class="swipe-tag again-tag" id="tagAgain">Review again</div>
+        <div class="swipe-tag good-tag" id="tagGood">Got it</div>
+        <div class="empty" id="empty" hidden>
+          <p id="emptyText"></p>
+          <button class="btn good" id="loadStarter" hidden>Load 20 example cards</button>
+        </div>
       </div>
-      <div class="list" id="list"></div>
-      <div class="row" id="deleteArea"><button class="btn danger" id="deleteConfirm" hidden></button><button class="btn" id="deleteCancel" hidden>Keep it</button></div>
-    </div>
-  </section>
+      <div class="controls">
+        <button class="btn" id="prev">Back</button>
+        <button class="btn again" id="again" disabled>Review again</button>
+        <button class="btn good" id="good" disabled>Got it</button>
+        <button class="btn" id="edit">Edit card</button>
+        <button class="btn" id="shuffle">Shuffle</button>
+        <button class="btn" id="reset">Reset progress</button>
+      </div>
+    </section>
+
+    <section id="manage" class="stack" hidden>
+      <div class="panel">
+        <h2>Add from your notes</h2>
+        <p>Type or paste your notes in either format below, then tap Import. A <code># heading</code> sets the topic for the cards under it, and answers can run over several lines.</p>
+        <div class="formats">
+          <pre># Fixed Income
+Q: When does a bond trade at a discount?
+A: When its coupon rate is below its YTM.
+
+Q: Macaulay duration
+A: Weighted average time to receive
+the bond's cash flows.</pre>
+          <pre>Ethics | What does I(B) cover? | Independence and objectivity
+Economics | GDP deflator formula | Nominal GDP / Real GDP × 100</pre>
+        </div>
+        <label for="bulk">Notes to turn into cards<textarea id="bulk" autocapitalize="sentences"></textarea></label>
+        <div class="row"><button class="btn good" id="importBtn">Import cards</button><span class="msg" id="bulkMsg"></span></div>
+      </div>
+
+      <div class="panel">
+        <div class="row between">
+          <h2 id="listTitle">All cards</h2>
+          <input id="search" type="search" placeholder="Search cards" aria-label="Search cards">
+        </div>
+        <div class="list" id="list"></div>
+        <div class="row between">
+          <span class="msg" id="listMsg"></span>
+          <button class="btn" id="exportBtn">Copy deck as JSON</button>
+        </div>
+      </div>
+    </section>
+  </div>
 </div>
 
+<button class="fab" id="fab" hidden aria-label="Add a card">+</button>
+
+<dialog id="editor">
+  <form id="form" method="dialog" class="stack">
+    <h2 id="formTitle">Add a card</h2>
+    <label for="fTopicIn">Topic<input id="fTopicIn" list="topicList" required placeholder="e.g. Fixed Income" autocapitalize="words"></label>
+    <datalist id="topicList"></datalist>
+    <label for="fFront">Question<textarea id="fFront" required autocapitalize="sentences"></textarea></label>
+    <label for="fBack">Answer<textarea id="fBack" required autocapitalize="sentences"></textarea></label>
+    <div class="row">
+      <button class="btn good" type="submit" id="save" value="save">Save and add another</button>
+      <button class="btn" type="button" id="closeEditor">Done</button>
+      <button class="btn danger" type="button" id="deleteBtn" hidden>Delete card</button>
+    </div>
+    <span class="msg" id="formMsg"></span>
+  </form>
+</dialog>
+
+<script type="module" src="app.js"></script>
 <script>
-(() => {
-  const $ = (id) => document.getElementById(id);
-  const store = {
-    get(k, d) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch { return d; } },
-    set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} }
-  };
-
-  let cards = [];            // [{id, topic, front, back}]
-  let db = null, canWrite = true, mode = "loading";
-  let progress = store.get("cfa-progress", {}); // id -> {box, seen}
-  let topicFilter = store.get("cfa-topic", "All");
-  let queue = [], pos = 0, history = [];
-  let editingId = null, pendingDelete = null;
-
-  // ---------- data layer ----------
-  const localKey = "cfa-local-cards";
-  function setCards(list) {
-    cards = list.slice().sort((a, b) => (a.topic || "").localeCompare(b.topic || "") || (a.createdAt || 0) - (b.createdAt || 0));
-    renderTopics(); rebuildQueue(true); renderList();
-  }
-  async function saveCard(card) {
-    const body = { topic: card.topic.trim(), front: card.front.trim(), back: card.back.trim(), updatedAt: Date.now(), createdAt: card.createdAt || Date.now() };
-    if (mode === "live") {
-      const ref = card.id ? db.collection("cards").doc(card.id) : db.collection("cards").doc();
-      await ref.set(body);
-    } else {
-      const list = cards.slice();
-      if (card.id) { const i = list.findIndex(c => c.id === card.id); list[i] = { ...body, id: card.id }; }
-      else list.push({ ...body, id: "l" + Date.now().toString(36) + Math.random().toString(36).slice(2, 6) });
-      store.set(localKey, list); setCards(list);
-    }
-  }
-  async function removeCard(id) {
-    if (mode === "live") await db.collection("cards").doc(id).delete();
-    else { const list = cards.filter(c => c.id !== id); store.set(localKey, list); setCards(list); }
-  }
-
-  function setSync(state, text) { $("sync").className = "sync" + (state === "live" ? " live" : ""); $("syncText").textContent = text; }
-
-  async function startLocal() {
-    mode = "local";
-    let list = store.get(localKey, null);
-    if (!list) {
-      try { const r = await fetch("cards.json"); list = (await r.json()).map((c, i) => ({ ...c, id: "s" + i, createdAt: i })); }
-      catch { list = []; }
-      store.set(localKey, list);
-    }
-    setSync("local", "Offline mode · saved in this browser");
-    setCards(list);
-  }
-
-  async function startLive() {
-    for (let i = 0; i < 10 && !(window.claude && window.claude.use); i++) await new Promise(r => setTimeout(r, 150));
-    db = window.claude && window.claude.use ? await window.claude.use("db") : null;
-    if (!db) return startLocal();
-    mode = "live";
-    try {
-      const user = await window.claude.use("user");
-      if (user) { const c = await user.can("data.write"); if (c === false) canWrite = false; }
-    } catch {}
-    applyWriteAccess();
-    db.collection("cards").onSnapshot(snap => {
-      setSync("live", "Live · " + snap.size + " cards synced");
-      setCards(snap.docs.map(d => ({ id: d.id, ...d.data() })));
-    }, err => {
-      setSync("local", "Live sync stopped. Reload the page to reconnect.");
-    });
-  }
-  function applyWriteAccess() {
-    $("readonly").hidden = canWrite;
-    ["save", "importBtn"].forEach(id => $(id).disabled = !canWrite);
-  }
-
-  // ---------- study ----------
-  function topicsOf() {
-    const m = new Map(); cards.forEach(c => m.set(c.topic, (m.get(c.topic) || 0) + 1));
-    return [...m.entries()].sort((a, b) => a[0].localeCompare(b[0]));
-  }
-  function renderTopics() {
-    const el = $("topics"); el.innerHTML = "";
-    const ts = topicsOf();
-    if (topicFilter !== "All" && !ts.some(t => t[0] === topicFilter)) topicFilter = "All";
-    [["All", cards.length], ...ts].forEach(([t, n]) => {
-      const b = document.createElement("button");
-      b.className = "chip"; b.setAttribute("aria-pressed", t === topicFilter);
-      b.textContent = t; const s = document.createElement("span"); s.className = "n"; s.textContent = n; b.append(s);
-      b.onclick = () => { topicFilter = t; store.set("cfa-topic", t); renderTopics(); rebuildQueue(false); };
-      el.append(b);
-    });
-    $("topicList").innerHTML = ""; ts.forEach(([t]) => { const o = document.createElement("option"); o.value = t; $("topicList").append(o); });
-  }
-  const pool = () => cards.filter(c => topicFilter === "All" || c.topic === topicFilter);
-  const box = (id) => (progress[id] && progress[id].box) || 0;
-
-  function rebuildQueue(keepCurrent) {
-    const current = queue[pos];
-    const p = pool();
-    // weakest cards first, random within the same box
-    queue = p.map(c => c.id).sort((a, b) => box(a) - box(b) || Math.random() - .5);
-    pos = 0; history = [];
-    if (keepCurrent && current && queue.includes(current)) { queue.splice(queue.indexOf(current), 1); queue.unshift(current); }
-    showCard(keepCurrent && current === queue[0]);
-  }
-  function showCard(keepFlip) {
-    const c = cards.find(x => x.id === queue[pos]);
-    const empty = $("empty");
-    if (!c) {
-      $("card").hidden = true; empty.hidden = false;
-      empty.textContent = cards.length ? "No cards in this topic yet." : "No cards yet. Add some under Manage cards.";
-    } else {
-      $("card").hidden = false; empty.hidden = true;
-      $("fTopic").textContent = $("bTopic").textContent = c.topic;
-      $("fText").textContent = c.front; $("bText").textContent = c.back;
-      if (!keepFlip) $("card").classList.remove("flipped");
-    }
-    const flipped = $("card").classList.contains("flipped");
-    $("again").disabled = $("good").disabled = !c || !flipped;
-    $("prev").disabled = !history.length;
-    renderStats();
-  }
-  function renderStats() {
-    const p = pool();
-    const mastered = p.filter(c => box(c.id) >= 3).length;
-    const learning = p.filter(c => box(c.id) > 0 && box(c.id) < 3).length;
-    const fresh = p.length - mastered - learning;
-    $("stats").innerHTML = "";
-    [["Card", p.length ? Math.min(pos + 1, queue.length) + " / " + queue.length : "0 / 0"], ["New", fresh], ["Learning", learning], ["Mastered", mastered]]
-      .forEach(([k, v]) => { const s = document.createElement("span"); s.textContent = k + " "; const b = document.createElement("b"); b.textContent = v; s.append(b); $("stats").append(s); });
-    $("barFill").style.width = p.length ? (mastered / p.length * 100) + "%" : "0";
-  }
-  function flip() { if ($("card").hidden) return; $("card").classList.toggle("flipped"); showCard(true); }
-  function grade(ok) {
-    const id = queue[pos]; if (!id || !$("card").classList.contains("flipped")) return;
-    const b = box(id);
-    progress[id] = { box: ok ? Math.min(b + 1, 5) : 0, seen: Date.now() };
-    store.set("cfa-progress", progress);
-    history.push(pos);
-    if (!ok) { // bring it back a few cards later
-      queue.splice(Math.min(pos + 4, queue.length), 0, id);
-    }
-    pos++;
-    if (pos >= queue.length) { rebuildQueue(false); return; }
-    showCard(false);
-  }
-  function back() { if (!history.length) return; pos = history.pop(); showCard(false); }
-
-  $("card").onclick = flip;
-  $("again").onclick = () => grade(false);
-  $("good").onclick = () => grade(true);
-  $("prev").onclick = back;
-  $("shuffle").onclick = () => { queue.sort(() => Math.random() - .5); pos = 0; history = []; showCard(false); };
-  let resetArmed = false;
-  $("reset").onclick = () => {
-    if (!resetArmed) { resetArmed = true; $("reset").textContent = "Tap again to reset"; setTimeout(() => { resetArmed = false; $("reset").textContent = "Reset progress"; }, 3000); return; }
-    resetArmed = false; $("reset").textContent = "Reset progress";
-    progress = {}; store.set("cfa-progress", progress); rebuildQueue(false);
-  };
-  document.addEventListener("keydown", e => {
-    if ($("study").hidden || /INPUT|TEXTAREA|SELECT/.test(e.target.tagName)) return;
-    if (e.key === " " || e.key === "Enter") { e.preventDefault(); flip(); }
-    else if (e.key === "1") grade(false);
-    else if (e.key === "2") grade(true);
-    else if (e.key === "ArrowLeft") back();
-  });
-
-  // ---------- tabs ----------
-  function selectTab(which) {
-    const study = which === "study";
-    $("tabStudy").setAttribute("aria-selected", study); $("tabManage").setAttribute("aria-selected", !study);
-    $("study").hidden = !study; $("manage").hidden = study;
-    store.set("cfa-tab", which);
-  }
-  $("tabStudy").onclick = () => selectTab("study");
-  $("tabManage").onclick = () => selectTab("manage");
-  selectTab(store.get("cfa-tab", "study"));
-
-  // ---------- manage ----------
-  function msg(id, text, err) { const m = $(id); m.textContent = text; m.className = "msg" + (err ? " err" : ""); }
-  function errText(e) { return e && e.code === "invalid_argument" ? "You don't have permission to edit these cards." : e && e.code === "quota_exceeded" ? "The deck is full. Delete some cards first." : "Couldn't save. Check your connection and try again."; }
-
-  $("form").addEventListener("submit", async e => {
-    e.preventDefault();
-    const card = { id: editingId, topic: $("fTopicIn").value, front: $("fFront").value, back: $("fBack").value };
-    if (editingId) card.createdAt = (cards.find(c => c.id === editingId) || {}).createdAt;
-    $("save").disabled = true;
-    try {
-      await saveCard(card);
-      msg("formMsg", editingId ? "Card updated" : "Card added");
-      const keepTopic = $("fTopicIn").value;
-      stopEdit(); $("fTopicIn").value = keepTopic; $("fFront").focus();
-    } catch (err) { msg("formMsg", errText(err), true); }
-    $("save").disabled = !canWrite;
-  });
-  function startEdit(c) {
-    editingId = c.id; $("formTitle").textContent = "Edit card"; $("save").textContent = "Save changes"; $("cancelEdit").hidden = false;
-    $("fTopicIn").value = c.topic; $("fFront").value = c.front; $("fBack").value = c.back;
-    $("form").scrollIntoView({ behavior: "smooth", block: "start" }); $("fFront").focus();
-  }
-  function stopEdit() {
-    editingId = null; $("formTitle").textContent = "Add a card"; $("save").textContent = "Add card"; $("cancelEdit").hidden = true;
-    $("fFront").value = ""; $("fBack").value = "";
-  }
-  $("cancelEdit").onclick = () => { stopEdit(); msg("formMsg", ""); };
-
-  function parseBulk(text) {
-    text = text.trim(); if (!text) return [];
-    if (text.startsWith("[")) {
-      return JSON.parse(text).map(c => ({ topic: String(c.topic || "General"), front: String(c.front || c.question || ""), back: String(c.back || c.answer || "") }));
-    }
-    return text.split(/\r?\n/).filter(l => l.trim()).map(l => {
-      const parts = l.split("|").map(s => s.trim().replace(/\\n/g, "\n"));
-      if (parts.length < 3) throw new Error("Each line needs Topic | Question | Answer. Check: " + l.slice(0, 60));
-      return { topic: parts[0], front: parts[1], back: parts.slice(2).join(" | ") };
-    });
-  }
-  $("importBtn").onclick = async () => {
-    let list;
-    try { list = parseBulk($("bulk").value).filter(c => c.front && c.back); }
-    catch (e) { msg("bulkMsg", e.message || "That JSON couldn't be read.", true); return; }
-    if (!list.length) { msg("bulkMsg", "Nothing to import yet.", true); return; }
-    $("importBtn").disabled = true;
-    let done = 0;
-    try {
-      for (const c of list) { await saveCard({ ...c, createdAt: Date.now() + done }); done++; msg("bulkMsg", "Importing " + done + " of " + list.length + "…"); }
-      msg("bulkMsg", "Imported " + done + " cards"); $("bulk").value = "";
-    } catch (e) { msg("bulkMsg", "Imported " + done + " cards, then stopped. " + errText(e), true); }
-    $("importBtn").disabled = !canWrite;
-  };
-
-  function renderList() {
-    const q = $("search").value.trim().toLowerCase();
-    const shown = cards.filter(c => !q || (c.topic + " " + c.front + " " + c.back).toLowerCase().includes(q));
-    $("listTitle").textContent = "All cards (" + cards.length + ")";
-    const el = $("list"); el.innerHTML = "";
-    if (!shown.length) { const d = document.createElement("div"); d.className = "item"; d.textContent = q ? "No cards match your search." : "No cards yet."; el.append(d); return; }
-    shown.forEach(c => {
-      const it = document.createElement("div"); it.className = "item";
-      const t = document.createElement("div"); t.className = "t"; t.textContent = c.topic;
-      const qq = document.createElement("div"); qq.className = "q"; qq.textContent = c.front;
-      const acts = document.createElement("div"); acts.className = "acts";
-      if (canWrite) {
-        const e = document.createElement("button"); e.textContent = "Edit"; e.onclick = () => startEdit(c);
-        const d = document.createElement("button"); d.textContent = "Delete"; d.onclick = () => askDelete(c, it);
-        acts.append(e, d);
-      }
-      it.append(t, acts, qq); el.append(it);
-    });
-  }
-  function askDelete(c, it) {
-    pendingDelete = c.id;
-    $("deleteConfirm").textContent = "Delete “" + c.front.slice(0, 50) + (c.front.length > 50 ? "…" : "") + "”";
-    $("deleteConfirm").hidden = $("deleteCancel").hidden = false;
-    it.after($("deleteArea"));
-    $("deleteConfirm").focus();
-  }
-  function clearDelete() { pendingDelete = null; $("deleteConfirm").hidden = $("deleteCancel").hidden = true; }
-  $("deleteCancel").onclick = clearDelete;
-  $("deleteConfirm").onclick = async () => {
-    const id = pendingDelete; clearDelete();
-    $("list").after($("deleteArea"));
-    try { await removeCard(id); } catch (e) { msg("bulkMsg", errText(e), true); }
-  };
-  $("search").addEventListener("input", renderList);
-
-  setSync("local", "Connecting…");
-  startLive();
-})();
+  if ("serviceWorker" in navigator) addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));
 </script>
+</body>
+</html>

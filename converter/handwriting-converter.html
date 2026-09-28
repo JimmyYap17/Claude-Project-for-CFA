@@ -52,6 +52,9 @@ button:focus-visible, input:focus-visible, textarea:focus-visible { outline: 2px
 .pad-wrap { position: relative; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; background: var(--paper); }
 #pad { display: block; width: 100%; height: 380px; touch-action: none; cursor: crosshair; }
 .pad-hint { position: absolute; inset: 0; display: grid; place-items: center; color: #8A9A94; font: 15px var(--sans); pointer-events: none; text-align: center; padding: 16px; }
+.paste-box { border: 2px dashed var(--accent); background: var(--accent-soft); color: var(--ink); border-radius: 10px; padding: 16px; font: 15px/1.45 var(--sans); cursor: text; caret-color: transparent; }
+.paste-box:focus { outline: 2px solid var(--accent); outline-offset: 2px; }
+.bridge .paste-box { padding: 28px 16px; font-size: 17px; text-align: center; }
 .photo-drop { border: 1px dashed var(--line); border-radius: 10px; padding: 24px 16px; display: grid; gap: 10px; justify-items: center; text-align: center; color: var(--muted); }
 .photo-drop img { max-height: 320px; border-radius: 8px; border: 1px solid var(--line); }
 .status { font: 13px var(--sans); color: var(--muted); min-height: 1.3em; }
@@ -92,6 +95,9 @@ a { color: var(--accent); }
   </header>
 
   <section class="panel">
+    <div class="paste-box" id="pasteBox" contenteditable="true" role="textbox" aria-label="Paste handwriting image here" inputmode="none">
+      <b>Coming from your flashcard app?</b> Tap here and choose <b>Paste</b>. Your handwriting converts straight away.
+    </div>
     <div class="row between">
       <div class="seg" role="group" aria-label="Input">
         <button id="modeWrite" aria-pressed="true">Write</button>
@@ -149,7 +155,7 @@ a { color: var(--accent); }
     <ol class="steps">
       <li>Tap <b>Copy for import</b>.</li>
       <li>Open your flashcard app: <a href="https://jimmyyap17.github.io/Claude-Project-for-CFA/" target="_blank" rel="noopener">jimmyyap17.github.io/Claude-Project-for-CFA</a></li>
-      <li>Go to <b>Manage cards</b>, paste into the notes box and tap <b>Import cards</b>.</li>
+      <li>Opened from the app's <b>Handwriting</b> tab? Go back and tap <b>Paste from Claude</b>. Otherwise go to <b>Manage cards</b>, paste into the notes box and tap <b>Import cards</b>.</li>
     </ol>
   </section>
 </div>
@@ -249,6 +255,29 @@ a { color: var(--accent); }
     const img = $("photoPreview");
     if (photoFile) { img.src = URL.createObjectURL(photoFile); img.hidden = false; $("photoText").textContent = photoFile.name; }
   });
+
+  // ---------- paste from the flashcard app ----------
+  const bridge = location.hash === "#bridge";
+  if (bridge) document.body.classList.add("bridge");
+  function takePastedImage(file) {
+    photoFile = file;
+    const img = $("photoPreview"); img.src = URL.createObjectURL(file); img.hidden = false;
+    $("photoText").textContent = "Pasted handwriting";
+    setMode("photo");
+  }
+  document.addEventListener("paste", (e) => {
+    const items = [...(e.clipboardData ? e.clipboardData.items : [])];
+    const item = items.find((it) => it.kind === "file" && it.type.startsWith("image/"));
+    if (!item) {
+      if (e.target === $("pasteBox")) { e.preventDefault(); status("There's no image on the clipboard. In your flashcard app, tap Copy & open Claude first.", "err"); }
+      return;
+    }
+    e.preventDefault();
+    takePastedImage(item.getAsFile());
+    $("pasteBox").blur();
+    if (!$("convert").disabled) $("convert").click();
+  });
+  $("pasteBox").addEventListener("beforeinput", (e) => e.preventDefault()); // keep the box's text as is
 
   // ---------- Claude ----------
   const PROMPT = (topic) => `The attached image is a CFA candidate's handwritten study note. Turn it into flashcards.
@@ -387,7 +416,9 @@ Use \\n inside strings for line breaks.`;
     try {
       await navigator.clipboard.writeText(text);
       $("copyBox").hidden = true;
-      status(`Copied ${n} card${n === 1 ? "" : "s"}. Paste them into Manage cards in your flashcard app.`, "ok");
+      status(bridge
+        ? `Copied ${n} card${n === 1 ? "" : "s"}. Go back to your flashcard app and tap Paste from Claude.`
+        : `Copied ${n} card${n === 1 ? "" : "s"}. Paste them into Manage cards in your flashcard app.`, "ok");
     } catch {
       const box = $("copyBox"); box.hidden = false; box.value = text; box.focus(); box.select();
       status("Copy the selected text in the box below, then paste it into your flashcard app.", "");

@@ -39,7 +39,7 @@ function show(view) {
   $("setup").hidden = view !== "setup";
   $("auth").hidden = view !== "auth";
   $("app").hidden = view !== "app";
-  $("fab").hidden = view !== "app";
+  $("fab").hidden = view !== "app" || local.get("cfa-tab", "study") === "hand";
   $("signOut").hidden = view !== "app";
 }
 function setSync(state, text) {
@@ -345,16 +345,20 @@ document.addEventListener("keydown", (e) => {
 });
 
 // ---------- tabs ----------
+const TABS = { study: "tabStudy", manage: "tabManage", hand: "tabHand" };
 function selectTab(which) {
-  const study = which === "study";
-  $("tabStudy").setAttribute("aria-selected", study);
-  $("tabManage").setAttribute("aria-selected", !study);
-  $("study").hidden = !study; $("manage").hidden = study;
+  if (!TABS[which]) which = "study";
+  for (const [id, tab] of Object.entries(TABS)) {
+    $(tab).setAttribute("aria-selected", id === which);
+    $(id).hidden = id !== which;
+  }
   local.set("cfa-tab", which);
+  $("fab").hidden = $("app").hidden || which === "hand";
+  if (which === "hand") sizePad();
 }
 $("tabStudy").onclick = () => selectTab("study");
 $("tabManage").onclick = () => selectTab("manage");
-selectTab(local.get("cfa-tab", "study"));
+$("tabHand").onclick = () => selectTab("hand");
 
 // ---------- add / edit dialog ----------
 function openEditor(c) {
@@ -476,3 +480,183 @@ $("exportBtn").onclick = async () => {
     msg("listMsg", "Select all the text in the box below the list and copy it", true);
   }
 };
+
+
+// ---------- handwriting ----------
+// Free path to Claude: the drawing is copied to the clipboard, pasted into the
+// Handwriting Converter page inside claude.ai (runs on the user's Claude plan),
+// and the result is pasted back here to check and add.
+const pad = $("pad"), pctx = pad.getContext("2d");
+let strokes = local.get("cfa-strokes", []), curStroke = null, penSeen = false, photoBlob = null;
+
+function sizePad() {
+  const r = pad.getBoundingClientRect();
+  if (!r.width) return;
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  pad.width = Math.round(r.width * dpr); pad.height = Math.round(r.height * dpr);
+  pctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  redrawPad();
+}
+function drawStroke(g, s, boost = 0) {
+  g.strokeStyle = "#15231F"; g.fillStyle = "#15231F"; g.lineCap = "round"; g.lineJoin = "round";
+  for (let i = 1; i < s.length; i++) {
+    g.lineWidth = 1.2 + boost + 2.6 * ((s[i - 1].p + s[i].p) / 2);
+    g.beginPath(); g.moveTo(s[i - 1].x, s[i - 1].y); g.lineTo(s[i].x, s[i].y); g.stroke();
+  }
+  if (s.length === 1) { g.beginPath(); g.arc(s[0].x, s[0].y, 1.7, 0, 7); g.fill(); }
+}
+function redrawPad() {
+  const r = pad.getBoundingClientRect();
+  pctx.fillStyle = "#FFFFFF"; pctx.fillRect(0, 0, r.width, r.height);
+  pctx.strokeStyle = "#E3E9E6"; pctx.lineWidth = 1;
+  for (let y = 48; y < r.height; y += 48) { pctx.beginPath(); pctx.moveTo(0, y + .5); pctx.lineTo(r.width, y + .5); pctx.stroke(); }
+  strokes.forEach((s) => drawStroke(pctx, s));
+  $("padHint").hidden = strokes.length > 0;
+}
+const saveStrokes = () => local.set("cfa-strokes", strokes);
+function padPoint(e) {
+  const r = pad.getBoundingClientRect();
+  return { x: Math.round((e.clientX - r.left) * 10) / 10, y: Math.round((e.clientY - r.top) * 10) / 10, p: e.pointerType === "pen" ? (e.pressure || .5) : .5 };
+}
+pad.addEventListener("pointerdown", (e) => {
+  if (e.pointerType === "pen") penSeen = true;
+  if (e.pointerType === "touch" && penSeen) return; // ignore the palm once a pencil is in use
+  pad.setPointerCapture(e.pointerId);
+  curStroke = [padPoint(e)]; strokes.push(curStroke); $("padHint").hidden = true; drawStroke(pctx, curStroke);
+});
+pad.addEventListener("pointermove", (e) => {
+  if (!curStroke) return;
+  const evs = e.getCoalescedEvents ? e.getCoalescedEvents() : [e];
+  evs.forEach((ev) => curStroke.push(padPoint(ev)));
+  drawStroke(pctx, curStroke.slice(-evs.length - 1));
+});
+const endPadStroke = () => { if (curStroke) { curStroke = null; saveStrokes(); } };
+pad.addEventListener("pointerup", endPadStroke);
+pad.addEventListener("pointercancel", endPadStroke);
+$("padUndo").onclick = () => { strokes.pop(); saveStrokes(); redrawPad(); };
+$("padClear").onclick = () => { strokes = []; saveStrokes(); redrawPad(); };
+addEventListener("resize", () => { clearTimeout(sizePad.t); sizePad.t = setTimeout(() => { if (!$("hand").hidden) sizePad(); }, 150); });
+
+$("handPhoto").addEventListener("change", () => {
+  const f = $("handPhoto").files[0];
+  photoBlob = f || null;
+  $("photoName").textContent = f ? "Using photo: " + f.name : "";
+});
+
+// Cropped, high-contrast PNG of the drawing (or the chosen photo as PNG).
+function handwritingPng() {
+  if (photoBlob) {
+    return createImageBitmap(photoBlob).then((bmp) => {
+      const scale = Math.min(1, 2000 / Math.max(bmp.width, bmp.height));
+      const c = document.createElement("canvas"); c.width = Math.round(bmp.width * scale); c.height = Math.round(bmp.height * scale);
+      c.getContext("2d").drawImage(bmp, 0, 0, c.width, c.height);
+      return new Promise((res) => c.toBlob(res, "image/png"));
+    });
+  }
+  const pts = strokes.flat();
+  const minX = Math.max(0, Math.min(...pts.map((p) => p.x)) - 24), minY = Math.max(0, Math.min(...pts.map((p) => p.y)) - 24);
+  const maxX = Math.max(...pts.map((p) => p.x)) + 24, maxY = Math.max(...pts.map((p) => p.y)) + 24;
+  const k = 2, c = document.createElement("canvas");
+  c.width = Math.ceil((maxX - minX) * k); c.height = Math.ceil((maxY - minY) * k);
+  const g = c.getContext("2d");
+  g.fillStyle = "#FFFFFF"; g.fillRect(0, 0, c.width, c.height);
+  g.setTransform(k, 0, 0, k, -minX * k, -minY * k);
+  strokes.forEach((s) => drawStroke(g, s, 0.2));
+  return new Promise((res) => c.toBlob(res, "image/png"));
+}
+
+$("toClaude").onclick = () => {
+  if (!photoBlob && !strokes.length) { msg("handMsg", "Write something on the pad first.", true); return; }
+  $("handFallback").hidden = true;
+  const png = handwritingPng();
+  // The copy must start inside the tap for iPad Safari to allow it, so the
+  // image goes in as a promise rather than after an await.
+  let copied;
+  try {
+    copied = navigator.clipboard.write([new ClipboardItem({ "image/png": png })]);
+  } catch (e) { copied = Promise.reject(e); }
+  copied.then(
+    () => msg("handMsg", "Copied. Now tap Open Claude."),
+    async () => {
+      msg("handMsg", "Couldn't copy automatically. Use the image below.", true);
+      $("handImg").src = URL.createObjectURL(await png);
+      $("handFallback").hidden = false;
+    },
+  );
+};
+
+// ---- results from Claude ----
+let handCards = [];
+function loadHandResult(text) {
+  let list;
+  try { list = parseNotes(text).filter((c) => c.front || c.back); } catch { list = []; }
+  if (!list.length) { msg("addMsg", "That doesn't look like cards from the converter. In Claude, tap Copy for import, then try again.", true); return; }
+  handCards.push(...list);
+  $("handPaste").value = "";
+  msg("addMsg", list.length + (list.length === 1 ? " card" : " cards") + " ready to check.");
+  renderHandCards();
+}
+$("pasteResult").onclick = async () => {
+  try {
+    const text = await navigator.clipboard.readText();
+    if (text && text.trim()) loadHandResult(text);
+    else msg("addMsg", "The clipboard is empty. In Claude, tap Copy for import first.", true);
+  } catch {
+    msg("addMsg", "Tap the box below, then choose Paste.", true);
+    $("handPaste").focus();
+  }
+};
+$("handPaste").addEventListener("paste", () => setTimeout(() => { if ($("handPaste").value.trim()) loadHandResult($("handPaste").value); }, 0));
+
+function renderHandCards() {
+  const box = $("handCards"); box.innerHTML = "";
+  $("addAll").hidden = handCards.length < 2;
+  handCards.forEach((c, i) => {
+    const el = document.createElement("div"); el.className = "hcard";
+    const mk = (label, key, rows) => {
+      const l = document.createElement("label"); l.textContent = label;
+      const t = document.createElement(rows ? "textarea" : "input");
+      if (rows) t.rows = rows; else t.setAttribute("list", "topicList");
+      t.value = c[key];
+      t.addEventListener("input", () => { c[key] = t.value; clearTimeout(t._p); t._p = setTimeout(prev, 250); });
+      l.append(t); return l;
+    };
+    const pv = document.createElement("div"); pv.className = "preview";
+    const lab = document.createElement("span"); lab.className = "preview-label"; lab.textContent = "Preview";
+    const pf = document.createElement("div"); pf.className = "pf";
+    const pb = document.createElement("div");
+    pv.append(lab, pf, pb);
+    const prev = () => { setRich(pf, c.front); setRich(pb, c.back); };
+    const fields = document.createElement("div"); fields.className = "fields";
+    fields.append(mk("Question (front)", "front", 3), mk("Answer (back)", "back", 3));
+    const row = document.createElement("div"); row.className = "row";
+    const add = document.createElement("button"); add.className = "btn good"; add.textContent = "Add to deck";
+    add.onclick = () => addHandCard(i);
+    const drop = document.createElement("button"); drop.className = "btn"; drop.textContent = "Discard";
+    drop.onclick = () => { handCards.splice(i, 1); renderHandCards(); };
+    row.append(add, drop);
+    el.append(mk("Topic", "topic"), fields, pv, row);
+    box.append(el);
+    prev();
+  });
+}
+function addHandCard(i) {
+  const c = handCards[i];
+  if (!c.topic.trim() || !c.front.trim() || !c.back.trim()) { msg("addMsg", "Each card needs a topic, a question and an answer.", true); return false; }
+  saveCard({ topic: c.topic, front: c.front, back: c.back });
+  handCards.splice(i, 1);
+  msg("addMsg", "Added to your deck.");
+  renderHandCards();
+  return true;
+}
+$("addAll").onclick = () => {
+  let n = 0;
+  for (let i = handCards.length - 1; i >= 0; i--) {
+    const c = handCards[i];
+    if (c.topic.trim() && c.front.trim() && c.back.trim()) { saveCard(c); handCards.splice(i, 1); n++; }
+  }
+  renderHandCards();
+  msg("addMsg", "Added " + n + (n === 1 ? " card" : " cards") + (handCards.length ? ". The rest need a topic, question and answer." : "."), handCards.length > 0);
+};
+
+selectTab(local.get("cfa-tab", "study")); // last, once the handwriting pad exists

@@ -53,6 +53,7 @@
     <nav class="tabs" role="tablist">
       <button class="tab" role="tab" id="tabStudy" aria-selected="true">Study</button>
       <button class="tab" role="tab" id="tabManage" aria-selected="false">Manage cards</button>
+      <button class="tab" role="tab" id="tabHand" aria-selected="false">Handwriting</button>
     </nav>
 
     <section id="study" class="stack">
@@ -120,6 +121,54 @@ Economics | GDP deflator formula | Nominal GDP / Real GDP × 100</pre>
         </div>
       </div>
     </section>
+
+    <section id="hand" class="stack" hidden>
+      <div class="panel">
+        <h2>1. Write it</h2>
+        <p>Write with your Apple Pencil: the question on top and the formula or answer below, or just the formula. Your drawing stays here if you leave the app.</p>
+        <div class="pad-wrap">
+          <canvas id="pad" aria-label="Handwriting pad"></canvas>
+          <div class="pad-hint" id="padHint">Write here</div>
+        </div>
+        <div class="row between">
+          <div class="row">
+            <button class="btn small" id="padUndo">Undo</button>
+            <button class="btn small" id="padClear">Clear</button>
+          </div>
+          <div class="row">
+            <span class="msg" id="photoName"></span>
+            <label class="btn small" for="handPhoto">Use a photo instead</label>
+            <input type="file" id="handPhoto" accept="image/*" hidden>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h2>2. Convert with Claude</h2>
+        <p>Copy your handwriting, then open the converter in Claude. Tap the paste box there and choose <b>Paste</b>. When the cards appear, tap <b>Copy for import</b> and come back here.</p>
+        <div class="row">
+          <button class="btn good" id="toClaude">Copy handwriting</button>
+          <a class="btn" id="openClaude" href="https://claude.ai/artifact/UeaZWHpa52rLk4FfkvkMF8#bridge" target="_blank" rel="noopener">Open Claude</a>
+          <span class="msg" id="handMsg"></span>
+        </div>
+        <div id="handFallback" hidden class="stack">
+          <p>Your iPad didn't allow the copy. Press and hold the image below, tap <b>Copy</b>, then paste it in Claude.</p>
+          <img id="handImg" alt="Your handwriting" class="hand-img">
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="row between">
+          <h2>3. Check and add</h2>
+          <button class="btn good" id="pasteResult">Paste from Claude</button>
+        </div>
+        <p>Check each formula in the preview, fix anything misread, and fill in the question before adding it.</p>
+        <label for="handPaste">Or paste Claude's result here<textarea id="handPaste" placeholder="# Fixed Income&#10;Q: …&#10;A: …"></textarea></label>
+        <div class="stack" id="handCards"></div>
+        <div class="row"><button class="btn good" id="addAll" hidden>Add all to deck</button><span class="msg" id="addMsg"></span></div>
+      </div>
+    </section>
+
   </div>
 </div>
 

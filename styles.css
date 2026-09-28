@@ -144,3 +144,18 @@ dialog::backdrop { background: rgba(10, 20, 17, .45); }
 .preview { border: 1px dashed var(--line); border-radius: 8px; padding: 10px 12px; display: grid; gap: 8px; font: 17px/1.45 var(--serif); white-space: pre-wrap; overflow-wrap: anywhere; }
 .preview-label { font: 500 11px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
 #previewFront { color: var(--muted); }
+
+/* handwriting */
+.pad-wrap { position: relative; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; background: #FFFFFF; }
+#pad { display: block; width: 100%; height: 360px; touch-action: none; cursor: crosshair; }
+.pad-hint { position: absolute; inset: 0; display: grid; place-items: center; color: #8A9A94; font: 15px var(--sans); pointer-events: none; }
+.btn.small { font-size: 13px; padding: 7px 11px; }
+label.btn { display: inline-block; color: var(--ink); font: 500 13px var(--sans); }
+.hand-img { max-width: 100%; max-height: 260px; border: 1px solid var(--line); border-radius: 8px; background: #FFFFFF; justify-self: start; -webkit-touch-callout: default; }
+.hcard { border: 1px solid var(--line); border-radius: 10px; padding: 12px; display: grid; gap: 10px; background: var(--bg); }
+.hcard .fields { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 10px; }
+.hcard textarea, .hcard input { background: var(--surface); }
+.hcard .preview { background: var(--surface); }
+@media (max-width: 520px) { #pad { height: 280px; } }
+.hcard .pf { color: var(--muted); }
+a.btn { text-decoration: none; display: inline-block; }

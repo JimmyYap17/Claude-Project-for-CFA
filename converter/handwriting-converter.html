@@ -1,0 +1,406 @@
+<title>CFA Handwriting Converter</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap">
+<style>
+:root {
+  --bg: #F3F5F4; --surface: #FFFFFF; --surface-2: #E8ECEA; --ink: #15231F; --muted: #5B6B66; --line: #D3DAD7;
+  --accent: #1F6F5C; --accent-ink: #FFFFFF; --accent-soft: #DCEDE7; --warn: #A8452F; --warn-soft: #F5E2DC;
+  --paper: #FFFFFF; --pen: #15231F; --rule: #E3E9E6;
+  --shadow: 0 1px 2px rgba(21,35,31,.06), 0 8px 24px rgba(21,35,31,.07);
+  --serif: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --sans: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --bg: #0E1513; --surface: #16201D; --surface-2: #1E2A26; --ink: #E4ECE9; --muted: #93A49E; --line: #2A3833;
+    --accent: #5CC2A3; --accent-ink: #0B1A15; --accent-soft: #1B3A31; --warn: #E08A72; --warn-soft: #3A221C;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.35);
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #0E1513; --surface: #16201D; --surface-2: #1E2A26; --ink: #E4ECE9; --muted: #93A49E; --line: #2A3833;
+  --accent: #5CC2A3; --accent-ink: #0B1A15; --accent-soft: #1B3A31; --warn: #E08A72; --warn-soft: #3A221C;
+  --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.35);
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font: 15px/1.5 var(--sans); }
+.wrap { max-width: 900px; margin: 0 auto; padding-inline: 16px; padding-block: 20px 48px; display: grid; gap: 18px; }
+header { display: grid; gap: 4px; }
+h1 { font: 600 26px/1.2 var(--serif); margin: 0; letter-spacing: -.01em; text-wrap: balance; }
+header p { margin: 0; color: var(--muted); max-width: 66ch; }
+h2 { font: 600 17px var(--serif); margin: 0; }
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 16px; display: grid; gap: 12px; }
+.row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.row.between { justify-content: space-between; }
+label { font: 500 12px var(--sans); color: var(--muted); display: grid; gap: 4px; }
+input[type=text], textarea { font: 16px var(--sans); color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 9px 11px; width: 100%; }
+textarea { min-height: 70px; resize: vertical; line-height: 1.45; font: 14px/1.45 var(--mono); }
+.seg { display: inline-flex; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+.seg button { border: 0; background: var(--surface); color: var(--muted); font: 500 14px var(--sans); padding: 8px 14px; cursor: pointer; }
+.seg button[aria-pressed="true"] { background: var(--ink); color: var(--bg); }
+.btn { font: 500 15px var(--sans); border-radius: 8px; padding: 10px 16px; cursor: pointer; border: 1px solid var(--line); background: var(--surface); color: var(--ink); }
+.btn:disabled { opacity: .45; cursor: default; }
+.btn.primary { background: var(--accent); border-color: transparent; color: var(--accent-ink); }
+.btn.small { font-size: 13px; padding: 6px 10px; }
+.btn.danger { color: var(--warn); }
+button:focus-visible, input:focus-visible, textarea:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.pad-wrap { position: relative; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; background: var(--paper); }
+#pad { display: block; width: 100%; height: 380px; touch-action: none; cursor: crosshair; }
+.pad-hint { position: absolute; inset: 0; display: grid; place-items: center; color: #8A9A94; font: 15px var(--sans); pointer-events: none; text-align: center; padding: 16px; }
+.photo-drop { border: 1px dashed var(--line); border-radius: 10px; padding: 24px 16px; display: grid; gap: 10px; justify-items: center; text-align: center; color: var(--muted); }
+.photo-drop img { max-height: 320px; border-radius: 8px; border: 1px solid var(--line); }
+.status { font: 13px var(--sans); color: var(--muted); min-height: 1.3em; }
+.status.err { color: var(--warn); }
+.status.ok { color: var(--accent); }
+.spinner { display: inline-block; width: 12px; height: 12px; border: 2px solid var(--line); border-top-color: var(--accent); border-radius: 50%; animation: spin .8s linear infinite; vertical-align: -1px; margin-right: 6px; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.cards { display: grid; gap: 12px; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 14px; display: grid; gap: 10px; }
+.card-head { display: flex; justify-content: space-between; gap: 8px; align-items: center; font: 500 11px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.fields { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 10px; }
+.preview { border-top: 1px solid var(--line); padding-top: 10px; display: grid; gap: 6px; font: 18px/1.45 var(--serif); white-space: pre-wrap; overflow-wrap: anywhere; }
+.preview .q { color: var(--muted); font-size: 16px; }
+.preview mjx-container { white-space: normal; overflow-wrap: normal; }
+.preview mjx-container[display="true"] { overflow-x: auto; overflow-y: hidden; margin: .4em 0 !important; }
+.empty-note { color: var(--muted); font-size: 14px; }
+.steps { margin: 0; padding-left: 20px; color: var(--muted); font-size: 14px; display: grid; gap: 2px; }
+a { color: var(--accent); }
+@media (max-width: 520px) { #pad { height: 300px; } }
+@media (prefers-reduced-motion: reduce) { .spinner { animation: none; } }
+</style>
+
+<script>
+  window.MathJax = {
+    tex: { inlineMath: [["\\(", "\\)"]], displayMath: [["$$", "$$"], ["\\[", "\\]"]] },
+    svg: { fontCache: "global" },
+    options: { enableMenu: false },
+    startup: { typeset: false },
+  };
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-svg.js" async></script>
+
+<div class="wrap">
+  <header>
+    <h1>CFA Handwriting Converter</h1>
+    <p>Write a formula or a note with your Apple Pencil, or add a photo of your notes. Claude types it out in the same layout, with formulas typeset. Then copy the cards into your flashcard app.</p>
+  </header>
+
+  <section class="panel">
+    <div class="row between">
+      <div class="seg" role="group" aria-label="Input">
+        <button id="modeWrite" aria-pressed="true">Write</button>
+        <button id="modePhoto" aria-pressed="false">Photo</button>
+      </div>
+      <label for="topic" style="min-width:220px;flex:1;max-width:340px">Topic (optional)
+        <input type="text" id="topic" list="topics" placeholder="e.g. Fixed Income" autocapitalize="words">
+      </label>
+      <datalist id="topics">
+        <option value="Ethics"></option><option value="Quantitative Methods"></option><option value="Economics"></option>
+        <option value="Financial Statement Analysis"></option><option value="Corporate Issuers"></option><option value="Equity Investments"></option>
+        <option value="Fixed Income"></option><option value="Derivatives"></option><option value="Alternative Investments"></option>
+        <option value="Portfolio Management"></option>
+      </datalist>
+    </div>
+
+    <div id="writeArea">
+      <div class="pad-wrap">
+        <canvas id="pad" aria-label="Handwriting pad"></canvas>
+        <div class="pad-hint" id="padHint">Write here with your Apple Pencil or finger.<br>Put the question on top and the formula or answer below, or write just the formula.</div>
+      </div>
+      <div class="row" style="margin-top:8px">
+        <button class="btn small" id="undo">Undo</button>
+        <button class="btn small" id="clear">Clear</button>
+      </div>
+    </div>
+
+    <div id="photoArea" hidden>
+      <div class="photo-drop">
+        <img id="photoPreview" alt="Your notes" hidden>
+        <span id="photoText">Choose a photo or screenshot of your handwritten notes. A whole page is fine; each item becomes its own card.</span>
+        <label class="btn" for="photoInput" style="display:inline-block;color:var(--ink);font:500 15px var(--sans)">Choose photo</label>
+        <input type="file" id="photoInput" accept="image/*" hidden>
+      </div>
+    </div>
+
+    <div class="row">
+      <button class="btn primary" id="convert">Convert to cards</button>
+      <button class="btn" id="stop" hidden>Stop</button>
+      <span class="status" id="status" aria-live="polite"></span>
+    </div>
+  </section>
+
+  <section class="panel">
+    <div class="row between">
+      <h2 id="resultsTitle">Cards</h2>
+      <div class="row">
+        <button class="btn small" id="addCard">Add a card</button>
+        <button class="btn primary" id="copy" disabled>Copy for import</button>
+      </div>
+    </div>
+    <p class="empty-note" id="emptyNote">Converted cards appear here. Check each one, fix anything that was misread, then tap Copy for import.</p>
+    <div class="cards" id="cards"></div>
+    <textarea id="copyBox" readonly hidden aria-label="Cards to paste into the flashcard app" style="min-height:160px"></textarea>
+    <ol class="steps">
+      <li>Tap <b>Copy for import</b>.</li>
+      <li>Open your flashcard app: <a href="https://jimmyyap17.github.io/Claude-Project-for-CFA/" target="_blank" rel="noopener">jimmyyap17.github.io/Claude-Project-for-CFA</a></li>
+      <li>Go to <b>Manage cards</b>, paste into the notes box and tap <b>Import cards</b>.</li>
+    </ol>
+  </section>
+</div>
+
+<script>
+(() => {
+  const $ = (id) => document.getElementById(id);
+  let sample = null, canImages = false, mode = "write", photoFile = null, ctl = null;
+  let cards = []; // {topic, front, back}
+  let exampleShown = false;
+
+  function status(text, kind, busy) {
+    const s = $("status");
+    s.className = "status" + (kind ? " " + kind : "");
+    s.innerHTML = "";
+    if (busy) { const sp = document.createElement("span"); sp.className = "spinner"; s.append(sp); }
+    s.append(document.createTextNode(text));
+  }
+
+  // ---------- pad ----------
+  const pad = $("pad"), ctx = pad.getContext("2d");
+  let strokes = [], current = null, penSeen = false;
+  function sizePad() {
+    const r = pad.getBoundingClientRect(), dpr = Math.min(window.devicePixelRatio || 1, 2);
+    pad.width = Math.round(r.width * dpr); pad.height = Math.round(r.height * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    redraw();
+  }
+  function paper() {
+    const r = pad.getBoundingClientRect();
+    ctx.fillStyle = "#FFFFFF"; ctx.fillRect(0, 0, r.width, r.height);
+    ctx.strokeStyle = "#E3E9E6"; ctx.lineWidth = 1;
+    for (let y = 48; y < r.height; y += 48) { ctx.beginPath(); ctx.moveTo(0, y + .5); ctx.lineTo(r.width, y + .5); ctx.stroke(); }
+  }
+  function drawStroke(s) {
+    ctx.strokeStyle = "#15231F"; ctx.lineCap = "round"; ctx.lineJoin = "round";
+    for (let i = 1; i < s.length; i++) {
+      const a = s[i - 1], b = s[i];
+      ctx.lineWidth = 1.2 + 2.6 * ((a.p + b.p) / 2);
+      ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
+    }
+    if (s.length === 1) { ctx.fillStyle = "#15231F"; ctx.beginPath(); ctx.arc(s[0].x, s[0].y, 1.6, 0, 7); ctx.fill(); }
+  }
+  function redraw() { paper(); strokes.forEach(drawStroke); $("padHint").hidden = strokes.length > 0; }
+  function pt(e) { const r = pad.getBoundingClientRect(); return { x: e.clientX - r.left, y: e.clientY - r.top, p: e.pointerType === "pen" ? (e.pressure || .5) : .5 }; }
+  pad.addEventListener("pointerdown", (e) => {
+    if (e.pointerType === "pen") penSeen = true;
+    if (e.pointerType === "touch" && penSeen) return; // palm rejection once a pencil is used
+    pad.setPointerCapture(e.pointerId);
+    current = [pt(e)]; strokes.push(current); $("padHint").hidden = true; drawStroke(current);
+  });
+  pad.addEventListener("pointermove", (e) => {
+    if (!current) return;
+    const evs = e.getCoalescedEvents ? e.getCoalescedEvents() : [e];
+    for (const ev of evs) { current.push(pt(ev)); }
+    drawStroke(current.slice(-evs.length - 1));
+  });
+  const endStroke = () => { current = null; };
+  pad.addEventListener("pointerup", endStroke);
+  pad.addEventListener("pointercancel", endStroke);
+  $("undo").onclick = () => { strokes.pop(); redraw(); };
+  $("clear").onclick = () => { strokes = []; redraw(); };
+  addEventListener("resize", () => { clearTimeout(sizePad.t); sizePad.t = setTimeout(sizePad, 150); });
+  sizePad();
+
+  function padBlob() {
+    // crop to the writing plus a margin so Claude gets a clear, compact image
+    if (!strokes.length) return Promise.resolve(null);
+    const pts = strokes.flat();
+    const minX = Math.max(0, Math.min(...pts.map(p => p.x)) - 24), minY = Math.max(0, Math.min(...pts.map(p => p.y)) - 24);
+    const maxX = Math.max(...pts.map(p => p.x)) + 24, maxY = Math.max(...pts.map(p => p.y)) + 24;
+    const scale = 2, w = Math.ceil((maxX - minX) * scale), h = Math.ceil((maxY - minY) * scale);
+    const c = document.createElement("canvas"); c.width = w; c.height = h;
+    const g = c.getContext("2d");
+    g.fillStyle = "#FFFFFF"; g.fillRect(0, 0, w, h);
+    g.setTransform(scale, 0, 0, scale, -minX * scale, -minY * scale);
+    g.strokeStyle = "#000000"; g.lineCap = "round"; g.lineJoin = "round";
+    for (const s of strokes) {
+      for (let i = 1; i < s.length; i++) { g.lineWidth = 1.4 + 2.6 * ((s[i - 1].p + s[i].p) / 2); g.beginPath(); g.moveTo(s[i - 1].x, s[i - 1].y); g.lineTo(s[i].x, s[i].y); g.stroke(); }
+      if (s.length === 1) { g.fillStyle = "#000"; g.beginPath(); g.arc(s[0].x, s[0].y, 1.8, 0, 7); g.fill(); }
+    }
+    return new Promise((res) => c.toBlob(res, "image/png"));
+  }
+
+  // ---------- mode ----------
+  function setMode(m) {
+    mode = m;
+    $("modeWrite").setAttribute("aria-pressed", m === "write");
+    $("modePhoto").setAttribute("aria-pressed", m === "photo");
+    $("writeArea").hidden = m !== "write"; $("photoArea").hidden = m !== "photo";
+    if (m === "write") sizePad();
+  }
+  $("modeWrite").onclick = () => setMode("write");
+  $("modePhoto").onclick = () => setMode("photo");
+  $("photoInput").addEventListener("change", () => {
+    photoFile = $("photoInput").files[0] || null;
+    const img = $("photoPreview");
+    if (photoFile) { img.src = URL.createObjectURL(photoFile); img.hidden = false; $("photoText").textContent = photoFile.name; }
+  });
+
+  // ---------- Claude ----------
+  const PROMPT = (topic) => `The attached image is a CFA candidate's handwritten study note. Turn it into flashcards.
+
+Topic: ${topic ? topic : "not given. Choose the CFA Level I topic area it belongs to (for example Fixed Income, Equity Investments, Quantitative Methods)."}
+
+Rules:
+1. Transcribe exactly what is written. Keep the writer's own layout, symbols, variable names and order of terms: a stacked fraction stays a \\frac, superscripts and subscripts stay where they are, line breaks stay. Do not simplify, rearrange, correct or add anything.
+2. Write every formula in LaTeX. A formula on its own line goes between $$ and $$. A short formula inside a sentence goes between \\( and \\). Never use a single $ as a formula delimiter; a written dollar amount such as $5 stays as plain text.
+3. Put words inside a formula in \\text{...}.
+4. If there is a question or heading with an answer below it, the question or heading is the front and the answer is the back.
+5. If there is only a formula, the front is "Formula: " followed by what it calculates (use the name written on the page, otherwise the standard CFA name), and the back is the formula plus any notes written with it.
+6. Separate items on the page each become their own card.
+7. If part of the writing is unreadable, put [?] in its place instead of guessing.
+
+Reply with JSON only, in this shape:
+{"cards":[{"topic":"...","front":"...","back":"..."}]}
+Use \\n inside strings for line breaks.`;
+
+  async function init() {
+    for (let i = 0; i < 20 && !(window.claude && window.claude.use); i++) await new Promise((r) => setTimeout(r, 150));
+    sample = window.claude && window.claude.use ? await window.claude.use("sample") : null;
+    if (!sample) { $("convert").disabled = true; status("Open this page in Claude (claude.ai or the Claude app) to convert handwriting.", "err"); return; }
+    const caps = await sample.limits().catch(() => null);
+    canImages = !!(caps && caps.images);
+    if (!canImages) { $("convert").disabled = true; status("Converting images isn't available in this view of Claude. Try claude.ai in Safari.", "err"); return; }
+    $("photoInput").accept = caps.images.mediaTypes.join(",");
+    status("Ready. The first conversion asks you to allow this page to use Claude.");
+  }
+
+  $("convert").onclick = async () => {
+    const blob = mode === "write" ? await padBlob() : photoFile;
+    if (!blob) { status(mode === "write" ? "Write something on the pad first." : "Choose a photo first.", "err"); return; }
+    ctl = new AbortController();
+    $("convert").disabled = true; $("stop").hidden = false;
+    status("Reading your handwriting… this usually takes 10 to 40 seconds.", "", true);
+    try {
+      const topic = $("topic").value.trim();
+      const out = await sample.json(PROMPT(topic), { images: [blob], signal: ctl.signal, modelTier: "default" });
+      const list = (out && Array.isArray(out.cards) ? out.cards : [])
+        .map((c) => ({ topic: String(c.topic || topic || "General").trim(), front: String(c.front || "").trim(), back: String(c.back || "").trim() }))
+        .filter((c) => c.front || c.back);
+      if (!list.length) { status("No cards came back. Try writing a little larger, or use a clearer photo.", "err"); }
+      else {
+        if (exampleShown) { cards = []; exampleShown = false; }
+        cards.push(...list); renderCards();
+        status(`Added ${list.length} card${list.length === 1 ? "" : "s"}. Check them below.`, "ok");
+        if (mode === "write") { strokes = []; redraw(); }
+      }
+    } catch (e) {
+      const code = e && e.code;
+      const map = {
+        cancelled: "Stopped.",
+        not_granted: "This page isn't allowed to use Claude. Reload the page to be asked again.",
+        sampling_disabled: "Claude isn't available for this account here.",
+        images_unavailable: "Converting images isn't available in this view of Claude.",
+        image_rejected: "That image couldn't be read. Try a different photo (JPEG or PNG).",
+        rate_limited: "You've hit your Claude usage limit for now. Try again a bit later.",
+        session_expired: "Your Claude session expired. Sign in again, then retry.",
+        refused: "Claude couldn't convert this image. Try a clearer photo or rewrite it.",
+        empty_completion: "Nothing came back. Try again with a clearer image.",
+        invalid_json: "The reply came back in the wrong format. Tap Convert to try again.",
+      };
+      status(map[code] || "Something went wrong. Tap Convert to try again.", code === "cancelled" ? "" : "err");
+    }
+    ctl = null; $("convert").disabled = !canImages; $("stop").hidden = true;
+  };
+  $("stop").onclick = () => { if (ctl) ctl.abort(); };
+
+  // ---------- cards ----------
+  function typeset(el, text) {
+    el.textContent = text;
+    if (window.MathJax && MathJax.typesetPromise) {
+      try { MathJax.typesetClear([el]); } catch {}
+      MathJax.typesetPromise([el]).catch(() => {});
+    }
+  }
+  function field(label, value, onInput, rows) {
+    const l = document.createElement("label"); l.textContent = label;
+    const t = document.createElement(rows ? "textarea" : "input");
+    if (!rows) t.type = "text"; else t.rows = rows;
+    t.value = value; t.addEventListener("input", () => onInput(t.value));
+    l.append(t); return l;
+  }
+  function renderCards() {
+    const box = $("cards"); box.innerHTML = "";
+    $("emptyNote").hidden = cards.length > 0 && !exampleShown;
+    $("emptyNote").textContent = exampleShown
+      ? "The card below is an example. It disappears when you convert your own handwriting."
+      : "Converted cards appear here. Check each one, fix anything that was misread, then tap Copy for import.";
+    $("copy").disabled = !cards.length;
+    $("resultsTitle").textContent = cards.length ? `Cards (${cards.length})` : "Cards";
+    cards.forEach((c, i) => {
+      const el = document.createElement("div"); el.className = "card";
+      const head = document.createElement("div"); head.className = "card-head";
+      head.textContent = "Card " + (i + 1);
+      const rm = document.createElement("button"); rm.className = "btn small danger"; rm.textContent = "Remove";
+      rm.onclick = () => { cards.splice(i, 1); if (!cards.length) exampleShown = false; renderCards(); };
+      head.append(rm);
+      const prev = document.createElement("div"); prev.className = "preview";
+      const pq = document.createElement("div"); pq.className = "q";
+      const pa = document.createElement("div");
+      prev.append(pq, pa);
+      let t;
+      const refresh = () => { clearTimeout(t); t = setTimeout(() => { typeset(pq, c.front); typeset(pa, c.back); }, 250); };
+      const fields = document.createElement("div"); fields.className = "fields";
+      fields.append(
+        field("Question (front)", c.front, (v) => { c.front = v; refresh(); }, 3),
+        field("Answer (back)", c.back, (v) => { c.back = v; refresh(); }, 3),
+      );
+      el.append(head, field("Topic", c.topic, (v) => { c.topic = v; }), fields, prev);
+      box.append(el);
+      typeset(pq, c.front); typeset(pa, c.back);
+    });
+  }
+  $("addCard").onclick = () => { if (exampleShown) { cards = []; exampleShown = false; } cards.push({ topic: $("topic").value.trim() || "General", front: "", back: "" }); renderCards(); };
+
+  function importText() {
+    const byTopic = new Map();
+    cards.filter((c) => c.front.trim() && c.back.trim()).forEach((c) => {
+      const t = c.topic.trim() || "General";
+      if (!byTopic.has(t)) byTopic.set(t, []);
+      byTopic.get(t).push(c);
+    });
+    let out = "";
+    for (const [t, list] of byTopic) {
+      out += "# " + t + "\n";
+      for (const c of list) out += "Q: " + c.front.trim() + "\nA: " + c.back.trim() + "\n\n";
+    }
+    return out.trim() + "\n";
+  }
+  $("copy").onclick = async () => {
+    const text = importText();
+    const n = cards.filter((c) => c.front.trim() && c.back.trim()).length;
+    if (!n) { status("Each card needs a question and an answer before copying.", "err"); return; }
+    try {
+      await navigator.clipboard.writeText(text);
+      $("copyBox").hidden = true;
+      status(`Copied ${n} card${n === 1 ? "" : "s"}. Paste them into Manage cards in your flashcard app.`, "ok");
+    } catch {
+      const box = $("copyBox"); box.hidden = false; box.value = text; box.focus(); box.select();
+      status("Copy the selected text in the box below, then paste it into your flashcard app.", "");
+    }
+  };
+
+  // Example so the page shows what a converted card looks like; replaced by real results.
+  cards = [{ topic: "Equity Investments", front: "Formula: Gordon growth model (example)", back: "$$V_0 = \\frac{D_1}{r - g}$$\nRequires \\(r > g\\)" }];
+  exampleShown = true;
+  renderCards();
+  const waitMJ = setInterval(() => { if (window.MathJax && MathJax.typesetPromise) { clearInterval(waitMJ); renderCards(); } }, 300);
+  setTimeout(() => clearInterval(waitMJ), 15000);
+
+  init();
+})();
+</script>

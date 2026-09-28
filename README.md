@@ -21,6 +21,8 @@ An installable flashcard app for CFA Level I study. Add it to your iPad Home Scr
   ```
 
   One card per line also works: `Topic | Question | Answer`. So does a JSON list in the same shape as `cards.json`.
+- **Formulas:** put a formula between `$$` signs, for example `$$V_0 = \frac{D_1}{r - g}$$`, and it's typeset on the card. Use `\( … \)` for a formula inside a sentence. A single `$` stays as text, so prices like $5 million are safe.
+- **Handwriting:** the [CFA Handwriting Converter](https://claude.ai/artifact/UeaZWHpa52rLk4FfkvkMF8) runs inside Claude on your own Claude plan. Write with your Apple Pencil or add a photo, tap **Convert to cards**, then **Copy for import**, and paste into **Manage cards**. Its source is in `converter/`.
 - **Works offline:** you can study and add cards without a connection. Changes sync the next time you're online.
 - **Edit or delete:** tap any card in the list, or tap **Edit card** while studying.
 

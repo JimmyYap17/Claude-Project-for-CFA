@@ -100,6 +100,72 @@ function listen() {
     progress = {}; snap.docs.forEach((d) => { progress[d.id] = d.data(); });
     if (!progressLoaded) { progressLoaded = true; rebuildQueue(true); } else renderStats();
   }, onDbError));
+  startInbox();
+}
+
+// ---------- card inbox ----------
+// Claude (or anything holding the inbox key) drops cards into inbox/<key>/cards;
+// this moves each one into the signed-in user's deck.
+let inboxKey = null, inboxUnsub = null;
+const settingsDoc = () => fb.doc(fb.db, "users", uid, "settings", "inbox");
+function newInboxKey() {
+  const b = new Uint8Array(18); crypto.getRandomValues(b);
+  return "cfa-" + [...b].map((x) => x.toString(16).padStart(2, "0")).join("");
+}
+async function startInbox() {
+  try {
+    const snap = await fb.getDoc(settingsDoc());
+    inboxKey = snap.exists() && snap.data().key;
+    if (!inboxKey) { inboxKey = newInboxKey(); await fb.setDoc(settingsDoc(), { key: inboxKey }); }
+    watchInbox();
+  } catch (e) {
+    console.error(e);
+    $("inboxKey").textContent = "Unavailable";
+    msg("inboxMsg", "The inbox needs the updated Firestore rules from the README.", true);
+  }
+}
+function watchInbox() {
+  if (inboxUnsub) inboxUnsub();
+  $("inboxKey").textContent = inboxKey;
+  const col = fb.collection(fb.db, "inbox", inboxKey, "cards");
+  inboxUnsub = fb.onSnapshot(col, (snap) => {
+    const docs = snap.docs.filter((d) => !d.metadata || !d.metadata.hasPendingWrites);
+    if (!docs.length) return;
+    const b = fb.writeBatch(fb.db);
+    docs.forEach((d) => {
+      const c = d.data();
+      b.set(fb.doc(cardsCol(), d.id), {
+        topic: String(c.topic || "General").trim(), front: String(c.front || "").trim(), back: String(c.back || "").trim(),
+        createdAt: Date.now(), updatedAt: Date.now(),
+      });
+      b.delete(d.ref);
+    });
+    b.commit().then(() => {
+      msg("inboxMsg", "Added " + docs.length + (docs.length === 1 ? " card" : " cards") + " from Claude.");
+    }).catch((e) => console.error(e));
+  }, (e) => {
+    console.error(e);
+    msg("inboxMsg", e.code === "permission-denied" ? "The inbox needs the updated Firestore rules from the README." : "The inbox stopped. Reload the app.", true);
+  });
+  unsubs.push(() => { if (inboxUnsub) { inboxUnsub(); inboxUnsub = null; } });
+}
+$("copyKey").onclick = async () => {
+  if (!inboxKey) return;
+  try { await navigator.clipboard.writeText(inboxKey); msg("inboxMsg", "Copied. Paste it to Claude."); }
+  catch { msg("inboxMsg", "Select the key above and copy it.", true); }
+};
+let newKeyArmed = false;
+$("newKey").onclick = async () => {
+  if (!newKeyArmed) {
+    newKeyArmed = true; $("newKey").textContent = "Tap again: the old key stops working";
+    setTimeout(() => { newKeyArmed = false; $("newKey").textContent = "Make a new key"; }, 4000);
+    return;
+  }
+  newKeyArmed = false; $("newKey").textContent = "Make a new key";
+  inboxKey = newInboxKey();
+  fb.setDoc(settingsDoc(), { key: inboxKey }).catch((e) => console.error(e));
+  watchInbox();
+  msg("inboxMsg", "New key made. Give it to Claude again.");
 }
 function onDbError(e) {
   console.error(e);

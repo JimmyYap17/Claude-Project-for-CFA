@@ -23,6 +23,7 @@ An installable flashcard app for CFA Level I study. Add it to your iPad Home Scr
   One card per line also works: `Topic | Question | Answer`. So does a JSON list in the same shape as `cards.json`.
 - **Formulas:** put a formula between `$$` signs, for example `$$V_0 = \frac{D_1}{r - g}$$`, and it's typeset on the card. Use `\( … \)` for a formula inside a sentence. A single `$` stays as text, so prices like $5 million are safe.
 - **Handwriting tab:** write with your Apple Pencil (or use a photo), tap **Copy handwriting**, then **Open Claude**. In the [CFA Handwriting Converter](https://claude.ai/artifact/UeaZWHpa52rLk4FfkvkMF8), tap the paste box and choose **Paste**; it converts on your own Claude plan at no extra cost. Tap **Copy for import**, come back to the app and tap **Paste from Claude**. Check the typeset preview, fill in the question, and tap **Add to deck**. The converter's source is in `converter/`.
+- **Cards from Claude:** in a Claude Code session on this repo, ask for a card ("create a card under Corporate Issuers: Entrenchment") and Claude sends it to your deck through a private card inbox. The inbox key is under **Manage cards → Add cards from Claude**; give it to Claude once per session. Anyone with the key can add cards but can't read or change your deck, and **Make a new key** retires the old one.
 - **Works offline:** you can study and add cards without a connection. Changes sync the next time you're online.
 - **Edit or delete:** tap any card in the list, or tap **Edit card** while studying.
 
@@ -67,6 +68,7 @@ A new deck is empty. Tap **Load 20 example cards** to try the app, then delete t
 | `index.html`, `styles.css`, `app.js` | The app |
 | `firebase-config.js` | Your Firebase project settings (step 2) |
 | `firestore.rules` | Database security rules (step 1.5) |
+| `scripts/send_cards.py` | Sends cards to the card inbox (used by Claude) |
 | `manifest.webmanifest`, `sw.js`, `icons/` | Home Screen install and offline support |
 | `cards.json` | The 20 example cards |
 

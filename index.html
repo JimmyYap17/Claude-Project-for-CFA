@@ -120,6 +120,17 @@ Economics | GDP deflator formula | Nominal GDP / Real GDP × 100</pre>
           <button class="btn" id="exportBtn">Copy deck as JSON</button>
         </div>
       </div>
+
+      <div class="panel">
+        <h2>Add cards from Claude</h2>
+        <p>Give Claude this inbox key once, then ask things like "create a card under Corporate Issuers: Entrenchment". Cards Claude sends appear in your deck within seconds. Keep the key private; anyone with it can add cards (but can't read or change your deck).</p>
+        <div class="row">
+          <code class="inbox-key" id="inboxKey">Loading…</code>
+          <button class="btn small" id="copyKey">Copy key</button>
+          <button class="btn small" id="newKey">Make a new key</button>
+        </div>
+        <span class="msg" id="inboxMsg"></span>
+      </div>
     </section>
 
     <section id="hand" class="stack" hidden>

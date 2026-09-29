@@ -159,3 +159,4 @@ label.btn { display: inline-block; color: var(--ink); font: 500 13px var(--sans)
 @media (max-width: 520px) { #pad { height: 280px; } }
 .hcard .pf { color: var(--muted); }
 a.btn { text-decoration: none; display: inline-block; }
+.inbox-key { font: 13px var(--mono); background: var(--bg); border: 1px solid var(--line); border-radius: 6px; padding: 7px 10px; overflow-wrap: anywhere; user-select: all; -webkit-user-select: all; }

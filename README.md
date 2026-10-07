@@ -7,6 +7,7 @@ An installable flashcard app for CFA Level I study. Add it to your iPad Home Scr
 ## What it does
 
 - **Study:** tap a card to see the answer. Then swipe right (or tap **Got it**) if you knew it, or swipe left (or tap **Review again**) if you didn't. Cards you miss come back a few cards later. You can filter by topic and track how many cards are New, Learning and Mastered.
+- **Refresher:** short readings on 49 topics the Level I exam tests, grouped by curriculum topic (formulas, how the ideas link, and exam traps). Swipe right (or tap **New topic**) for a random one; every topic in your filter comes up once before any repeat. Swipe left to go back. Tap a topic chip to stay in one area. Tap **Save** to keep a reading: saved ones sync across devices, show under **★ Saved**, and are listed by topic below the reading. **Make a flashcard** opens a new card in that topic. The readings live in [`refreshers.md`](refreshers.md); ask Claude in a session on this repo to add more.
 - **Quick add:** tap the round **+** button anywhere in the app. The topic stays filled in, so you can type card after card.
 - **Add from notes:** under **Manage cards**, type or paste your notes and tap **Import**:
 
@@ -71,6 +72,7 @@ A new deck is empty. Tap **Load 20 example cards** to try the app, then delete t
 | `scripts/send_cards.py` | Sends cards to the card inbox (used by Claude) |
 | `manifest.webmanifest`, `sw.js`, `icons/` | Home Screen install and offline support |
 | `cards.json` | The 20 example cards |
+| `refreshers.md` | The Refresher tab's readings |
 
 ## Running it on a computer
 

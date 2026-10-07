@@ -160,3 +160,34 @@ label.btn { display: inline-block; color: var(--ink); font: 500 13px var(--sans)
 .hcard .pf { color: var(--muted); }
 a.btn { text-decoration: none; display: inline-block; }
 .inbox-key { font: 13px var(--mono); background: var(--bg); border: 1px solid var(--line); border-radius: 6px; padding: 7px 10px; overflow-wrap: anywhere; user-select: all; -webkit-user-select: all; }
+
+/* refresher readings */
+.reading {
+  background: var(--surface); border: 1px solid var(--line); border-radius: 12px; box-shadow: var(--shadow);
+  padding: 22px 26px 20px; display: grid; gap: 12px; min-height: 340px; align-content: start;
+  touch-action: pan-y; transition: transform .3s cubic-bezier(.2,.7,.2,1);
+}
+.reading > * { min-width: 0; }
+.reading.dragging { transition: none; user-select: none; -webkit-user-select: none; }
+.r-title { font: 600 24px/1.25 var(--serif); }
+.r-body { font: 400 17px/1.6 var(--serif); max-width: 68ch; overflow-wrap: anywhere; }
+.r-body > :first-child { margin-top: 0; }
+.r-body p { margin: 0 0 .7em; }
+.r-body h3 { font: 600 12px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--accent); margin: 1.4em 0 .5em; }
+.r-body ul, .r-body ol { margin: 0 0 .8em; padding-left: 1.3em; }
+.r-body li { margin: .25em 0; }
+.r-body li > ul, .r-body li > ol { margin: .2em 0 0; }
+.r-body b { font-weight: 600; }
+.r-table { overflow-x: auto; margin: 0 0 1em; border: 1px solid var(--line); border-radius: 8px; }
+.r-table table { border-collapse: collapse; width: 100%; overflow-wrap: normal; font: 14px/1.4 var(--sans); }
+.r-table th, .r-table td { padding: 7px 10px; text-align: left; border-bottom: 1px solid var(--line); vertical-align: top; }
+.r-table th { background: var(--surface-2); font-weight: 500; }
+.r-table tr:last-child td { border-bottom: 0; }
+.saved-chip[aria-pressed="false"] { border-color: var(--accent); color: var(--accent); }
+#rSave[aria-pressed="true"] { background: var(--accent-soft); border-color: transparent; color: var(--accent); }
+.saved-group { display: grid; gap: 6px; }
+.saved-group h3 { font: 500 11px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 0; }
+.saved-group .item { grid-template-columns: 1fr auto; }
+.saved-group .item .go { grid-row: auto; }
+@media (max-width: 520px) { .reading { padding: 18px 16px; } .r-title { font-size: 21px; } .r-body { font-size: 16px; } }
+@media (prefers-reduced-motion: reduce) { .reading { transition: none; } }

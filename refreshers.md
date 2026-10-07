@@ -1,15 +1,21 @@
 <!--
 Refresher readings for the Refresher tab.
   # Area        one of the ten CFA Level I topic names
+  Weight: …     the area's exam weight, on its own line under # Area
   ## Title      starts a reading (its id is made from the title, so renaming one un-saves it)
+  Module: …     first line of a reading: the official learning module(s) it covers
+  Scope: …      optional, after Module: a note when part of the reading goes beyond Level I
   ### Heading   a section inside a reading
   - item / 1. item, **bold**, $$ display formula $$ on its own line, \( inline formula \)
 -->
 
 # Ethics
 
+Weight: 15–20%
+
 ## Material nonpublic information and the mosaic theory
 
+Module: Guidance for Standards I–VII (Standard II)
 Standard II(A) is one of the most tested standards. The question is almost always whether the information is both **material** and **nonpublic**.
 
 ### The two tests
@@ -34,6 +40,7 @@ You may reach a conclusion by combining **public** information with **nonmateria
 
 ## Independence and objectivity: gifts, issuer-paid research and pressure
 
+Module: Guidance for Standards I–VII (Standard I)
 Standard I(B) requires members to use reasonable care and judgment to stay independent and objective, and not to offer, solicit or accept anything that could compromise it.
 
 ### Gifts and entertainment
@@ -56,6 +63,7 @@ Allowed if pay is a flat fee not tied to the conclusion, and the payment arrange
 
 ## Duties to clients: loyalty, fair dealing and suitability
 
+Module: Guidance for Standards I–VII (Standard III)
 Standard III covers what you owe clients. The order of priority: **clients, then employer, then yourself.**
 
 ### III(A) Loyalty, prudence and care
@@ -84,6 +92,7 @@ Standard III covers what you owe clients. The order of priority: **clients, then
 
 ## Conflicts of interest and priority of transactions
 
+Module: Guidance for Standards I–VII (Standards IV and VI)
 Standard VI is about spotting conflicts and handling them in the right order.
 
 ### VI(A) Disclosure of conflicts
@@ -109,6 +118,7 @@ Disclose to employers, clients and prospects the nature and value of any compens
 
 ## GIPS: the Global Investment Performance Standards
 
+Module: Introduction to the Global Investment Performance Standards (GIPS)
 GIPS lets prospective clients compare managers' track records fairly.
 
 ### Key ideas
@@ -128,6 +138,7 @@ GIPS lets prospective clients compare managers' track records fairly.
 
 ## Professionalism: misrepresentation, misconduct and knowledge of the law
 
+Module: Guidance for Standards I–VII (Standard I)
 Standard I sets the baseline for professional behavior.
 
 ### I(A) Knowledge of the law
@@ -155,6 +166,7 @@ I(B) is independence and objectivity; I(E) **competence**: act with and maintain
 
 ## Investment analysis: diligence, communication and records
 
+Module: Guidance for Standards I–VII (Standard V)
 Standard V covers how you build and communicate recommendations.
 
 ### V(A) Diligence and reasonable basis
@@ -181,6 +193,7 @@ Standard V covers how you build and communicate recommendations.
 
 ## Supervisors and CFA Institute responsibilities
 
+Module: Guidance for Standards I–VII (Standards IV and VII)
 ### IV(C) Responsibilities of supervisors
 - Make **reasonable efforts** to ensure people under your supervision follow laws, rules and the Code and Standards.
 - That means adequate compliance procedures, and actually enforcing them.
@@ -204,6 +217,7 @@ Standard V covers how you build and communicate recommendations.
 
 ## The Code of Ethics and the professional conduct process
 
+Module: Ethics and Trust in the Investment Profession; Code of Ethics and Standards of Professional Conduct
 ### The six components of the Code of Ethics
 Members and candidates must:
 1. Act with integrity, competence, diligence, respect and in an ethical manner.
@@ -231,8 +245,11 @@ I Professionalism · II Integrity of capital markets · III Duties to clients ·
 
 # Quantitative Methods
 
+Weight: 6–9%
+
 ## Time value of money: annuities, perpetuities and effective rates
 
+Module: Time Value of Money in Finance
 Most calculator questions trace back to a handful of relationships.
 
 ### Core formulas
@@ -257,6 +274,7 @@ Any uneven cash-flow stream can be broken into pieces and valued separately. Thi
 
 ## Rates of return: money-weighted vs time-weighted
 
+Module: Rates and Returns
 Know which return measures what, and which one judges the manager.
 
 ### Holding period return
@@ -283,6 +301,7 @@ $$HPR = \frac{P_1 - P_0 + D_1}{P_0}$$
 
 ## Hypothesis testing: errors, p-values and test choice
 
+Module: Hypothesis Testing
 The logic is the same every time: assume H₀ is true, and reject it only if the data are unlikely under H₀.
 
 ### The steps
@@ -314,6 +333,7 @@ The logic is the same every time: assume H₀ is true, and reject it only if the
 
 ## Simple linear regression: assumptions and output
 
+Module: Simple Linear Regression
 $$Y_i = b_0 + b_1 X_i + \varepsilon_i$$
 
 ### Estimates
@@ -345,6 +365,7 @@ Log-lin (ln Y on X), lin-log (Y on ln X), and log-log (slope is an elasticity) h
 
 ## Probability: Bayes' formula, expected value and covariance
 
+Module: Probability Trees and Conditional Expectations; Portfolio Mathematics
 ### Rules
 - Multiplication: \( P(AB) = P(A \mid B)\,P(B) \).
 - Addition: \( P(A \text{ or } B) = P(A) + P(B) - P(AB) \).
@@ -373,6 +394,7 @@ Odds **for** E = P(E) / [1 − P(E)]. Odds of 1 to 4 means P = 0.20.
 
 ## Sampling and estimation: the central limit theorem and confidence intervals
 
+Module: Estimation and Inference
 ### Sampling methods
 - **Simple random sampling:** every member equally likely.
 - **Stratified random sampling:** split into strata (e.g., by sector), sample within each. Used for bond index replication.
@@ -407,6 +429,7 @@ $$\bar{X} \pm z_{\alpha/2}\frac{\sigma}{\sqrt{n}}$$
 
 ## Probability distributions: normal, lognormal and safety-first
 
+Module: Portfolio Mathematics; Simulation Methods
 ### Normal distribution
 - Described fully by mean and variance; skewness 0, kurtosis 3.
 - About 68% within ±1σ, 90% within ±1.65σ, 95% within ±1.96σ, 99% within ±2.58σ.
@@ -438,6 +461,7 @@ Generates many random scenarios from assumed distributions. Useful for path-depe
 
 ## Descriptive statistics: dispersion, skewness and kurtosis
 
+Module: Statistical Measures of Asset Returns
 ### Central tendency
 Mean, median, mode. Outliers distort the mean; use trimmed or winsorized means, or the median.
 
@@ -470,6 +494,7 @@ Quartiles, quintiles, deciles, percentiles. The position of the yth percentile: 
 
 ## Big data and machine learning basics
 
+Module: Introduction to Big Data Techniques
 ### Big data characteristics
 Volume, velocity, variety, plus veracity (data quality). **Alternative data** includes satellite images, credit card transactions, web traffic and social media.
 
@@ -491,10 +516,45 @@ Text analysis of filings and news, sentiment analysis, fraud detection, credit s
 - Out-of-sample performance is what matters.
 - Clustering is unsupervised; classification is supervised.
 
+## Tests of independence: correlation and contingency tables
+
+Module: Parametric and Non-Parametric Tests of Independence
+
+### Testing a correlation
+H₀: ρ = 0. With n observations:
+$$t = \frac{r\sqrt{n - 2}}{\sqrt{1 - r^2}}$$
+with **n − 2** degrees of freedom. Reject H₀ if |t| exceeds the critical value.
+
+- Bigger samples make even small correlations significant.
+- **Pearson correlation** is parametric: it assumes a linear relationship and roughly normal variables.
+
+### Spearman rank correlation
+Non-parametric: rank each variable, then correlate the ranks.
+$$r_S = 1 - \frac{6\sum d_i^2}{n(n^2 - 1)}$$
+where \( d_i \) is the difference in ranks. For large samples (n > 30), test it with the same t-statistic as above. Use it when data are ranked, have outliers, or aren't normal.
+
+### Contingency tables (chi-square test of independence)
+Tests whether two categorical variables are related (e.g., fund style vs size).
+- Expected count in each cell: \( E_{ij} = \frac{\text{row total} \times \text{column total}}{\text{grand total}} \).
+- Statistic: \( \chi^2 = \sum \frac{(O_{ij} - E_{ij})^2}{E_{ij}} \).
+- Degrees of freedom: **(r − 1)(c − 1)**.
+- Reject independence if the statistic is above the critical value (a one-tailed test).
+
+### Parametric vs non-parametric
+Use non-parametric tests when distribution assumptions fail, the data are ranks, or there are outliers. They're less powerful when the parametric assumptions do hold.
+
+### Exam traps
+- Degrees of freedom for a correlation test are n − 2, not n − 1.
+- The chi-square test of independence is one-tailed (right tail).
+
 # Economics
+
+Weight: 6–9%
 
 ## Twin deficits: budget and trade balances
 
+Module: Fiscal Policy; Capital Flows and the FX Market
+Scope: The sector-balance identity, fiscal policy and balance of payments basics are Level I. Marshall-Lerner, the J-curve, the absorption approach and Mundell-Fleming are taught in depth at Level II; at Level I, know the intuition.
 Most of this ties back to one identity.
 
 ### The identity that links them
@@ -542,6 +602,7 @@ Persistent current account deficits tend to weaken a currency over time, especia
 
 ## Market structures: from perfect competition to monopoly
 
+Module: Firms and Market Structures
 The exam asks you to identify the structure from its features and know how price and output are set.
 
 ### The four structures
@@ -575,6 +636,7 @@ Every firm produces where **MR = MC**.
 
 ## Monetary policy: tools, transmission and limits
 
+Module: Monetary Policy
 ### Central bank roles and tools
 - Roles: monopoly supplier of currency, banker to the government and banks, lender of last resort, regulator, managing reserves and FX.
 - Tools: **policy rate**, **reserve requirements**, **open market operations** (buying bonds adds reserves and lowers rates).
@@ -609,6 +671,7 @@ A cut in the policy rate lowers short-term market rates, raises asset prices, we
 
 ## Business cycles: phases and indicators
 
+Module: Understanding Business Cycles
 ### Four phases
 1. **Recovery:** output rises from the trough, still below potential. Unemployment stays high; inflation is moderating.
 2. **Expansion:** output above trend; hiring rises; inflation picks up; central banks tighten.
@@ -637,6 +700,7 @@ A cut in the policy rate lowers short-term market rates, raises asset prices, we
 
 ## Exchange rates: cross rates, forwards and interest parity
 
+Module: Exchange Rate Calculations; Capital Flows and the FX Market
 ### Quotes
 "USD/EUR = 1.10" means 1.10 USD per 1 EUR (price currency / base currency). The base currency is in the denominator, the one you're pricing.
 
@@ -664,6 +728,7 @@ Capital inflows appreciate the currency. Capital controls are used to slow surge
 
 ## Firms: costs, breakeven and shutdown
 
+Module: Firms and Market Structures
 ### Revenue and cost
 - **Total revenue** = P × Q. Marginal revenue = change in TR from one more unit.
 - **Total cost** = fixed + variable. Average total cost (ATC) is U-shaped; marginal cost (MC) cuts ATC and AVC at their minimums.
@@ -695,6 +760,7 @@ Breakeven is where P = minimum ATC. The **shutdown point** is P = minimum AVC.
 
 ## International trade: comparative advantage and restrictions
 
+Module: International Trade
 ### Why trade
 - **Absolute advantage:** producing at lower cost (more output per unit of input).
 - **Comparative advantage:** lower **opportunity cost**. Trade benefits both countries if each specializes in its comparative advantage, even if one has an absolute advantage in everything.
@@ -722,6 +788,7 @@ Limit flows of capital in or out. Used to manage hot money, protect reserves or 
 
 ## Geopolitics: actors, risks and their effect on markets
 
+Module: Introduction to Geopolitics
 ### Key concepts
 - **State actors** (governments) and **non-state actors** (multinationals, NGOs, individuals) shape geopolitics.
 - **Cooperation vs non-cooperation:** cooperative countries share standards, trade and institutions.
@@ -756,8 +823,11 @@ Risk-off moves: safe-haven currencies and government bonds rally, equities and E
 
 # Financial Statement Analysis
 
+Weight: 11–14%
+
 ## Revenue recognition: the five-step model
 
+Module: Analyzing Income Statements
 IFRS 15 and ASC 606 use the same core model.
 
 ### Five steps
@@ -783,6 +853,7 @@ A **principal** controls the goods before transfer and reports gross revenue. An
 
 ## Inventories: FIFO, LIFO and the LIFO reserve
 
+Module: Analysis of Inventories
 ### Cost flow methods
 - **FIFO:** older costs go to COGS. In rising prices: lower COGS, higher profit, higher taxes, inventory near current cost.
 - **LIFO** (US GAAP only, not IFRS): newer costs go to COGS. In rising prices: higher COGS, lower profit and taxes, so **higher cash flow**. Inventory is understated.
@@ -812,6 +883,7 @@ LIFO gives lower current ratio, higher inventory turnover, lower gross margin, h
 
 ## Long-lived assets: capitalize or expense, depreciation and impairment
 
+Module: Analysis of Long-Term Assets
 ### Capitalizing vs expensing
 Capitalizing a cost (vs expensing it):
 - Higher assets and equity; lower debt-to-equity.
@@ -841,6 +913,7 @@ IFRS allows the revaluation model; increases go to a revaluation surplus in equi
 
 ## Income taxes: deferred tax assets and liabilities
 
+Module: Analysis of Income Taxes
 Deferred taxes come from **temporary** differences between accounting (book) and tax bases.
 
 ### Deferred tax liability (DTL)
@@ -870,6 +943,7 @@ If a DTL is not expected to reverse (growing capex keeps it rising), treat it as
 
 ## Cash flow statement: CFO, classification and free cash flow
 
+Module: Analyzing Statements of Cash Flows I and II
 ### Indirect method for CFO
 Start with net income, then:
 - Add back non-cash charges (depreciation, amortization, impairments).
@@ -900,6 +974,7 @@ $$FCFE = CFO - FCInv + \text{Net borrowing}$$
 
 ## Financial analysis: DuPont and the key ratios
 
+Module: Financial Analysis Techniques
 ### Three-part DuPont
 $$ROE = \frac{NI}{\text{Sales}} \times \frac{\text{Sales}}{\text{Assets}} \times \frac{\text{Assets}}{\text{Equity}}$$
 Net profit margin × asset turnover × financial leverage.
@@ -925,6 +1000,7 @@ DSO + DOH − DPO. Shorter is generally better.
 
 ## Leases: lessee accounting under IFRS 16 and ASC 842
 
+Module: Topics in Long-Term Liabilities and Equity
 ### Lessee: on balance sheet
 Both standards put almost all leases (over 12 months) on the balance sheet:
 - **Right-of-use (ROU) asset** and **lease liability** = PV of lease payments.
@@ -957,6 +1033,8 @@ Every lease is treated like a finance lease:
 
 ## Bonds payable: effective interest method
 
+Module: Background for Topics in Long-Term Liabilities and Equity
+Scope: Bond accounting was its own Level I reading in older curricula. Treat it as background for interest expense and cash flow questions, and check it against your LOS.
 ### Issuance
 - Bond issued at a **discount** when the coupon rate < market rate; at a **premium** when the coupon rate > market rate.
 - Initial carrying amount = issue price (PV of cash flows at the market rate).
@@ -989,6 +1067,7 @@ Both standards allow carrying debt at fair value. Rising market rates reduce the
 
 ## Earnings per share: basic and diluted
 
+Module: Analyzing Income Statements
 ### Basic EPS
 $$\text{Basic EPS} = \frac{\text{Net income} - \text{Preferred dividends}}{\text{Weighted average common shares}}$$
 
@@ -1013,6 +1092,7 @@ Compare its **incremental EPS** (added numerator / added shares) with basic EPS.
 
 ## Financial reporting quality and red flags
 
+Module: Financial Reporting Quality
 ### Quality spectrum
 1. GAAP-compliant, decision-useful, **sustainable** earnings (best).
 2. GAAP-compliant, but low earnings quality (not sustainable).
@@ -1043,10 +1123,188 @@ Stretching payables, classifying operating outflows as investing, factoring rece
 - Conservative accounting is still biased and lowers quality.
 - A high-quality report can describe low-quality (unsustainable) earnings.
 
+## The analysis framework, sources and the auditor's report
+
+Module: Introduction to Financial Statement Analysis
+
+### Six-step framework
+1. Articulate the purpose and context.
+2. Collect data.
+3. Process data (adjustments, common-size statements, ratios).
+4. Analyze and interpret.
+5. Develop and communicate conclusions.
+6. Follow up.
+
+### Sources of information
+- **Financial statements:** balance sheet, income statement (and comprehensive income), statement of changes in equity, cash flow statement.
+- **Notes:** accounting policies, estimates, segment data. Critical for comparisons.
+- **MD&A (management commentary):** results, trends, risks, critical accounting estimates. Not audited.
+- Other: proxy statements, earnings calls, press releases, industry and economic data.
+
+### Auditor's opinion
+| Opinion | Meaning |
+| --- | --- |
+| **Unqualified (unmodified)** | Statements present fairly; the clean opinion |
+| **Qualified** | Fair except for specific issues |
+| **Adverse** | Statements are not presented fairly |
+| **Disclaimer** | Auditor can't express an opinion |
+
+- **Key audit matters** (IFRS) / **critical audit matters** (US): areas of significant auditor judgment.
+- **Going concern** doubts must be flagged.
+- An audit gives **reasonable assurance**, not a guarantee against fraud.
+- In the US, the auditor also gives an opinion on **internal control over financial reporting**.
+
+### Standard setters vs regulators
+- **Standard setters** write the rules: IASB (IFRS), FASB (US GAAP).
+- **Regulators** enforce them: SEC in the US, coordinated globally through IOSCO.
+
+### Exam traps
+- MD&A isn't audited.
+- A qualified opinion is "except for", an adverse opinion is "not fair".
+
+## Income statement analysis: unusual items, OCI and comprehensive income
+
+Module: Analyzing Income Statements
+
+### Presentation
+- Expenses grouped **by nature** (raw materials, salaries) or **by function** (cost of sales, SG&A). IFRS allows either; US GAAP (SEC filers) generally by function.
+- **Single-step** vs **multi-step** (shows gross profit).
+
+### Non-recurring and unusual items
+| Item | Treatment |
+| --- | --- |
+| **Discontinued operations** | Reported separately, net of tax, below income from continuing operations |
+| **Unusual or infrequent items** | In continuing operations, pre-tax (e.g., restructuring, gains on asset sales) |
+| **Change in accounting policy** | Applied **retrospectively** (restate prior periods) |
+| **Change in accounting estimate** | Applied **prospectively** (no restatement) |
+| **Correction of a prior-period error** | Restate prior periods; disclose |
+
+Neither IFRS nor US GAAP allows "extraordinary items" now.
+
+### Comprehensive income
+$$\text{Comprehensive income} = \text{Net income} + \text{OCI}$$
+
+Common OCI items:
+- Foreign currency translation adjustments.
+- Unrealized gains and losses on debt securities at fair value through OCI.
+- Effective portion of **cash flow hedges**.
+- Pension **remeasurements** (actuarial gains and losses).
+
+### Analysis tools
+- **Common-size income statement:** every line as a % of revenue.
+- Margins: gross, operating, pre-tax, net.
+- Compare with peers and over time; strip out non-recurring items to judge sustainable earnings.
+
+### Exam traps
+- Policy changes are retrospective; estimate changes are prospective.
+- Discontinued operations are net of tax and below continuing operations.
+
+## Balance sheet analysis: classification, measurement and equity
+
+Module: Analyzing Balance Sheets
+
+### Classification
+- **Current vs non-current** (within one year or operating cycle). IFRS also allows a **liquidity-based** order when more relevant (banks).
+
+### Measuring financial assets
+| IFRS 9 | US GAAP (debt securities) | Measured at |
+| --- | --- | --- |
+| Amortized cost | Held-to-maturity | Amortized cost |
+| Fair value through OCI | Available-for-sale | Fair value; unrealized gains in OCI |
+| Fair value through P&L | Trading | Fair value; gains in net income |
+
+Under US GAAP, equity securities are generally at fair value through net income.
+
+### Intangibles and goodwill
+- **Goodwill** = purchase price − fair value of identifiable net assets acquired. Arises only in acquisitions.
+- Not amortized; tested for impairment.
+- Internally generated goodwill and most internally created intangibles aren't recognized.
+
+### Equity components
+- Contributed (paid-in) capital.
+- **Retained earnings.**
+- **Treasury shares:** repurchased shares; reduce equity, no votes or dividends.
+- **Accumulated OCI.**
+- **Non-controlling (minority) interest:** the share of a consolidated subsidiary the parent doesn't own.
+
+### Analysis tools
+- **Common-size balance sheet:** each item as a % of total assets.
+- Liquidity ratios (current, quick, cash) and solvency ratios (debt-to-assets, debt-to-equity, financial leverage).
+
+### Exam traps
+- Unrealized gains on available-for-sale / FVOCI securities skip net income.
+- Goodwill can't be created internally.
+
+## Pensions and share-based compensation
+
+Module: Topics in Long-Term Liabilities and Equity
+
+### Defined contribution (DC) plans
+Expense = the contribution the employer makes in the period. No liability beyond unpaid contributions. The employee bears the investment risk.
+
+### Defined benefit (DB) plans
+- **Funded status** = fair value of plan assets − PV of the defined benefit obligation.
+- Negative: **net pension liability**. Positive: **net pension asset** (limited by the asset ceiling under IFRS).
+
+| Component | IFRS | US GAAP |
+| --- | --- | --- |
+| Service cost | P&L | P&L |
+| Interest / return | Net interest on the net liability, in P&L | Interest cost and **expected** return on assets, in P&L |
+| Remeasurements (actuarial gains and losses) | OCI, never recycled | OCI, then amortized into P&L |
+
+Assumptions matter: a higher discount rate lowers the obligation; a higher expected return (US GAAP) lowers pension expense.
+
+### Share-based compensation
+- Measured at **fair value at the grant date**, expensed over the **vesting (service) period**.
+- **Stock options:** valued with an option pricing model; higher volatility or longer expected life raise the expense.
+- **Restricted stock:** fair value = share price at grant.
+- **Stock appreciation rights (cash-settled):** a liability remeasured each period.
+- Aligns managers with shareholders but dilutes existing owners.
+
+### Exam traps
+- DC plans don't create a pension liability (beyond unpaid contributions).
+- IFRS remeasurements stay in OCI; under US GAAP they're amortized into income later.
+
+## Financial statement modeling: building a forecast
+
+Module: Introduction to Financial Statement Modeling
+
+### Revenue
+Top-down (market size × share, GDP-linked growth), bottom-up (volume × price, store counts), or a hybrid.
+
+### Costs
+- **COGS** via gross margin; consider input prices, economies of scale and the competitive position.
+- **SG&A:** mostly fixed in the short run; selling costs vary with revenue.
+- **D&A** tied to capex and the asset base.
+- **Interest** from forecast debt and rates.
+- **Taxes:** use the effective rate; watch differences between statutory, effective and cash rates.
+
+### Balance sheet and cash flow
+- Working capital from days ratios (DSO, DIO, DPO).
+- Capex = maintenance (≈ depreciation) + growth.
+- Cash or a revolver balances the model.
+
+### Behavioral pitfalls in forecasting
+Overconfidence, illusion of control, conservatism (slow updates), representativeness, confirmation bias. Use base rates and scenarios.
+
+### Competitive and inflation effects
+- Porter's five forces shape long-term margins.
+- Inflation pass-through depends on pricing power; input costs may rise faster than prices.
+
+### Long-term forecasts
+Choose a horizon, then a **normalized** year for the terminal value. Margins and growth tend to revert to industry norms. Use scenario and sensitivity analysis.
+
+### Exam traps
+- Effective tax rate, not statutory, for the income statement forecast.
+- Extrapolating recent high growth is a classic forecasting error.
+
 # Corporate Issuers
+
+Weight: 6–9%
 
 ## Corporate governance: stakeholders and agency conflicts
 
+Module: Investors and Other Stakeholders; Corporate Governance: Conflicts, Mechanisms, Risks, and Benefits
 ### Stakeholders
 Shareholders, creditors, managers and employees, board of directors, customers, suppliers, government and regulators.
 
@@ -1072,6 +1330,7 @@ Approaches include negative screening, positive screening, thematic investing, i
 
 ## Capital investment: NPV, IRR and project decisions
 
+Module: Capital Investments and Capital Allocation
 ### Decision rules
 - **NPV** = PV of cash inflows − initial investment. Accept if NPV > 0. NPV is the expected increase in shareholder wealth.
 - **IRR**: the discount rate making NPV = 0. Accept if IRR > required return.
@@ -1100,6 +1359,8 @@ Timing, abandonment, expansion and flexibility options add value that a static N
 
 ## Cost of capital: WACC and its components
 
+Module: Capital Structure
+Scope: WACC and the costs of debt and equity sit in the Level I Capital Structure module. Unlevering and relevering beta and country risk premiums get their full treatment at Level II.
 $$WACC = w_d\,r_d(1 - t) + w_p\,r_p + w_e\,r_e$$
 
 Use **target** (or market value) weights, not book values where avoidable.
@@ -1133,6 +1394,7 @@ Best practice: adjust the project's initial outlay, not the cost of capital.
 
 ## Capital structure: Modigliani-Miller and trade-off theory
 
+Module: Capital Structure
 ### MM without taxes
 - **Proposition I:** firm value doesn't depend on capital structure.
 - **Proposition II:** cost of equity rises linearly with leverage, so WACC stays constant.
@@ -1162,6 +1424,7 @@ Debt disciplines managers by reducing free cash flow (Jensen's free cash flow hy
 
 ## Working capital and liquidity management
 
+Module: Working Capital and Liquidity
 ### Cash conversion cycle
 $$CCC = DOH + DSO - DPO$$
 Days of inventory on hand + days sales outstanding − days payables outstanding.
@@ -1191,6 +1454,7 @@ Uncommitted and committed lines of credit, revolving credit, secured loans, fact
 
 ## Organizational forms and ownership
 
+Module: Organizational Forms, Corporate Issuer Features, and Ownership
 ### Legal forms
 | Form | Liability | Taxation | Ownership |
 | --- | --- | --- | --- |
@@ -1219,6 +1483,7 @@ Uncommitted and committed lines of credit, revolving credit, secured loans, fact
 
 ## Business models: how companies make money
 
+Module: Business Models
 ### Elements of a business model
 Customer (who), value proposition (what and why), channels (how delivered), pricing (how charged), key assets and suppliers, and the **value chain**.
 
@@ -1250,6 +1515,8 @@ Direct (own stores, online) vs indirect (distributors, wholesalers). Omnichannel
 
 ## Operating and financial leverage
 
+Module: Background for Business Models and Capital Structure
+Scope: Degree-of-leverage formulas were their own Level I reading in older curricula. The current curriculum covers operating leverage inside Business Models and Capital Structure, so treat this as background.
 ### Degree of operating leverage (DOL)
 $$DOL = \frac{\%\Delta EBIT}{\%\Delta \text{Sales}} = \frac{Q(P - V)}{Q(P - V) - F}$$
 Higher fixed operating costs (F) mean higher DOL and more volatile operating income.
@@ -1277,8 +1544,11 @@ Debt magnifies ROE when the return on assets exceeds the after-tax cost of debt;
 
 # Equity Investments
 
+Weight: 11–14%
+
 ## Market efficiency: weak, semi-strong and strong forms
 
+Module: Market Efficiency
 ### Three forms
 - **Weak form:** prices reflect all past market data. Technical analysis can't earn abnormal returns.
 - **Semi-strong form:** prices reflect all **public** information. Fundamental analysis of public data can't earn abnormal returns.
@@ -1308,6 +1578,7 @@ Loss aversion, herding, overconfidence and information cascades help explain ano
 
 ## Equity valuation: dividend discount and multiples
 
+Module: Equity Valuation: Concepts and Basic Tools
 ### Three model types
 - **Present value models:** DDM, free cash flow to equity.
 - **Multiplier models:** P/E, P/B, P/S, EV/EBITDA.
@@ -1337,6 +1608,7 @@ EV = market value of equity + debt + preferred − cash. EV/EBITDA is useful for
 
 ## Market organization: margin, leverage and orders
 
+Module: Market Organization and Structure
 ### Margin transactions
 - Leverage ratio = 1 / initial margin. 50% initial margin means 2× leverage.
 - Return on a margin purchase is magnified both ways, before interest and commissions.
@@ -1364,6 +1636,7 @@ Timely information, liquidity (low cost, depth), and **informational efficiency*
 
 ## Security market indexes: weighting methods
 
+Module: Security Market Indexes
 ### Weighting schemes
 - **Price-weighted:** sum of prices / divisor. High-priced stocks dominate. A split changes the divisor. Example: Dow Jones Industrial Average, Nikkei 225.
 - **Equal-weighted:** each stock gets the same weight. Needs frequent rebalancing; tilts toward small caps.
@@ -1389,6 +1662,7 @@ Huge, heterogeneous universe; many bonds trade rarely, so pricing relies on deal
 
 ## Industry analysis: five forces and the life cycle
 
+Module: Industry and Competitive Analysis
 ### Porter's five forces
 1. **Threat of new entrants:** high barriers protect profits.
 2. **Bargaining power of suppliers:** concentrated or unique suppliers squeeze margins.
@@ -1417,6 +1691,7 @@ Cost leadership vs differentiation; a firm stuck in the middle tends to underper
 
 ## Equity securities: types and features
 
+Module: Overview of Equity Securities
 ### Common shares
 - Residual claim on assets; voting rights.
 - **Statutory voting:** one vote per share per director. **Cumulative voting:** votes can be concentrated on one director, helping minority shareholders.
@@ -1454,6 +1729,7 @@ Total return = price change + dividends. Equity risk is the uncertainty of those
 
 ## Company analysis: forecasting revenue, costs and returns
 
+Module: Company Analysis: Forecasting
 ### Company research report
 Business description, industry and competitive analysis, investment summary, valuation, risks, ESG considerations.
 
@@ -1482,10 +1758,42 @@ Test forecasts against changes in key drivers (volume, price, input costs).
 - Long-run forecasts should move margins and growth toward industry norms (mean reversion), unless the company has a durable advantage.
 - Bottom-up forecasts can ignore macro limits; top-down can miss firm-specific drivers.
 
+## Company analysis: business model, drivers and history
+
+Module: Company Analysis: Past and Present
+
+### Understand the business
+- What it sells, to whom, through which channels, at what price.
+- **Revenue drivers:** volume × price; split by segment, geography and product.
+- **Cost structure:** fixed vs variable costs, operating leverage.
+
+### Key performance indicators
+Industry-specific measures: same-store sales (retail), ARPU and churn (subscriptions), load factor (airlines), backlog (industrials), net interest margin (banks).
+
+### Analyzing past performance
+- Revenue growth broken into volume and price effects.
+- Margins over time and versus peers.
+- Working capital efficiency (DSO, DIO, DPO).
+- Return on invested capital vs cost of capital.
+- Capital allocation: capex, acquisitions, dividends, buybacks.
+
+### Competitive position
+Market share trends, pricing power, cost advantages, switching costs, network effects. Link these to Porter's five forces.
+
+### ESG
+Identify material ESG factors (emissions, labor practices, governance) and how they could affect revenue, costs, assets or the cost of capital.
+
+### Exam traps
+- Growth from acquisitions isn't the same as organic growth.
+- Rising revenue with falling margins can signal weak pricing power.
+
 # Fixed Income
+
+Weight: 11–14%
 
 ## Bond pricing and yield measures
 
+Module: Fixed-Income Bond Valuation: Prices and Yields; Yield and Yield Spread Measures for Fixed-Rate Bonds
 ### Price from yield
 $$P = \sum_{t=1}^{N} \frac{C}{(1 + r)^t} + \frac{FV}{(1 + r)^N}$$
 
@@ -1514,6 +1822,7 @@ Discount rate basis (T-bills) understates the true yield; add-on basis is closer
 
 ## Duration and convexity
 
+Module: Interest Rate Risk and Return; Yield-Based Bond Duration Measures and Properties; Yield-Based Bond Convexity and Portfolio Properties
 ### Duration measures
 - **Macaulay duration:** weighted average time to receive cash flows (in years).
 - **Modified duration:** \( \frac{MacDur}{1 + r} \). Approximate % price change for a 1% change in yield.
@@ -1544,6 +1853,7 @@ Positive convexity: prices rise more when yields fall than they drop when yields
 
 ## Credit risk: expected loss, spreads and ratings
 
+Module: Credit Risk; Credit Analysis for Corporate Issuers
 ### Expected loss
 $$EL = PD \times LGD$$
 LGD = (1 − recovery rate) × exposure. The yield spread compensates for EL plus liquidity and a risk premium.
@@ -1571,6 +1881,7 @@ Spread widening hurts price: \( \%\Delta P \approx -\text{ModDur} \times \Delta 
 
 ## Term structure: spot, forward and par curves
 
+Module: The Term Structure of Interest Rates: Spot, Par, and Forward Curves
 ### Three curves
 - **Spot (zero) curve:** yields on zero-coupon bonds. The right way to discount each cash flow.
 - **Par curve:** coupon rates at which bonds price at par for each maturity.
@@ -1600,6 +1911,7 @@ If the spot curve slopes up, forwards sit above spots; spots sit above par yield
 
 ## Securitization: ABS, MBS and prepayment risk
 
+Module: Fixed-Income Securitization; ABS and MBS Instrument and Market Features
 ### Why securitize
 Banks sell loans to a **special purpose entity (SPE)** that issues securities. Benefits: frees bank capital, gives investors access to pooled assets, improves liquidity. The SPE is **bankruptcy-remote** from the originator.
 
@@ -1627,6 +1939,7 @@ Issued by banks, backed by a segregated cover pool; investors also have recourse
 
 ## Bond features: indentures, covenants and embedded options
 
+Module: Fixed-Income Instrument Features; Fixed-Income Cash Flows and Types
 ### Basic features
 Issuer, maturity, par value, coupon rate and frequency, currency.
 - **Bullet bonds:** principal at maturity. **Amortizing bonds:** principal repaid over time. **Sinking funds:** principal retired gradually; lowers credit risk but adds reinvestment risk.
@@ -1657,6 +1970,7 @@ Domestic, foreign and **Eurobonds** (issued outside the jurisdiction of the curr
 
 ## Fixed-income markets: issuance, trading and repos
 
+Module: Fixed-Income Issuance and Trading; Fixed-Income Markets for Corporate and Government Issuers
 ### Market segments
 - **Sovereign, non-sovereign (local), quasi-government, supranational** (World Bank), corporate and securitized.
 - **Investment grade vs high yield**; developed vs emerging; money market (≤ 1 year) vs capital market.
@@ -1689,6 +2003,7 @@ Bank loans and syndicated loans, commercial paper (backed by liquidity lines), c
 
 ## Arbitrage-free bond valuation with spot rates
 
+Module: Fixed-Income Bond Valuation: Prices and Yields
 ### The idea
 Each cash flow should be discounted at the **spot rate** for its timing. A coupon bond is a portfolio of zeros.
 $$P = \frac{C}{(1 + S_1)^1} + \frac{C}{(1 + S_2)^2} + \cdots + \frac{C + FV}{(1 + S_N)^N}$$
@@ -1714,10 +2029,95 @@ Full price = PV at the previous coupon date × \( (1 + r)^{t/T} \). Accrued inte
 - Valuing every cash flow at the YTM gives the same price as using spot rates, but YTM is just the single rate that matches; spot rates are the more fundamental inputs.
 - Matrix pricing is also used to set the yield on a new issue.
 
+## Floating-rate notes and money market yields
+
+Module: Yield and Yield Spread Measures for Floating-Rate Instruments
+
+### Floating-rate notes (FRNs)
+- Coupon = **market reference rate (MRR)** + **quoted margin (QM)**.
+- **Discount margin (DM)** (required margin) is the spread investors require now.
+- QM = DM: priced at par on reset dates. QM > DM: premium. QM < DM: discount.
+- Interest rate risk is low because the coupon resets; credit risk shows up through DM.
+
+### Money market quotes
+**Discount rate (DR)** basis:
+$$PV = FV\left(1 - \frac{\text{Days}}{\text{Year}} \times DR\right)$$
+
+**Add-on rate (AOR)** basis:
+$$PV = \frac{FV}{1 + \frac{\text{Days}}{\text{Year}} \times AOR}$$
+
+- The discount rate **understates** the investor's true return (uses FV as the base, not PV).
+- **Bond-equivalent yield:** an add-on rate on a 365-day year. Convert everything to it before comparing.
+
+### Example
+A 90-day T-bill priced at 99 per 100:
+- DR (360 days) = (1 − 0.99) × 360/90 = **4.00%**.
+- AOR (365 days) = (100/99 − 1) × 365/90 ≈ **4.10%**.
+
+### Exam traps
+- Discount-basis quotes look lower than the return actually earned.
+- Check whether the convention uses 360 or 365 days.
+
+## Curve-based and empirical risk measures
+
+Module: Curve-Based and Empirical Fixed-Income Risk Measures
+
+### Effective duration and convexity
+For bonds whose cash flows change with rates (callables, putables, MBS), use shifts in the **benchmark curve**:
+$$EffDur = \frac{PV_- - PV_+}{2 \times \Delta\text{Curve} \times PV_0} \qquad EffCon = \frac{PV_- + PV_+ - 2PV_0}{(\Delta\text{Curve})^2 \times PV_0}$$
+
+- **Callable bonds:** negative effective convexity when rates are low (price compression near the call price).
+- **Putable bonds:** positive convexity; the put adds value as rates rise.
+
+### Key rate (partial) duration
+- Sensitivity to a change in the yield at **one maturity**, holding others fixed.
+- Key rate durations add up to the effective duration.
+- Measures **yield curve shape risk** (twists, steepening), which effective duration misses.
+
+### Empirical duration
+- Estimated by regressing actual bond price changes on benchmark yield changes.
+- For high-yield bonds, spreads often narrow when government yields rise (good economy), so empirical duration is **below** analytical duration.
+- Government bonds: empirical ≈ analytical.
+
+### Exam traps
+- Effective duration assumes a parallel shift; key rate durations handle non-parallel moves.
+- Use effective (not modified) duration for bonds with options.
+
+## Credit analysis for government issuers
+
+Module: Credit Analysis for Government Issuers
+
+### Sovereign credit: qualitative factors
+- **Institutional and political:** rule of law, governance, policy stability.
+- **Fiscal:** debt and deficits relative to GDP, interest burden, ability to raise revenue.
+- **Monetary:** central bank independence and credibility; **reserve currency** status helps a lot.
+- **Economic:** growth, size, diversity, GDP per capita.
+- **External:** current account balance, FX reserves, external debt.
+
+### Quantitative measures
+Debt/GDP, deficit/GDP, interest/revenue, real GDP growth, per-capita income, current account/GDP, reserves/short-term external debt.
+
+### Local vs foreign currency
+**Local-currency** debt usually has a higher rating than **foreign-currency** debt: the government can tax and, ultimately, print its own currency.
+
+### Non-sovereign government debt
+- **Agencies and quasi-government entities:** often an implied or explicit government guarantee.
+- **Supranationals** (World Bank): typically very high quality.
+- **Regional and local governments:**
+  - **General obligation bonds:** backed by taxing power. Analyze the tax base, economy, debt burden, pensions.
+  - **Revenue bonds:** backed by a specific project's revenue (toll road, airport). Analyze like a company; key ratio is **debt service coverage**.
+
+### Exam traps
+- Revenue bonds carry more risk than general obligation bonds from the same issuer.
+- Unlike sovereigns, local governments usually can't print money and often face balanced-budget rules.
+
 # Derivatives
+
+Weight: 5–8%
 
 ## Forwards and futures: pricing and cost of carry
 
+Module: Pricing and Valuation of Forward Contracts; Pricing and Valuation of Futures Contracts
 ### No-arbitrage forward price
 $$F_0(T) = S_0(1 + r)^T$$
 With carry benefits (dividends, coupons, convenience yield) and costs (storage):
@@ -1750,6 +2150,7 @@ An FRA locks in a future interest rate. The long gains if rates rise.
 
 ## Options: payoffs, moneyness and put-call parity
 
+Module: Pricing and Valuation of Options; Option Replication Using Put–Call Parity
 ### Payoffs at expiry
 - Call: \( \max(0, S_T - X) \). Put: \( \max(0, X - S_T) \).
 - Profit = payoff − premium (for the buyer).
@@ -1787,6 +2188,7 @@ Protective put = fiduciary call. Rearrange to create synthetic positions, e.g., 
 
 ## Swaps: what they are and how they're valued
 
+Module: Pricing and Valuation of Interest Rate Swaps
 ### Interest rate swap
 - One party pays fixed, the other floating, on a notional that isn't exchanged.
 - **Pay-fixed** gains when rates rise.
@@ -1814,6 +2216,7 @@ Convert floating-rate debt to fixed (or vice versa), manage duration, hedge curr
 
 ## Binomial option pricing and replication
 
+Module: Valuing a Derivative Using a One-Period Binomial Model
 ### One-period binomial model
 The stock goes up to \( S^+ = uS_0 \) or down to \( S^- = dS_0 \).
 
@@ -1838,6 +2241,7 @@ Because the option can be replicated with the underlying and borrowing, its pric
 
 ## Derivative markets: instruments, uses and risks
 
+Module: Derivative Instrument and Derivative Market Features; Forward Commitment and Contingent Claim Features; Derivative Benefits, Risks, and Uses
 ### Firm commitments vs contingent claims
 - **Firm commitments:** both parties must perform. Forwards, futures, swaps. Payoff is linear.
 - **Contingent claims:** the holder has a right, not an obligation. Options, credit derivatives (CDS). Payoff is asymmetric.
@@ -1871,6 +2275,7 @@ Issuers use derivatives for **fair value hedges** (fixed-rate debt), **cash flow
 
 ## Arbitrage, replication and the cost of carry
 
+Module: Arbitrage, Replication, and the Cost of Carry in Pricing Derivatives
 ### Arbitrage
 - Two assets or portfolios with identical future cash flows must have the same price today (the **law of one price**).
 - A risk-free portfolio must earn the risk-free rate.
@@ -1900,6 +2305,7 @@ Transaction costs, short-sale constraints, and inability to borrow at the risk-f
 
 ## Option value bounds and early exercise
 
+Module: Pricing and Valuation of Options
 ### Lower bounds (European)
 $$c_0 \geq \max\left(0, S_0 - \frac{X}{(1 + r)^T}\right) \qquad p_0 \geq \max\left(0, \frac{X}{(1 + r)^T} - S_0\right)$$
 
@@ -1920,10 +2326,41 @@ Higher volatility raises both call and put values. Higher rates raise calls and 
 - Lower bound uses the PV of X, not X.
 - An American put's lower bound is max(0, X − S₀), its exercise value.
 
+## Forward rates and FRAs across maturities
+
+Module: Pricing and Valuation of Forward Contracts and for an Underlying with Varying Maturities
+
+### Implied forward rates
+No arbitrage links spot and forward rates:
+$$(1 + S_2)^2 = (1 + S_1)(1 + F_{1,1})$$
+Investing for two years at the 2-year rate must equal investing for one year and rolling at the 1-year forward rate.
+
+### Forward rate agreements (FRAs)
+- Lock in an interest rate for a future period. A **3×9 FRA** covers a 6-month rate starting in 3 months.
+- The **long** (fixed-rate payer, notional borrower) gains when rates rise.
+- The FRA rate at inception = the implied forward rate, so the FRA has zero value.
+
+### Settlement
+Settled at the **start** of the loan period, so the payoff is discounted:
+$$\text{Payoff to long} = \frac{\text{Notional} \times (MRR - \text{FRA rate}) \times \frac{\text{days}}{360}}{1 + MRR \times \frac{\text{days}}{360}}$$
+
+### Value after inception
+Value = notional × (new forward rate − original FRA rate) × period, discounted to today. Rising rates make the long FRA positive.
+
+### Uses
+Borrowers buy FRAs to hedge rising rates; lenders sell them. A series of FRAs resembles an interest rate swap.
+
+### Exam traps
+- An "a × b" FRA expires in a months and covers the rate from a to b.
+- Remember to discount the payoff because settlement is in advance.
+
 # Alternative Investments
+
+Weight: 7–10%
 
 ## Fee structures: management fees, hurdles and high-water marks
 
+Module: Alternative Investment Performance and Returns
 ### Typical structure
 "2 and 20": a 2% management fee on assets plus a 20% incentive fee on profits.
 
@@ -1948,6 +2385,7 @@ Incentive fees can be calculated net of management fees or independently. Read c
 
 ## Private equity and private credit
 
+Module: Investments in Private Capital: Equity and Debt
 ### Private equity stages
 - **Venture capital:** pre-seed, seed, early stage, later stage. High risk, minority stakes.
 - **Growth equity:** minority stakes in established, growing companies.
@@ -1975,6 +2413,7 @@ Hard to value because there are no market prices; NAVs are stale and smoothed, w
 
 ## Real estate: valuation approaches and investment forms
 
+Module: Real Estate and Infrastructure
 ### Four quadrants
 | | Public | Private |
 | --- | --- | --- |
@@ -2006,6 +2445,7 @@ Large, indivisible, illiquid, heterogeneous, high transaction costs. Appraisal-b
 
 ## Commodities: futures, contango and roll yield
 
+Module: Natural Resources
 ### Return sources on a commodity futures position
 $$\text{Total return} = \text{Price return} + \text{Roll yield} + \text{Collateral return}$$
 
@@ -2031,6 +2471,7 @@ Commodities have low correlation with stocks and bonds and can hedge inflation. 
 
 ## Hedge fund strategies
 
+Module: Hedge Funds
 ### Main categories
 - **Equity hedge:**
   - Market neutral (near-zero beta), fundamental long/short, short bias, quantitative directional.
@@ -2058,6 +2499,7 @@ Lightly regulated, use leverage and short selling, lock-up periods, notice perio
 
 ## Natural resources and infrastructure
 
+Module: Natural Resources; Real Estate and Infrastructure
 ### Natural resources
 - **Commodities:** energy, metals, agriculture. Mostly accessed through futures.
 - **Farmland:** returns from harvests and land value. Harvest timing is fairly flexible.
@@ -2085,6 +2527,7 @@ Regulatory and political risk, construction risk (greenfield), operational risk,
 
 ## Digital assets
 
+Module: Introduction to Digital Assets
 ### What they are
 Digital assets are created, stored and transmitted electronically. **Cryptocurrencies** are digital assets recorded on a **distributed ledger** (often a blockchain).
 
@@ -2115,6 +2558,7 @@ Direct holdings in a digital wallet, crypto funds, futures and ETFs, shares of r
 
 ## Measuring alternative investment performance
 
+Module: Alternative Investment Performance and Returns
 ### Why it's harder
 Illiquidity, infrequent valuation, appraisal-based or model-based prices, leverage, fees and cash flow timing.
 
@@ -2143,10 +2587,43 @@ Gates, lock-ups and redemption fees protect remaining investors when the fund mu
 - MOIC ignores time; two funds with the same MOIC can have very different IRRs.
 - Smoothed returns make alternatives look like better diversifiers than they are.
 
+## Alternative investment structures and ways to invest
+
+Module: Alternative Investment Features, Methods, and Structures
+
+### Common features
+Illiquidity, low transparency, specialist skills needed, leverage, high fees, hard-to-observe values, and potential diversification benefits.
+
+### Three ways to invest
+| Method | Control | Fees | Expertise needed |
+| --- | --- | --- | --- |
+| **Fund investing** | Least | Highest (full fee layers) | Lowest |
+| **Co-investing** (alongside a fund) | More | Lower | More |
+| **Direct investing** | Most | Lowest | Highest |
+
+### Structures
+- **Limited partnership:** GP manages and has unlimited liability; LPs provide capital with limited liability.
+- **Master-feeder:** several feeder funds (onshore, offshore) invest through one master fund.
+- **Separately managed accounts:** investor owns the assets directly; more transparency.
+- **Funds of funds:** diversification and due diligence, with an extra fee layer.
+
+### Key terms
+- **Committed capital** drawn down through **capital calls**; management fees on committed capital (private equity) or AUM (hedge funds).
+- **Lock-ups**, **notice periods**, **gates**.
+- **Side letters:** special terms for particular LPs (often most-favored-nation clauses).
+- **Due diligence:** strategy, team, process, operations, legal terms, fees.
+
+### Exam traps
+- Direct investing gives the most control and the lowest fees but needs the most expertise.
+- In a limited partnership, LPs who take part in management can lose limited liability.
+
 # Portfolio Management
+
+Weight: 8–12%
 
 ## CAPM, the CML and the SML
 
+Module: Portfolio Risk and Return: Part II
 ### Capital market line (CML)
 Combines the risk-free asset and the market portfolio:
 $$E(R_p) = R_f + \frac{E(R_m) - R_f}{\sigma_m}\sigma_p$$
@@ -2176,6 +2653,7 @@ Risk-averse, utility-maximizing investors; frictionless markets; same single-per
 
 ## Risk aversion, utility and the optimal portfolio
 
+Module: Portfolio Risk and Return: Part I
 ### Utility function
 $$U = E(r) - \tfrac{1}{2}A\sigma^2$$
 - A > 0: risk-averse; A = 0: risk-neutral; A < 0: risk-seeking.
@@ -2201,6 +2679,7 @@ Correlation below +1 lowers portfolio risk. As the number of assets grows, portf
 
 ## Performance measures: Sharpe, Treynor, M² and alpha
 
+Module: Portfolio Risk and Return: Part II
 | Measure | Formula | Risk used |
 | --- | --- | --- |
 | Sharpe ratio | \( \frac{R_p - R_f}{\sigma_p} \) | Total |
@@ -2222,6 +2701,7 @@ Correlation below +1 lowers portfolio risk. As the number of assets grows, portf
 
 ## The investment policy statement: objectives and constraints
 
+Module: Basics of Portfolio Planning and Construction
 ### Components of an IPS
 Client description, purpose, duties and responsibilities, procedures to update, **investment objectives**, **constraints**, guidelines, evaluation and review, appendices (strategic asset allocation, rebalancing).
 
@@ -2248,6 +2728,7 @@ Calendar or percentage-of-portfolio range rebalancing.
 
 ## Behavioral biases: cognitive errors vs emotional biases
 
+Module: The Behavioral Biases of Individuals
 ### Cognitive errors (easier to correct with education)
 **Belief perseverance:**
 - **Conservatism:** slow to update on new information.
@@ -2276,6 +2757,7 @@ Calendar or percentage-of-portfolio range rebalancing.
 
 ## The portfolio management process and types of investors
 
+Module: Portfolio Management: An Overview
 ### Three steps
 1. **Planning:** understand the client, write the IPS, form capital market expectations.
 2. **Execution:** asset allocation, security analysis, portfolio construction and trading.
@@ -2307,6 +2789,7 @@ Calendar or percentage-of-portfolio range rebalancing.
 
 ## Risk management: framework, measures and tolerance
 
+Module: Introduction to Risk Management
 ### Risk management framework
 Governance, risk identification and measurement, infrastructure, defined policies and processes, monitoring and mitigation, communications, strategic analysis and integration.
 
@@ -2338,6 +2821,7 @@ Prevent and avoid, accept (self-insure, diversify), **transfer** (insurance), **
 
 ## Portfolio planning: asset allocation and ESG
 
+Module: Basics of Portfolio Planning and Construction
 ### Strategic asset allocation (SAA)
 - Long-term target weights that meet the IPS objectives and constraints.
 - Asset allocation explains most of the variation in a portfolio's returns over time.

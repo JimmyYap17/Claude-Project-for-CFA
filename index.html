@@ -98,8 +98,10 @@
         <article class="reading" id="reading" tabindex="0" aria-live="polite">
           <div class="meta"><span id="rArea"></span><span class="side" id="rSaved"></span></div>
           <h2 class="r-title" id="rTitle"></h2>
+          <div class="r-module" id="rModule" hidden></div>
+          <div class="r-scope" id="rScope" hidden></div>
           <div class="r-body" id="rBody"></div>
-          <div class="hint">Swipe right for a new topic, left to go back</div>
+          <div class="hint">Swipe right for a new topic, left to go back. Double-tap to save.</div>
         </article>
         <div class="swipe-tag again-tag" id="rTagBack">Previous</div>
         <div class="swipe-tag good-tag" id="rTagNext">New topic</div>
@@ -109,6 +111,7 @@
         <button class="btn" id="rPrev">Previous</button>
         <button class="btn" id="rSave" aria-pressed="false">Save</button>
         <button class="btn good" id="rNext">New topic</button>
+        <button class="btn" id="rFocus">Focus mode</button>
         <button class="btn" id="rCard">Make a flashcard</button>
       </div>
       <div class="panel" id="savedPanel" hidden>
@@ -211,6 +214,12 @@ Economics | GDP deflator formula | Nominal GDP / Real GDP × 100</pre>
 </div>
 
 <button class="fab" id="fab" hidden aria-label="Add a card">+</button>
+
+<div class="focus-bar" id="focusBar" hidden>
+  <span class="focus-info"><span id="focusInfo"></span> <span class="focus-saved" id="focusSaved"></span></span>
+  <button class="btn small" id="focusExit">Exit focus</button>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <dialog id="editor">
   <form id="form" method="dialog" class="stack">

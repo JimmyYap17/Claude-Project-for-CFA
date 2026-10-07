@@ -589,11 +589,9 @@ function showReading() {
   $("rModule").hidden = !r.module;
   $("rScope").textContent = r.scope || "";
   $("rScope").hidden = !r.scope;
-  $("focusInfo").textContent = r.area;
   setRichHtml($("rBody"), mdToHtml(r.body));
   const on = !!saved[r.id];
   $("rSaved").textContent = on ? "\u2605 Saved" : "";
-  $("focusSaved").textContent = on ? "\u2605 Saved" : "Double-tap to save";
   $("rSave").textContent = on ? "\u2605 Saved" : "\u2606 Save";
   $("rSave").setAttribute("aria-pressed", on);
 }
@@ -616,7 +614,7 @@ function toast(text) {
 // Focus mode: only the reading, full screen. Swipe to move, double-tap to save.
 function setFocus(on) {
   document.body.classList.toggle("focus", on);
-  $("focusBar").hidden = !on;
+  $("focusExit").hidden = !on;
   $("reading").scrollTop = 0;
   if (on) $("reading").focus({ preventScroll: true });
   else $("reading").scrollIntoView({ block: "start" });
@@ -665,42 +663,71 @@ $("rCard").onclick = () => {
 };
 
 // Swipe right for a new topic, left to go back; double-tap to save.
-// Vertical drags scroll.
+// Touch screens use touch events: once a drag is clearly sideways it stops the
+// page scrolling, which iPhone and iPad Safari won't do for pointer events.
 (() => {
   const el = $("reading");
-  let startX = 0, startY = 0, dx = 0, active = false, moved = false;
+  let startX = 0, startY = 0, dx = 0, axis = null, active = false;
   let lastTap = 0, lastX = 0, lastY = 0;
-  el.addEventListener("pointerdown", (e) => {
-    if (e.pointerType === "mouse" && e.button !== 0) return;
-    active = true; moved = false; startX = e.clientX; startY = e.clientY; dx = 0;
-  });
-  el.addEventListener("pointermove", (e) => {
-    if (!active) return;
-    dx = e.clientX - startX;
-    const dy = e.clientY - startY;
-    if (!moved && Math.abs(dx) > 12 && Math.abs(dx) > Math.abs(dy) * 1.5) { moved = true; el.setPointerCapture(e.pointerId); el.classList.add("dragging"); }
-    if (!moved) return;
+  const begin = (x, y, target) => {
+    // let wide tables and formulas scroll sideways instead of swiping
+    const inner = target.closest && target.closest(".r-table, .katex-display");
+    active = !(inner && inner.scrollWidth > inner.clientWidth + 1);
+    startX = x; startY = y; dx = 0; axis = null;
+  };
+  const move = (x, y) => {
+    if (!active) return false;
+    dx = x - startX;
+    const dy = y - startY;
+    if (!axis && (Math.abs(dx) > 10 || Math.abs(dy) > 10)) {
+      axis = Math.abs(dx) > Math.abs(dy) ? "x" : "y";
+      if (axis === "x") el.classList.add("dragging");
+    }
+    if (axis !== "x") return false;
     el.style.transform = `translateX(${dx}px) rotate(${dx / 40}deg)`;
-    $("rTagNext").style.opacity = Math.max(0, Math.min(1, dx / 90));
-    $("rTagBack").style.opacity = learnHistory.length ? Math.max(0, Math.min(1, -dx / 90)) : 0;
-  });
-  const end = (e) => {
+    $("rTagNext").style.opacity = Math.max(0, Math.min(1, dx / 80));
+    $("rTagBack").style.opacity = Math.max(0, Math.min(1, -dx / 80));
+    return true;
+  };
+  const finish = (x, y) => {
     if (!active) return;
     active = false;
     el.classList.remove("dragging");
     $("rTagNext").style.opacity = $("rTagBack").style.opacity = 0;
-    if (!moved) {
-      const now = Date.now();
-      if (now - lastTap < 350 && Math.abs(e.clientX - lastX) < 30 && Math.abs(e.clientY - lastY) < 30) { lastTap = 0; toggleSaved(); }
-      else { lastTap = now; lastX = e.clientX; lastY = e.clientY; }
+    if (axis === "x") {
+      el.style.transform = "";
+      if (dx > 70) nextReading();
+      else if (dx < -70) learnHistory.length ? prevReading() : nextReading(); // nothing to go back to: show a new one
       return;
     }
-    el.style.transform = "";
-    if (dx > 90) nextReading();
-    else if (dx < -90 && learnHistory.length) prevReading();
+    if (axis) return; // a scroll
+    const now = Date.now();
+    if (now - lastTap < 350 && Math.abs(x - lastX) < 30 && Math.abs(y - lastY) < 30) { lastTap = 0; toggleSaved(); }
+    else { lastTap = now; lastX = x; lastY = y; }
   };
-  el.addEventListener("pointerup", end);
-  el.addEventListener("pointercancel", () => { dx = 0; moved = true; lastTap = 0; end(); });
+  const cancel = () => { if (axis === "x") el.style.transform = ""; axis = "y"; finish(0, 0); };
+
+  el.addEventListener("touchstart", (e) => {
+    if (e.touches.length !== 1) { cancel(); return; }
+    begin(e.touches[0].clientX, e.touches[0].clientY, e.target);
+  }, { passive: true });
+  el.addEventListener("touchmove", (e) => {
+    if (e.touches.length === 1 && move(e.touches[0].clientX, e.touches[0].clientY)) e.preventDefault();
+  }, { passive: false });
+  el.addEventListener("touchend", (e) => { const t = e.changedTouches[0]; finish(t.clientX, t.clientY); });
+  el.addEventListener("touchcancel", cancel);
+
+  // mouse and pen
+  el.addEventListener("pointerdown", (e) => {
+    if (e.pointerType === "touch" || e.button !== 0) return;
+    begin(e.clientX, e.clientY, e.target);
+  });
+  el.addEventListener("pointermove", (e) => {
+    if (e.pointerType === "touch" || !active) return;
+    if (move(e.clientX, e.clientY) && !el.hasPointerCapture(e.pointerId)) el.setPointerCapture(e.pointerId);
+  });
+  el.addEventListener("pointerup", (e) => { if (e.pointerType !== "touch") finish(e.clientX, e.clientY); });
+  el.addEventListener("pointercancel", (e) => { if (e.pointerType !== "touch") cancel(); });
   el.addEventListener("dblclick", (e) => e.preventDefault()); // no word selection on double-tap
 })();
 

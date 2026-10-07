@@ -413,7 +413,9 @@ $("loadStarter").onclick = async () => {
 document.addEventListener("keydown", (e) => {
   if ($("app").hidden || $("editor").open || /INPUT|TEXTAREA/.test(e.target.tagName)) return;
   if (!$("learn").hidden) {
-    if (e.key === "ArrowRight") nextReading();
+    if (e.key === "Escape" && document.body.classList.contains("focus")) setFocus(false);
+    else if (e.key === "f") setFocus(!document.body.classList.contains("focus"));
+    else if (e.key === "ArrowRight") nextReading();
     else if (e.key === "ArrowLeft") prevReading();
     else if (e.key === "s") toggleSaved();
     return;
@@ -436,15 +438,28 @@ let learnCurrent = local.get("cfa-learn-current", null);
 let learnBag = [], learnHistory = [], learnSeen = new Set();
 
 const slug = (t) => t.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+let areaWeight = {};          // area -> exam weight, e.g. "6–9%"
 function parseReadings(text) {
   const out = []; let area = "General", cur = null;
+  areaWeight = {};
   for (const line of text.replace(/<!--[\s\S]*?-->/g, "").split(/\r?\n/)) {
     let m;
     if ((m = line.match(/^# (.+)/))) { area = m[1].trim(); cur = null; }
     else if ((m = line.match(/^## (.+)/))) { cur = { id: slug(m[1]), area, title: m[1].trim(), lines: [] }; out.push(cur); }
     else if (cur) cur.lines.push(line);
+    else if ((m = line.match(/^Weight: (.+)/))) areaWeight[area] = m[1].trim();
   }
-  return out.map(({ lines, ...r }) => ({ ...r, body: lines.join("\n").trim() }));
+  // "Module:" and "Scope:" lines at the top of a reading are shown apart from the text
+  return out.map(({ lines, ...r }) => {
+    const meta = {};
+    while (lines.length) {
+      const m = lines[0].match(/^(Module|Scope): (.+)/);
+      if (m) meta[m[1].toLowerCase()] = m[2].trim();
+      else if (lines[0].trim()) break;
+      lines.shift();
+    }
+    return { ...r, ...meta, body: lines.join("\n").trim() };
+  });
 }
 
 // Small Markdown subset: ### headings, - and 1. lists (one level of nesting),
@@ -549,6 +564,8 @@ function openReading(id, remember = true) {
   learnCurrent = id; local.set("cfa-learn-current", id); learnSeen.add(id);
   showReading();
   const r = $("reading");
+  r.scrollTop = 0;
+  if (!document.body.classList.contains("focus") && r.getBoundingClientRect().top < 0) r.scrollIntoView({ block: "start" });
   r.classList.add("dragging"); r.style.transform = ""; void r.offsetWidth; r.classList.remove("dragging");
 }
 function showReading() {
@@ -566,22 +583,46 @@ function showReading() {
       : "No topics here yet.";
     return;
   }
-  $("rArea").textContent = r.area;
+  $("rArea").textContent = r.area + (areaWeight[r.area] ? " \u00b7 " + areaWeight[r.area] + " of exam" : "");
   $("rTitle").textContent = r.title;
+  $("rModule").textContent = r.module ? "Learning module: " + r.module : "";
+  $("rModule").hidden = !r.module;
+  $("rScope").textContent = r.scope || "";
+  $("rScope").hidden = !r.scope;
+  $("focusInfo").textContent = r.area;
   setRichHtml($("rBody"), mdToHtml(r.body));
   const on = !!saved[r.id];
   $("rSaved").textContent = on ? "\u2605 Saved" : "";
+  $("focusSaved").textContent = on ? "\u2605 Saved" : "Double-tap to save";
   $("rSave").textContent = on ? "\u2605 Saved" : "\u2606 Save";
   $("rSave").setAttribute("aria-pressed", on);
 }
 function toggleSaved() {
   const r = readings.find((x) => x.id === learnCurrent);
-  if (!r || !fb || !uid) return;
+  if (!r) return;
+  if (!fb || !uid) { toast("Sign in to save topics"); return; }
   const ref = fb.doc(savedCol(), r.id);
-  if (saved[r.id]) { delete saved[r.id]; fb.deleteDoc(ref).catch((e) => console.error(e)); }
-  else { saved[r.id] = { area: r.area, title: r.title, savedAt: Date.now() }; fb.setDoc(ref, saved[r.id]).catch((e) => console.error(e)); }
+  if (saved[r.id]) { delete saved[r.id]; fb.deleteDoc(ref).catch((e) => console.error(e)); toast("Removed from saved"); }
+  else { saved[r.id] = { area: r.area, title: r.title, savedAt: Date.now() }; fb.setDoc(ref, saved[r.id]).catch((e) => console.error(e)); toast("\u2605 Saved"); }
   renderLearn();
 }
+let toastTimer;
+function toast(text) {
+  const t = $("toast");
+  t.textContent = text; t.classList.add("show");
+  clearTimeout(toastTimer); toastTimer = setTimeout(() => t.classList.remove("show"), 1400);
+}
+
+// Focus mode: only the reading, full screen. Swipe to move, double-tap to save.
+function setFocus(on) {
+  document.body.classList.toggle("focus", on);
+  $("focusBar").hidden = !on;
+  $("reading").scrollTop = 0;
+  if (on) $("reading").focus({ preventScroll: true });
+  else $("reading").scrollIntoView({ block: "start" });
+}
+$("rFocus").onclick = () => setFocus(true);
+$("focusExit").onclick = () => setFocus(false);
 // Saved topics, grouped by curriculum topic in curriculum order.
 function renderSaved() {
   const list = readings.filter((r) => saved[r.id]);
@@ -623,10 +664,12 @@ $("rCard").onclick = () => {
   msg("formMsg", "From: " + r.title);
 };
 
-// Swipe right for a new topic, left to go back. Vertical drags scroll the page.
+// Swipe right for a new topic, left to go back; double-tap to save.
+// Vertical drags scroll.
 (() => {
   const el = $("reading");
   let startX = 0, startY = 0, dx = 0, active = false, moved = false;
+  let lastTap = 0, lastX = 0, lastY = 0;
   el.addEventListener("pointerdown", (e) => {
     if (e.pointerType === "mouse" && e.button !== 0) return;
     active = true; moved = false; startX = e.clientX; startY = e.clientY; dx = 0;
@@ -641,18 +684,24 @@ $("rCard").onclick = () => {
     $("rTagNext").style.opacity = Math.max(0, Math.min(1, dx / 90));
     $("rTagBack").style.opacity = learnHistory.length ? Math.max(0, Math.min(1, -dx / 90)) : 0;
   });
-  const end = () => {
+  const end = (e) => {
     if (!active) return;
     active = false;
     el.classList.remove("dragging");
     $("rTagNext").style.opacity = $("rTagBack").style.opacity = 0;
-    if (!moved) return;
+    if (!moved) {
+      const now = Date.now();
+      if (now - lastTap < 350 && Math.abs(e.clientX - lastX) < 30 && Math.abs(e.clientY - lastY) < 30) { lastTap = 0; toggleSaved(); }
+      else { lastTap = now; lastX = e.clientX; lastY = e.clientY; }
+      return;
+    }
     el.style.transform = "";
     if (dx > 90) nextReading();
     else if (dx < -90 && learnHistory.length) prevReading();
   };
   el.addEventListener("pointerup", end);
-  el.addEventListener("pointercancel", () => { dx = 0; end(); });
+  el.addEventListener("pointercancel", () => { dx = 0; moved = true; lastTap = 0; end(); });
+  el.addEventListener("dblclick", (e) => e.preventDefault()); // no word selection on double-tap
 })();
 
 // ---------- tabs ----------
@@ -664,6 +713,7 @@ function selectTab(which) {
     $(id).hidden = id !== which;
   }
   local.set("cfa-tab", which);
+  if (which !== "learn") setFocus(false);
   $("fab").hidden = $("app").hidden || which === "hand";
   if (which === "hand") sizePad();
 }

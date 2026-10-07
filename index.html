@@ -52,6 +52,7 @@
   <div id="app" hidden>
     <nav class="tabs" role="tablist">
       <button class="tab" role="tab" id="tabStudy" aria-selected="true">Study</button>
+      <button class="tab" role="tab" id="tabLearn" aria-selected="false">Refresher</button>
       <button class="tab" role="tab" id="tabManage" aria-selected="false">Manage cards</button>
       <button class="tab" role="tab" id="tabHand" aria-selected="false">Handwriting</button>
     </nav>
@@ -87,6 +88,32 @@
         <button class="btn" id="edit">Edit card</button>
         <button class="btn" id="shuffle">Shuffle</button>
         <button class="btn" id="reset">Reset progress</button>
+      </div>
+    </section>
+
+    <section id="learn" class="stack" hidden>
+      <div class="chips" id="learnTopics"></div>
+      <div class="stats" id="learnStats"></div>
+      <div class="stage">
+        <article class="reading" id="reading" tabindex="0" aria-live="polite">
+          <div class="meta"><span id="rArea"></span><span class="side" id="rSaved"></span></div>
+          <h2 class="r-title" id="rTitle"></h2>
+          <div class="r-body" id="rBody"></div>
+          <div class="hint">Swipe right for a new topic, left to go back</div>
+        </article>
+        <div class="swipe-tag again-tag" id="rTagBack">Previous</div>
+        <div class="swipe-tag good-tag" id="rTagNext">New topic</div>
+        <div class="empty" id="learnEmpty" hidden><p id="learnEmptyText"></p></div>
+      </div>
+      <div class="controls">
+        <button class="btn" id="rPrev">Previous</button>
+        <button class="btn" id="rSave" aria-pressed="false">Save</button>
+        <button class="btn good" id="rNext">New topic</button>
+        <button class="btn" id="rCard">Make a flashcard</button>
+      </div>
+      <div class="panel" id="savedPanel" hidden>
+        <h2 id="savedTitle">Saved topics</h2>
+        <div class="stack" id="savedList"></div>
       </div>
     </section>
 

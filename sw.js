@@ -1,7 +1,7 @@
 // Offline support: keeps the app shell and Firebase SDK cached so the app opens without a connection.
 // Card data itself is cached by Firestore's offline cache, not here.
-const CACHE = "cfa-cards-v5";
-const SHELL = ["./", "index.html", "styles.css", "app.js", "firebase-config.js", "cards.json", "manifest.webmanifest", "icons/icon-192.png", "icons/apple-touch-icon.png"];
+const CACHE = "cfa-cards-v7";
+const SHELL = ["./", "index.html", "styles.css", "app.js", "firebase-config.js", "cards.json", "refreshers.md", "manifest.webmanifest", "icons/icon-192.png", "icons/apple-touch-icon.png"];
 
 self.addEventListener("install", (e) => {
   e.waitUntil(caches.open(CACHE).then((c) => c.addAll(SHELL)).then(() => self.skipWaiting()));

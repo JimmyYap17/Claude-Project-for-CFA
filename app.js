@@ -22,7 +22,10 @@ function setRich(el, text) {
   }
 }
 // KaTeX loads with `defer`; re-render once it arrives
-addEventListener("load", () => { if (typeof showCard === "function" && cards.length) { showCard(true); renderList(); } });
+addEventListener("load", () => {
+  if (typeof showCard === "function" && cards.length) { showCard(true); renderList(); }
+  if (typeof showReading === "function" && readings.length) showReading();
+});
 
 // ---------- state ----------
 let fb = null;               // Firebase modules + instances
@@ -76,13 +79,14 @@ async function boot() {
   authMod.onAuthStateChanged(auth, (user) => {
     unsubs.forEach((u) => u()); unsubs = [];
     if (user) { uid = user.uid; show("app"); listen(); }
-    else { uid = null; cards = []; progress = {}; show("auth"); setSync("", "Signed out"); }
+    else { uid = null; cards = []; progress = {}; saved = {}; show("auth"); setSync("", "Signed out"); }
   });
 }
 
 // ---------- Firestore ----------
 const cardsCol = () => fb.collection(fb.db, "users", uid, "cards");
 const progressCol = () => fb.collection(fb.db, "users", uid, "progress");
+const savedCol = () => fb.collection(fb.db, "users", uid, "saved");
 
 function listen() {
   progressLoaded = false;
@@ -99,6 +103,10 @@ function listen() {
   unsubs.push(fb.onSnapshot(progressCol(), (snap) => {
     progress = {}; snap.docs.forEach((d) => { progress[d.id] = d.data(); });
     if (!progressLoaded) { progressLoaded = true; rebuildQueue(true); } else renderStats();
+  }, onDbError));
+  unsubs.push(fb.onSnapshot(savedCol(), (snap) => {
+    saved = {}; snap.docs.forEach((d) => { saved[d.id] = d.data(); });
+    renderLearn();
   }, onDbError));
   startInbox();
 }
@@ -403,15 +411,252 @@ $("loadStarter").onclick = async () => {
   $("loadStarter").disabled = false;
 };
 document.addEventListener("keydown", (e) => {
-  if ($("app").hidden || $("study").hidden || $("editor").open || /INPUT|TEXTAREA/.test(e.target.tagName)) return;
+  if ($("app").hidden || $("editor").open || /INPUT|TEXTAREA/.test(e.target.tagName)) return;
+  if (!$("learn").hidden) {
+    if (e.key === "ArrowRight") nextReading();
+    else if (e.key === "ArrowLeft") prevReading();
+    else if (e.key === "s") toggleSaved();
+    return;
+  }
+  if ($("study").hidden) return;
   if (e.key === " " || e.key === "Enter") { e.preventDefault(); flip(); }
   else if (e.key === "1" || e.key === "ArrowDown") grade(false);
   else if (e.key === "2" || e.key === "ArrowUp") grade(true);
   else if (e.key === "ArrowLeft") back();
 });
 
+// ---------- refresher readings ----------
+// refreshers.md holds short readings grouped by curriculum topic. Swipe right
+// for a random new one; saved ones sync through users/<uid>/saved.
+const SAVED = "Saved";
+let readings = [];
+let saved = {};              // readingId -> {area, title, savedAt}
+let learnFilter = local.get("cfa-learn-topic", "All");
+let learnCurrent = local.get("cfa-learn-current", null);
+let learnBag = [], learnHistory = [], learnSeen = new Set();
+
+const slug = (t) => t.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+function parseReadings(text) {
+  const out = []; let area = "General", cur = null;
+  for (const line of text.replace(/<!--[\s\S]*?-->/g, "").split(/\r?\n/)) {
+    let m;
+    if ((m = line.match(/^# (.+)/))) { area = m[1].trim(); cur = null; }
+    else if ((m = line.match(/^## (.+)/))) { cur = { id: slug(m[1]), area, title: m[1].trim(), lines: [] }; out.push(cur); }
+    else if (cur) cur.lines.push(line);
+  }
+  return out.map(({ lines, ...r }) => ({ ...r, body: lines.join("\n").trim() }));
+}
+
+// Small Markdown subset: ### headings, - and 1. lists (one level of nesting),
+// | tables |, **bold**. Formulas pass through untouched for KaTeX.
+const esc = (t) => t.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const inline = (t) => t.split(/(\$\$[\s\S]+?\$\$|\\\([\s\S]+?\\\))/)
+  .map((part, i) => (i % 2 ? esc(part) : esc(part).replace(/\*\*(.+?)\*\*/g, "<b>$1</b>"))).join("");
+const LIST_ITEM = /^(\s*)([-*]|\d+\.) (.+)/;
+function mdList(items) {
+  const tag = items[0].ord ? "ol" : "ul";
+  let out = "<" + tag + ">", i = 0;
+  while (i < items.length) {
+    let li = inline(items[i++].text);
+    const sub = [];
+    while (i < items.length && items[i].deep) sub.push({ ...items[i++], deep: false });
+    if (sub.length) li += mdList(sub);
+    out += "<li>" + li + "</li>";
+  }
+  return out + "</" + tag + ">";
+}
+function mdToHtml(md) {
+  const html = [], lines = md.split("\n");
+  let para = [];
+  const flush = () => { if (para.length) { html.push("<p>" + inline(para.join(" ")) + "</p>"); para = []; } };
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i]; let m;
+    if (!line.trim()) { flush(); }
+    else if ((m = line.match(/^### (.+)/))) { flush(); html.push("<h3>" + inline(m[1]) + "</h3>"); }
+    else if (line.trim().startsWith("|")) {
+      flush();
+      const rows = [];
+      for (; i < lines.length && lines[i].trim().startsWith("|"); i++) if (!/^[\s|:-]+$/.test(lines[i])) rows.push(lines[i]);
+      i--;
+      const cells = (r, t) => r.trim().replace(/^\||\|$/g, "").split("|").map((c) => "<" + t + ">" + inline(c.trim()) + "</" + t + ">").join("");
+      html.push('<div class="r-table"><table><thead><tr>' + cells(rows[0], "th") + "</tr></thead><tbody>"
+        + rows.slice(1).map((r) => "<tr>" + cells(r, "td") + "</tr>").join("") + "</tbody></table></div>");
+    } else if (LIST_ITEM.test(line)) {
+      flush();
+      const items = [];
+      for (; i < lines.length && (m = lines[i].match(LIST_ITEM)); i++) items.push({ deep: m[1].length >= 2, ord: /\d/.test(m[2]), text: m[3] });
+      i--;
+      html.push(mdList(items));
+    } else para.push(line.trim());
+  }
+  flush();
+  return html.join("");
+}
+function setRichHtml(el, html) {
+  el.innerHTML = html;
+  if (window.renderMathInElement) {
+    try { window.renderMathInElement(el, { delimiters: MATH_DELIMS, throwOnError: false }); } catch {}
+  }
+}
+
+const learnPool = () => readings.filter((r) => learnFilter === "All" || (learnFilter === SAVED ? saved[r.id] : r.area === learnFilter));
+function renderLearn() {
+  const el = $("learnTopics"); el.innerHTML = "";
+  const areas = [...new Set(readings.map((r) => r.area))];
+  const nSaved = readings.filter((r) => saved[r.id]).length;
+  [["All", readings.length], ...areas.map((a) => [a, readings.filter((r) => r.area === a).length]), [SAVED, nSaved]].forEach(([t, n]) => {
+    const b = document.createElement("button");
+    b.className = "chip" + (t === SAVED ? " saved-chip" : ""); b.setAttribute("aria-pressed", t === learnFilter);
+    b.textContent = t === SAVED ? "\u2605 Saved" : t;
+    const c = document.createElement("span"); c.className = "n"; c.textContent = n; b.append(c);
+    b.onclick = () => setLearnFilter(t);
+    el.append(b);
+  });
+  renderSaved();
+  showReading();
+}
+function setLearnFilter(t) {
+  learnFilter = t; local.set("cfa-learn-topic", t);
+  learnBag = []; learnHistory = []; learnSeen = new Set();
+  const pool = learnPool();
+  if (!pool.some((r) => r.id === learnCurrent)) learnCurrent = null;
+  renderLearn();
+  if (!learnCurrent) nextReading(false);
+}
+function shuffled(a) {
+  a = a.slice();
+  for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
+  return a;
+}
+// A shuffled bag per round, so every topic in the filter comes up once before any repeats.
+function nextReading(remember = true) {
+  const ids = learnPool().map((r) => r.id);
+  learnBag = learnBag.filter((id) => ids.includes(id) && id !== learnCurrent);
+  if (!learnBag.length) {
+    learnBag = shuffled(ids.filter((id) => id !== learnCurrent || ids.length === 1));
+    learnSeen = new Set(learnCurrent && ids.length > 1 ? [learnCurrent] : []);
+  }
+  if (!learnBag.length) { learnCurrent = null; showReading(); return; }
+  if (remember && learnCurrent) learnHistory.push(learnCurrent);
+  openReading(learnBag.pop(), false);
+}
+function prevReading() {
+  if (!learnHistory.length) return;
+  openReading(learnHistory.pop(), false);
+}
+function openReading(id, remember = true) {
+  if (remember && learnCurrent && learnCurrent !== id) learnHistory.push(learnCurrent);
+  learnCurrent = id; local.set("cfa-learn-current", id); learnSeen.add(id);
+  showReading();
+  const r = $("reading");
+  r.classList.add("dragging"); r.style.transform = ""; void r.offsetWidth; r.classList.remove("dragging");
+}
+function showReading() {
+  const r = readings.find((x) => x.id === learnCurrent);
+  $("reading").hidden = !r; $("learnEmpty").hidden = !!r || !readings.length;
+  $("rSave").disabled = $("rCard").disabled = !r;
+  $("rPrev").disabled = !learnHistory.length;
+  $("rNext").disabled = !learnPool().length;
+  const pool = learnPool().length;
+  $("learnStats").textContent = pool ? pool + (pool === 1 ? " topic" : " topics") + (learnFilter === "All" ? "" : " in " + learnFilter)
+    + " \u00b7 " + learnPool().filter((x) => learnSeen.has(x.id)).length + " read this round" : "";
+  if (!r) {
+    $("learnEmptyText").textContent = learnFilter === SAVED
+      ? "Nothing saved yet. Tap Save on a topic you want to come back to."
+      : "No topics here yet.";
+    return;
+  }
+  $("rArea").textContent = r.area;
+  $("rTitle").textContent = r.title;
+  setRichHtml($("rBody"), mdToHtml(r.body));
+  const on = !!saved[r.id];
+  $("rSaved").textContent = on ? "\u2605 Saved" : "";
+  $("rSave").textContent = on ? "\u2605 Saved" : "\u2606 Save";
+  $("rSave").setAttribute("aria-pressed", on);
+}
+function toggleSaved() {
+  const r = readings.find((x) => x.id === learnCurrent);
+  if (!r || !fb || !uid) return;
+  const ref = fb.doc(savedCol(), r.id);
+  if (saved[r.id]) { delete saved[r.id]; fb.deleteDoc(ref).catch((e) => console.error(e)); }
+  else { saved[r.id] = { area: r.area, title: r.title, savedAt: Date.now() }; fb.setDoc(ref, saved[r.id]).catch((e) => console.error(e)); }
+  renderLearn();
+}
+// Saved topics, grouped by curriculum topic in curriculum order.
+function renderSaved() {
+  const list = readings.filter((r) => saved[r.id]);
+  $("savedPanel").hidden = !list.length;
+  $("savedTitle").textContent = "Saved topics (" + list.length + ")";
+  const box = $("savedList"); box.innerHTML = "";
+  [...new Set(list.map((r) => r.area))].forEach((area) => {
+    const g = document.createElement("div"); g.className = "saved-group";
+    const h = document.createElement("h3"); h.textContent = area;
+    const l = document.createElement("div"); l.className = "list";
+    list.filter((r) => r.area === area).forEach((r) => {
+      const it = document.createElement("button"); it.className = "item"; it.type = "button";
+      const q = document.createElement("span"); q.className = "q"; q.textContent = r.title;
+      const go = document.createElement("span"); go.className = "go"; go.textContent = r.id === learnCurrent ? "Open now" : "Read";
+      it.append(q, go);
+      it.onclick = () => { openReading(r.id); renderSaved(); $("learn").scrollIntoView({ behavior: "smooth" }); };
+      l.append(it);
+    });
+    g.append(h, l); box.append(g);
+  });
+}
+
+fetch("refreshers.md").then((res) => res.text()).then((text) => {
+  readings = parseReadings(text);
+  if (learnFilter !== "All" && learnFilter !== SAVED && !readings.some((r) => r.area === learnFilter)) learnFilter = "All";
+  if (!readings.some((r) => r.id === learnCurrent)) learnCurrent = null;
+  renderLearn();
+  if (!learnCurrent) nextReading(false);
+}).catch(() => { $("learnEmpty").hidden = false; $("learnEmptyText").textContent = "Couldn't load the refresher topics. Check your connection."; });
+
+$("rNext").onclick = () => nextReading();
+$("rPrev").onclick = prevReading;
+$("rSave").onclick = toggleSaved;
+$("rCard").onclick = () => {
+  const r = readings.find((x) => x.id === learnCurrent);
+  if (!r) return;
+  openEditor(null);
+  $("fTopicIn").value = r.area; $("fFront").focus();
+  msg("formMsg", "From: " + r.title);
+};
+
+// Swipe right for a new topic, left to go back. Vertical drags scroll the page.
+(() => {
+  const el = $("reading");
+  let startX = 0, startY = 0, dx = 0, active = false, moved = false;
+  el.addEventListener("pointerdown", (e) => {
+    if (e.pointerType === "mouse" && e.button !== 0) return;
+    active = true; moved = false; startX = e.clientX; startY = e.clientY; dx = 0;
+  });
+  el.addEventListener("pointermove", (e) => {
+    if (!active) return;
+    dx = e.clientX - startX;
+    const dy = e.clientY - startY;
+    if (!moved && Math.abs(dx) > 12 && Math.abs(dx) > Math.abs(dy) * 1.5) { moved = true; el.setPointerCapture(e.pointerId); el.classList.add("dragging"); }
+    if (!moved) return;
+    el.style.transform = `translateX(${dx}px) rotate(${dx / 40}deg)`;
+    $("rTagNext").style.opacity = Math.max(0, Math.min(1, dx / 90));
+    $("rTagBack").style.opacity = learnHistory.length ? Math.max(0, Math.min(1, -dx / 90)) : 0;
+  });
+  const end = () => {
+    if (!active) return;
+    active = false;
+    el.classList.remove("dragging");
+    $("rTagNext").style.opacity = $("rTagBack").style.opacity = 0;
+    if (!moved) return;
+    el.style.transform = "";
+    if (dx > 90) nextReading();
+    else if (dx < -90 && learnHistory.length) prevReading();
+  };
+  el.addEventListener("pointerup", end);
+  el.addEventListener("pointercancel", () => { dx = 0; end(); });
+})();
+
 // ---------- tabs ----------
-const TABS = { study: "tabStudy", manage: "tabManage", hand: "tabHand" };
+const TABS = { study: "tabStudy", learn: "tabLearn", manage: "tabManage", hand: "tabHand" };
 function selectTab(which) {
   if (!TABS[which]) which = "study";
   for (const [id, tab] of Object.entries(TABS)) {
@@ -423,6 +668,7 @@ function selectTab(which) {
   if (which === "hand") sizePad();
 }
 $("tabStudy").onclick = () => selectTab("study");
+$("tabLearn").onclick = () => selectTab("learn");
 $("tabManage").onclick = () => selectTab("manage");
 $("tabHand").onclick = () => selectTab("hand");
 

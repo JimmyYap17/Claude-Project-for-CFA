@@ -1,10 +1,10 @@
 // Offline support: keeps the app shell and Firebase SDK cached so the app opens without a connection.
 // Card data itself is cached by Firestore's offline cache, not here.
-const CACHE = "cfa-cards-v7";
+const CACHE = "cfa-cards-v8";
 const SHELL = ["./", "index.html", "styles.css", "app.js", "firebase-config.js", "cards.json", "refreshers.md", "manifest.webmanifest", "icons/icon-192.png", "icons/apple-touch-icon.png"];
 
 self.addEventListener("install", (e) => {
-  e.waitUntil(caches.open(CACHE).then((c) => c.addAll(SHELL)).then(() => self.skipWaiting()));
+  e.waitUntil(caches.open(CACHE).then((c) => c.addAll(SHELL.map((u) => new Request(u, { cache: "reload" })))).then(() => self.skipWaiting()));
 });
 self.addEventListener("activate", (e) => {
   e.waitUntil(caches.keys().then((keys) => Promise.all(keys.filter((k) => k !== CACHE).map((k) => caches.delete(k)))).then(() => self.clients.claim()));
@@ -25,8 +25,10 @@ self.addEventListener("fetch", (e) => {
     })));
     return;
   }
-  // own files: network first so updates show up, cache when offline
-  e.respondWith(fetch(req).then((res) => {
+  // own files: network first so updates show up, cache when offline.
+  // "no-cache" makes the browser check with GitHub every time instead of
+  // reusing its own copy for up to 10 minutes after an update.
+  e.respondWith(fetch(req.url, { cache: "no-cache", credentials: "same-origin" }).then((res) => {
     if (res.ok) { const copy = res.clone(); caches.open(CACHE).then((c) => c.put(req, copy)); }
     return res;
   }).catch(() => caches.match(req).then((hit) => hit || caches.match("index.html"))));

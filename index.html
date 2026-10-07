@@ -232,7 +232,7 @@ Economics | GDP deflator formula | Nominal GDP / Real GDP × 100</pre>
 
 <script type="module" src="app.js"></script>
 <script>
-  if ("serviceWorker" in navigator) addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));
+  if ("serviceWorker" in navigator) addEventListener("load", () => navigator.serviceWorker.register("sw.js", { updateViaCache: "none" }).catch(() => {}));
 </script>
 </body>
 </html>

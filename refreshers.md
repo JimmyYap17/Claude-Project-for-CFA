@@ -126,6 +126,109 @@ GIPS lets prospective clients compare managers' track records fairly.
 - Verification is firm-wide.
 - Excluding underperforming discretionary accounts from a composite is exactly what GIPS prohibits.
 
+## Professionalism: misrepresentation, misconduct and knowledge of the law
+
+Standard I sets the baseline for professional behavior.
+
+### I(A) Knowledge of the law
+- Follow the **stricter** of applicable law and the Code and Standards.
+- If you learn of a violation by others, **dissociate**: stop working on the activity, report to your supervisor or compliance. You aren't required to report to regulators under the Standards, though it may be wise or required by law.
+- Simply resigning isn't always required, but continuing to participate is a violation.
+
+### I(C) Misrepresentation
+- Don't knowingly misstate facts about investment analysis, recommendations, actions or performance.
+- **Plagiarism** is misrepresentation: you must cite others' research, models and quotes. Exceptions: widely available factual data from recognized sources (government statistics, standard references).
+- Don't guarantee returns on investments that are inherently risky. Describing a guaranteed product (like a government bond's coupon) accurately is fine.
+- Using a third-party manager's or model's work without disclosure is a violation.
+
+### I(D) Misconduct
+- Covers professional conduct involving **dishonesty, fraud or deceit**, or any act that reflects badly on your professional reputation, integrity or competence.
+- Personal behavior that doesn't touch your professional life (a one-off minor offense unrelated to work) usually isn't covered. Repeated drunkenness at work would be.
+
+### I(B) and I(E) for completeness
+I(B) is independence and objectivity; I(E) **competence**: act with and maintain the competence required for your role.
+
+### Exam traps
+- Under the stricter-law rule, a less strict local law doesn't excuse you from the Standards.
+- Copying a research report and adding your own name, even with small edits, is plagiarism.
+- Dissociation means stopping participation, not just disclosing.
+
+## Investment analysis: diligence, communication and records
+
+Standard V covers how you build and communicate recommendations.
+
+### V(A) Diligence and reasonable basis
+- Have a **reasonable and adequate basis**, supported by research, for any recommendation.
+- Relying on third-party research is fine if you've checked it's sound (methodology, assumptions, independence).
+- Group research: you can put your name on a group report you disagree with, as long as it has a reasonable basis and was arrived at objectively. You may document the dissent.
+- Quantitative models: understand their assumptions and test them under different scenarios, including stress periods.
+
+### V(B) Communication with clients
+- Disclose the **basic format and general principles** of the investment process, and changes to it.
+- Highlight significant **risks and limitations**.
+- **Distinguish fact from opinion.** A forecast of earnings is opinion; past reported earnings are fact.
+- Tell clients about any changes that materially affect the process (a new model, a change of portfolio manager).
+
+### V(C) Record retention
+- Keep records that support your analysis and communications. The records belong to the **firm**, not you.
+- Absent other rules, CFA Institute recommends keeping records for **at least 7 years**.
+- Records can be electronic.
+
+### Exam traps
+- Presenting a forecast as certain fails V(B).
+- Taking research files when you leave a job breaks V(C) and IV(A), even if you created them.
+- Secondary or third-party research still needs a reasonableness check.
+
+## Supervisors and CFA Institute responsibilities
+
+### IV(C) Responsibilities of supervisors
+- Make **reasonable efforts** to ensure people under your supervision follow laws, rules and the Code and Standards.
+- That means adequate compliance procedures, and actually enforcing them.
+- If the firm's compliance system is inadequate, **decline in writing to accept supervisory responsibility** until it's fixed.
+- When you learn of a possible violation, respond promptly: investigate and limit the employee's activity (e.g., increase supervision) while you do. Relying on an employee's promise not to do it again isn't enough.
+
+### VII(A) Conduct as participants in CFA Institute programs
+- Don't compromise exam integrity: no sharing exam questions or topics tested after the exam, no cheating.
+- Expressing opinions about the CFA program or CFA Institute is allowed.
+
+### VII(B) Reference to CFA Institute, the designation and the program
+- "CFA" is an **adjective**, never a noun: "Jane Smith, CFA" or "a CFA charterholder", not "a CFA".
+- Don't say or imply that charterholders get better results.
+- Candidates: "Level II candidate in the CFA Program" is fine. There's no "CFA Level I" designation or partial designation.
+- You can say you passed all three levels on the first attempt (a fact) but not that this makes you a superior manager.
+- Charterholders must pay dues and file the Professional Conduct Statement to keep using the designation.
+
+### Exam traps
+- A supervisor who delegates compliance still has responsibility.
+- "CFA (expected)" or "CFA Level II" isn't allowed: there's no partial or expected designation.
+
+## The Code of Ethics and the professional conduct process
+
+### The six components of the Code of Ethics
+Members and candidates must:
+1. Act with integrity, competence, diligence, respect and in an ethical manner.
+2. Place the integrity of the profession and the **interests of clients above their own** interests.
+3. Use reasonable care and exercise independent professional judgment.
+4. Practice and encourage others to practice professionally and ethically.
+5. Promote the integrity and viability of global capital markets.
+6. Maintain and improve their professional competence.
+
+### The seven Standards
+I Professionalism · II Integrity of capital markets · III Duties to clients · IV Duties to employers · V Investment analysis, recommendations and actions · VI Conflicts of interest · VII Responsibilities as a CFA Institute member or candidate.
+
+### Professional conduct program
+- Overseen by the **Disciplinary Review Committee** of the CFA Institute Board.
+- Inquiries can start from the annual Professional Conduct Statement, written complaints, media reports, or exam proctor reports.
+- Possible outcomes: no action, a cautionary letter, or proposed sanctions (public censure, suspension, revocation of membership and charter).
+- The member can accept or reject the sanction; if rejected, a hearing panel decides.
+
+### Ethical decision-making framework
+**Identify** (facts, stakeholders, duties, conflicts), **Consider** (situational influences, guidance), **Decide and act**, **Reflect**.
+
+### Exam traps
+- Situational influences (pressure from bosses, overconfidence, bonuses) are the most common reason good people make bad decisions.
+- Legal isn't the same as ethical: something can be legal and still unethical.
+
 # Quantitative Methods
 
 ## Time value of money: annuities, perpetuities and effective rates
@@ -267,6 +370,126 @@ Odds **for** E = P(E) / [1 − P(E)]. Odds of 1 to 4 means P = 0.20.
 ### Exam traps
 - Independence means P(A | B) = P(A). Mutually exclusive means P(AB) = 0. They aren't the same thing.
 - Correlation only measures **linear** association.
+
+## Sampling and estimation: the central limit theorem and confidence intervals
+
+### Sampling methods
+- **Simple random sampling:** every member equally likely.
+- **Stratified random sampling:** split into strata (e.g., by sector), sample within each. Used for bond index replication.
+- **Cluster sampling:** sample whole groups; cheaper, less precise.
+- **Non-probability:** convenience and judgmental sampling.
+
+### Sampling error and the central limit theorem
+- Sampling error = sample statistic − population parameter.
+- **CLT:** for a large sample (n ≥ 30), the sampling distribution of the mean is approximately normal, whatever the population's distribution, with mean μ and variance σ²/n.
+- **Standard error of the mean:** \( \sigma / \sqrt{n} \) (or \( s / \sqrt{n} \) when σ is unknown).
+
+### Confidence intervals
+$$\bar{X} \pm z_{\alpha/2}\frac{\sigma}{\sqrt{n}}$$
+- Use **z** when the population is normal with known variance, or n is large.
+- Use **t** (n − 1 df) when the variance is unknown, especially for small samples from a normal population.
+- Critical z values: 90% → 1.645, 95% → 1.96, 99% → 2.58.
+
+### Resampling
+- **Bootstrap:** draw repeated samples with replacement from the sample itself.
+- **Jackknife:** leave one observation out at a time.
+
+### Biases
+- **Data snooping:** finding patterns by repeatedly mining the same data.
+- **Survivorship bias:** only surviving funds or firms in the data.
+- **Look-ahead bias:** using data not available at the time.
+- **Time-period bias:** results specific to a particular period.
+- **Sample selection bias:** non-random exclusion.
+
+### Exam traps
+- A bigger sample narrows the confidence interval (standard error falls with √n).
+- t-distribution has fatter tails than normal; it approaches normal as df rise.
+
+## Probability distributions: normal, lognormal and safety-first
+
+### Normal distribution
+- Described fully by mean and variance; skewness 0, kurtosis 3.
+- About 68% within ±1σ, 90% within ±1.65σ, 95% within ±1.96σ, 99% within ±2.58σ.
+- **z-score:** \( z = \frac{X - \mu}{\sigma} \).
+- A linear combination of normal variables is normal.
+
+### Lognormal distribution
+- If ln X is normal, X is lognormal. Bounded below by zero and right-skewed.
+- Used for **asset prices**; normal is used for returns (continuously compounded returns are normal if prices are lognormal).
+- Continuously compounded return: \( r = \ln(P_1 / P_0) \). Multi-period returns add up.
+
+### Other distributions
+- **Binomial:** n independent trials, probability p each. Mean np, variance np(1 − p).
+- **Uniform:** equal probability over a range.
+- **Student's t:** symmetric, fatter tails, df = n − 1.
+- **Chi-square and F:** asymmetric, bounded by zero, used for variance tests.
+
+### Roy's safety-first ratio
+Choose the portfolio that minimizes the probability that return falls below a threshold \( R_L \):
+$$SFRatio = \frac{E(R_p) - R_L}{\sigma_p}$$
+Pick the **highest** SFRatio. If \( R_L \) = risk-free rate, it equals the Sharpe ratio.
+
+### Monte Carlo simulation
+Generates many random scenarios from assumed distributions. Useful for path-dependent problems and complex securities. Only as good as its assumptions; it's statistical, not analytical.
+
+### Exam traps
+- Shortfall probability = N(−SFRatio).
+- Lognormal can't be negative; normal can.
+
+## Descriptive statistics: dispersion, skewness and kurtosis
+
+### Central tendency
+Mean, median, mode. Outliers distort the mean; use trimmed or winsorized means, or the median.
+
+### Dispersion
+- **Range**, **mean absolute deviation**.
+- Sample variance divides by **n − 1**: \( s^2 = \frac{\sum (X_i - \bar{X})^2}{n - 1} \).
+- **Target downside deviation (semideviation)** measures only returns below a target.
+- **Coefficient of variation** = s / mean: risk per unit of return.
+
+### Skewness
+- **Positive (right) skew:** long right tail; mean > median > mode. Investors like it (occasional big gains).
+- **Negative (left) skew:** long left tail; mean < median < mode. Frequent small gains, occasional big losses.
+
+### Kurtosis
+- Normal kurtosis = 3. **Excess kurtosis** = kurtosis − 3.
+- **Leptokurtic** (fat tails, excess > 0): more extreme outcomes than normal. Common for asset returns.
+- **Platykurtic:** thinner tails.
+
+### Correlation and scatter plots
+- Sample covariance and correlation; correlation is unitless.
+- **Spurious correlation:** chance relationships, or both driven by a third variable.
+- Outliers can drive correlation.
+
+### Quantiles
+Quartiles, quintiles, deciles, percentiles. The position of the yth percentile: \( L_y = (n + 1)\frac{y}{100} \). Box plots show the interquartile range.
+
+### Exam traps
+- With negative skew, the mean sits below the median.
+- Fat tails mean the normal distribution understates the risk of extreme losses.
+
+## Big data and machine learning basics
+
+### Big data characteristics
+Volume, velocity, variety, plus veracity (data quality). **Alternative data** includes satellite images, credit card transactions, web traffic and social media.
+
+### Types of machine learning
+- **Supervised learning:** labeled data; predict a target. Regression (continuous) and classification (categorical). Examples: penalized regression (LASSO), support vector machines, k-nearest neighbor, CART, random forests.
+- **Unsupervised learning:** no labels; find structure. Examples: **principal component analysis** (dimension reduction), **k-means** and hierarchical **clustering**.
+- **Deep learning / neural networks:** layers of nodes; handle complex nonlinear patterns such as images and text.
+- **Reinforcement learning:** an agent learns by trial and error to maximize a reward.
+
+### Fitting problems
+- **Overfitting:** the model learns noise; great in-sample, poor out-of-sample. High variance error.
+- **Underfitting:** too simple; misses the pattern. High bias error.
+- Fixes: cross-validation (training, validation and test samples; k-fold), regularization, fewer features, ensemble methods.
+
+### Uses in investing
+Text analysis of filings and news, sentiment analysis, fraud detection, credit scoring, robo-advisers, algorithmic trading.
+
+### Exam traps
+- Out-of-sample performance is what matters.
+- Clustering is unsupervised; classification is supervised.
 
 # Economics
 
@@ -439,6 +662,98 @@ Capital inflows appreciate the currency. Capital controls are used to slow surge
 - Writing the formula upside down: the currency in the denominator of the quote takes the denominator interest rate.
 - Real exchange rate: nominal rate adjusted by the ratio of price levels.
 
+## Firms: costs, breakeven and shutdown
+
+### Revenue and cost
+- **Total revenue** = P × Q. Marginal revenue = change in TR from one more unit.
+- **Total cost** = fixed + variable. Average total cost (ATC) is U-shaped; marginal cost (MC) cuts ATC and AVC at their minimums.
+- **Economic profit** = accounting profit − implicit (opportunity) costs. Normal profit = zero economic profit.
+
+### Short-run decisions (perfect competition)
+| Condition | Decision |
+| --- | --- |
+| P ≥ ATC | Operate; earning normal or economic profit |
+| AVC ≤ P < ATC | Operate in the short run (covering variable costs and some fixed costs); exit in the long run |
+| P < AVC | Shut down now |
+
+Breakeven is where P = minimum ATC. The **shutdown point** is P = minimum AVC.
+
+### Economies and diseconomies of scale
+- **Economies of scale:** long-run ATC falls as output rises (specialization, bulk purchasing).
+- **Diseconomies:** ATC rises (bureaucracy, coordination problems).
+- **Minimum efficient scale:** the lowest point of the long-run ATC curve.
+
+### Elasticity
+- Price elasticity of demand = % change in quantity / % change in price.
+- **Elastic** (|E| > 1): cutting price raises total revenue. **Inelastic** (|E| < 1): raising price raises revenue.
+- Total revenue is maximized where |E| = 1.
+- More substitutes, larger share of budget and longer time horizon make demand more elastic.
+
+### Exam traps
+- Fixed costs are sunk in the short run, so they don't affect the shutdown decision.
+- Diminishing marginal returns is a short-run idea; economies of scale is long-run.
+
+## International trade: comparative advantage and restrictions
+
+### Why trade
+- **Absolute advantage:** producing at lower cost (more output per unit of input).
+- **Comparative advantage:** lower **opportunity cost**. Trade benefits both countries if each specializes in its comparative advantage, even if one has an absolute advantage in everything.
+- **Ricardian model:** differences in labor productivity (technology). **Heckscher-Ohlin:** differences in factor endowments (labor vs capital).
+
+### Trade restrictions
+| Tool | Effect |
+| --- | --- |
+| **Tariff** (tax on imports) | Higher domestic price, more domestic output, fewer imports, government revenue, deadweight loss |
+| **Import quota** | Similar price effects; quota rents go to license holders (domestic or foreign) |
+| **Voluntary export restraint** | Exporting country limits sales; rents go to foreign exporters |
+| **Export subsidy** | Raises domestic price of the good in the exporting country; costs taxpayers |
+
+For a small country, a tariff reduces national welfare. A large country may improve its terms of trade with a tariff.
+
+### Trading blocs, from loosest to deepest
+Free trade area → customs union (common external tariffs) → common market (free movement of labor and capital) → economic union (common institutions and policies) → monetary union (common currency).
+
+### Capital restrictions
+Limit flows of capital in or out. Used to manage hot money, protect reserves or keep monetary independence.
+
+### Exam traps
+- Comparative advantage, not absolute advantage, drives gains from trade.
+- A tariff and a quota can have the same price effect; who gets the revenue differs.
+
+## Geopolitics: actors, risks and their effect on markets
+
+### Key concepts
+- **State actors** (governments) and **non-state actors** (multinationals, NGOs, individuals) shape geopolitics.
+- **Cooperation vs non-cooperation:** cooperative countries share standards, trade and institutions.
+- **Globalization vs nationalism:** the degree to which economic and cultural activity is integrated across borders.
+
+### Four archetypes
+| | Globalization | Nationalism |
+| --- | --- | --- |
+| **Cooperation** | Multilateralism | Bilateralism |
+| **Non-cooperation** | Regionalism | Autarky |
+
+Autarky aims at self-sufficiency and state control; hegemony is when one country dominates.
+
+### Tools of geopolitics
+- **National security tools:** armed conflict, espionage, alliances.
+- **Economic tools:** trade agreements, tariffs, nationalization.
+- **Financial tools:** currency policy, sanctions, limits on foreign investment.
+
+### Geopolitical risk types
+- **Event risk:** known timing (elections, treaty deadlines).
+- **Exogenous risk:** sudden, unanticipated (a coup, invasion).
+- **Thematic risk:** ongoing trends (climate change, cyber threats).
+
+Assess **likelihood**, **velocity** (how fast it hits markets) and **size and nature** of the impact.
+
+### Market effects
+Risk-off moves: safe-haven currencies and government bonds rally, equities and EM assets fall. Supply chains, commodity prices and cost of capital can shift.
+
+### Exam traps
+- Know the archetype quadrant: cooperation plus nationalism is bilateralism.
+- High-velocity risks call for liquidity and hedging; slow thematic risks feed into long-run strategy.
+
 # Financial Statement Analysis
 
 ## Revenue recognition: the five-step model
@@ -608,6 +923,126 @@ DSO + DOH − DPO. Shorter is generally better.
 - ROE can rise purely from more leverage: check the DuPont driver.
 - Higher leverage raises ROE only if return on assets exceeds the after-tax cost of debt.
 
+## Leases: lessee accounting under IFRS 16 and ASC 842
+
+### Lessee: on balance sheet
+Both standards put almost all leases (over 12 months) on the balance sheet:
+- **Right-of-use (ROU) asset** and **lease liability** = PV of lease payments.
+
+### IFRS 16: single model
+Every lease is treated like a finance lease:
+- Income statement: **depreciation** of the ROU asset + **interest** on the liability. Expense is front-loaded.
+- Cash flow: interest in CFO or CFF (IFRS choice), principal in **CFF**.
+
+### US GAAP: two models
+- **Finance lease:** same as IFRS (depreciation + interest).
+- **Operating lease:** a single straight-line **lease expense**. The whole payment goes in **CFO**.
+
+### Effects of finance lease treatment vs operating
+| Item | Finance lease | Operating lease (US GAAP) |
+| --- | --- | --- |
+| EBIT / operating income | Higher | Lower |
+| Interest expense | Higher | None |
+| Net income, early years | Lower | Higher |
+| CFO | Higher | Lower |
+| CFF | Lower | — |
+
+### Lessor
+- **Finance (sales-type or direct financing) lease:** derecognize the asset, record a lease receivable.
+- **Operating lease:** keep the asset, record rental income.
+
+### Exam traps
+- Under IFRS 16, a lessee has no operating lease category (apart from short-term and low-value exemptions).
+- Finance lease treatment raises CFO because principal repayment is a financing flow.
+
+## Bonds payable: effective interest method
+
+### Issuance
+- Bond issued at a **discount** when the coupon rate < market rate; at a **premium** when the coupon rate > market rate.
+- Initial carrying amount = issue price (PV of cash flows at the market rate).
+
+### Effective interest method
+- **Interest expense** = carrying amount × **market rate at issue**.
+- **Coupon paid** = face value × coupon rate.
+- The difference amortizes the discount or premium.
+- Discount bond: interest expense > coupon; carrying amount rises to par.
+- Premium bond: interest expense < coupon; carrying amount falls to par.
+- IFRS requires the effective interest method; US GAAP prefers it (straight-line allowed if immaterial).
+
+### Cash flow statement
+- Coupon paid in CFO (US GAAP).
+- Proceeds from issuance and principal repaid in CFF.
+- For a discount bond, the coupon in CFO **understates** the true borrowing cost (part of the interest is discount amortization), so CFO looks better than it is.
+
+### Derecognition
+Retire debt before maturity: gain or loss = carrying amount − amount paid. Shown in income; not part of CFO.
+
+### Fair value option
+Both standards allow carrying debt at fair value. Rising market rates reduce the liability's value (a gain). Changes due to own credit risk go to OCI.
+
+### Debt covenants
+**Affirmative** (things the issuer must do) and **negative** (things it can't do: extra borrowing, asset sales, high dividends). Disclosed in notes.
+
+### Exam traps
+- Interest expense uses the market rate at issue, not the current market rate.
+- Zero-coupon bonds: all interest is amortization, none in CFO.
+
+## Earnings per share: basic and diluted
+
+### Basic EPS
+$$\text{Basic EPS} = \frac{\text{Net income} - \text{Preferred dividends}}{\text{Weighted average common shares}}$$
+
+- Weight shares by the time they were outstanding.
+- **Stock splits and stock dividends** are applied retroactively to the start of the year (and to prior periods).
+
+### Diluted EPS
+Assume all dilutive securities were converted at the start of the year (or at issue, if later).
+- **Convertible preferred** (if-converted method): add back preferred dividends to the numerator; add the converted shares.
+- **Convertible bonds:** add back **after-tax** interest; add the converted shares.
+- **Options and warrants** (treasury stock method): assume exercise, and that proceeds buy back shares at the **average market price**. Net new shares = shares issued − shares repurchased. Only dilutive if exercise price < average price.
+
+### Antidilutive securities
+If assuming conversion would **raise** EPS, ignore that security. Diluted EPS can never be higher than basic EPS.
+
+### Check whether a convertible is dilutive
+Compare its **incremental EPS** (added numerator / added shares) with basic EPS. If incremental EPS < basic EPS, it's dilutive.
+
+### Exam traps
+- Preferred dividends come off the numerator only for basic EPS (and stay off for non-convertible preferred in diluted EPS).
+- Under IFRS the treasury stock method uses the same idea: the "free shares" are the dilution.
+
+## Financial reporting quality and red flags
+
+### Quality spectrum
+1. GAAP-compliant, decision-useful, **sustainable** earnings (best).
+2. GAAP-compliant, but low earnings quality (not sustainable).
+3. GAAP-compliant, but **biased** accounting choices (aggressive or conservative).
+4. Within GAAP but **earnings management** (real actions like delaying R&D).
+5. **Departures from GAAP** (non-compliant).
+6. **Fictitious** transactions (worst).
+
+### Conservative vs aggressive
+- **Aggressive:** boost current earnings or assets (long depreciation lives, capitalizing costs, recognizing revenue early).
+- **Conservative:** understate current earnings; can create "cookie jar" reserves to release later. Both are biased.
+
+### Motivations and conditions
+The **fraud triangle**: **opportunity**, **motivation (pressure)** and **rationalization**. Pressure includes meeting analyst forecasts, debt covenants and bonuses.
+
+### Common warning signs
+- Revenue: channel stuffing, bill-and-hold, rising DSO, big fourth-quarter jumps.
+- Inventory: falling inventory turnover; LIFO liquidations.
+- Capitalization policies that differ from peers.
+- **CFO consistently below net income**, or a high accruals ratio.
+- Frequent "non-recurring" charges; heavy reliance on non-GAAP measures.
+- Related-party transactions, auditor changes, delayed filings.
+
+### Cash flow manipulation
+Stretching payables, classifying operating outflows as investing, factoring receivables.
+
+### Exam traps
+- Conservative accounting is still biased and lowers quality.
+- A high-quality report can describe low-quality (unsustainable) earnings.
+
 # Corporate Issuers
 
 ## Corporate governance: stakeholders and agency conflicts
@@ -754,6 +1189,92 @@ Uncommitted and committed lines of credit, revolving credit, secured loans, fact
 - Forgoing a trade discount is usually more costly than a bank line.
 - A shorter CCC means less working capital to finance.
 
+## Organizational forms and ownership
+
+### Legal forms
+| Form | Liability | Taxation | Ownership |
+| --- | --- | --- | --- |
+| Sole proprietorship | Unlimited | Pass-through (owner) | One owner |
+| General partnership | Unlimited for all partners | Pass-through | Partners |
+| Limited partnership | GP unlimited; LPs limited | Pass-through | GP manages; LPs invest |
+| Corporation | Limited | Taxed at entity level, plus dividends taxed (double taxation) | Shareholders; separate legal person |
+
+### Corporations
+- Separate legal identity; owners and managers are separate (a source of agency conflicts).
+- Easy to transfer ownership; large capital raising.
+- **Public** companies: listed shares, extensive disclosure. **Private** companies: fewer disclosure rules, less liquidity.
+
+### Going public and going private
+- **IPO**, **direct listing** (no new capital raised), **SPAC** merger.
+- **Leveraged buyout:** a public firm taken private with heavy debt.
+
+### Equity vs debt claims
+- Shareholders: residual claim, unlimited upside, limited downside (call option-like payoff).
+- Creditors: fixed claim, capped upside, priority in liquidation.
+- Shareholders prefer more risk; creditors prefer less.
+
+### Exam traps
+- Limited partners lose limited liability if they participate in management (in many jurisdictions).
+- Double taxation is a corporate, not partnership, feature.
+
+## Business models: how companies make money
+
+### Elements of a business model
+Customer (who), value proposition (what and why), channels (how delivered), pricing (how charged), key assets and suppliers, and the **value chain**.
+
+### Pricing approaches
+- **Value-based** vs **cost-based** pricing.
+- **Price discrimination:** tiered pricing, dynamic pricing, auctions.
+- **Freemium:** basic free, premium paid.
+- **Razors and blades:** cheap base product, recurring consumables.
+- **Bundling** and **subscription** (recurring revenue).
+- **Penetration pricing:** low price to gain share.
+
+### Business model types
+- **Platform / network effects:** value rises with more users (marketplaces, payment networks). Two-sided platforms serve buyers and sellers.
+- **Asset-light:** outsourcing production; franchising.
+- **Crowdsourcing** and **conglomerates**.
+
+### Channels
+Direct (own stores, online) vs indirect (distributors, wholesalers). Omnichannel combines them.
+
+### Economics to analyze
+- **Unit economics:** revenue and cost per unit or customer.
+- **Customer acquisition cost** vs **customer lifetime value**.
+- **Operating leverage:** high fixed costs magnify profit swings.
+- Startups: total addressable market, growth and burn rate.
+
+### Exam traps
+- Network effects create strong competitive advantages once established.
+- Recurring revenue (subscriptions) is generally valued more highly than one-off sales.
+
+## Operating and financial leverage
+
+### Degree of operating leverage (DOL)
+$$DOL = \frac{\%\Delta EBIT}{\%\Delta \text{Sales}} = \frac{Q(P - V)}{Q(P - V) - F}$$
+Higher fixed operating costs (F) mean higher DOL and more volatile operating income.
+
+### Degree of financial leverage (DFL)
+$$DFL = \frac{\%\Delta \text{Net income}}{\%\Delta EBIT} = \frac{EBIT}{EBIT - \text{Interest}}$$
+
+### Degree of total leverage (DTL)
+$$DTL = DOL \times DFL = \frac{Q(P - V)}{Q(P - V) - F - \text{Interest}}$$
+
+### Breakeven points
+- **Breakeven quantity:** \( Q_{BE} = \frac{F + \text{Interest}}{P - V} \).
+- **Operating breakeven:** \( Q_{OBE} = \frac{F}{P - V} \).
+
+### Business risk vs financial risk
+- **Business risk** = sales risk (uncertain revenue) + operating risk (cost structure).
+- **Financial risk** comes from fixed financing costs (debt, leases).
+
+### Leverage and ROE
+Debt magnifies ROE when the return on assets exceeds the after-tax cost of debt; it magnifies losses when it doesn't.
+
+### Exam traps
+- DOL is not constant: it's highest near the breakeven point and falls as sales grow.
+- Firms with high operating leverage usually carry less debt to keep total risk manageable.
+
 # Equity Investments
 
 ## Market efficiency: weak, semi-strong and strong forms
@@ -893,6 +1414,73 @@ Cost leadership vs differentiation; a firm stuck in the middle tends to underper
 ### Exam traps
 - Shakeout comes **after** growth and before maturity.
 - Low fixed costs and differentiated products reduce rivalry.
+
+## Equity securities: types and features
+
+### Common shares
+- Residual claim on assets; voting rights.
+- **Statutory voting:** one vote per share per director. **Cumulative voting:** votes can be concentrated on one director, helping minority shareholders.
+- **Dual-class shares** give founders control with fewer economic rights.
+- **Callable common** (issuer can repurchase) and **putable common** (holder can sell back) exist.
+
+### Preferred shares
+- Priority over common for dividends and in liquidation; usually no vote.
+- **Cumulative:** missed dividends must be paid before common dividends. **Non-cumulative:** missed dividends are lost.
+- **Participating:** extra dividends if profits exceed a level. **Convertible** into common.
+- Less risky than common for the investor.
+
+### Risk ranking (for investors in the same company)
+Putable common < common < callable common; for preferred, putable < plain < callable. Cumulative is less risky than non-cumulative.
+
+### Private equity securities
+Not traded; less liquid; less disclosure; often more concentrated ownership and longer-term focus.
+
+### Foreign equities
+- **Direct investing:** buy shares on the foreign exchange.
+- **Depository receipts:** sponsored (company involved, holder has voting rights) and unsponsored.
+- **ADRs** trade in the US; **GDRs** outside the issuer's and US markets.
+- Basket of listed depository receipts (an ETF of DRs).
+
+### Return and risk
+Total return = price change + dividends. Equity risk is the uncertainty of those future returns.
+
+### Book value vs market value
+- Book value of equity = assets − liabilities (accounting).
+- ROE = net income / average book equity. Market value reflects expected future cash flows.
+
+### Exam traps
+- Cumulative voting helps **minority** shareholders.
+- Sponsored DRs carry voting rights; unsponsored usually don't.
+
+## Company analysis: forecasting revenue, costs and returns
+
+### Company research report
+Business description, industry and competitive analysis, investment summary, valuation, risks, ESG considerations.
+
+### Forecasting revenue
+- **Top-down:** start with the economy or market (GDP growth, market size × market share).
+- **Bottom-up:** build from units × price, store counts, capacity.
+- **Hybrid** combines them.
+
+### Forecasting costs
+- Split into fixed and variable costs; watch economies of scale and operating leverage.
+- Compare margins with peers; consider input prices and competitive position.
+
+### Balance sheet and cash flow
+- Working capital forecasts tied to sales (DSO, DOH, DPO).
+- Capex: maintenance capex (≈ depreciation) plus growth capex.
+- Capital structure, buybacks and dividends.
+
+### Competitive analysis
+- Pricing power and cost structure; Porter's five forces.
+- Sustainable competitive advantage, or moat: network effects, switching costs, cost advantages, intangible assets.
+
+### Scenario and sensitivity analysis
+Test forecasts against changes in key drivers (volume, price, input costs).
+
+### Exam traps
+- Long-run forecasts should move margins and growth toward industry norms (mean reversion), unless the company has a durable advantage.
+- Bottom-up forecasts can ignore macro limits; top-down can miss firm-specific drivers.
 
 # Fixed Income
 
@@ -1037,6 +1625,95 @@ Issued by banks, backed by a segregated cover pool; investors also have recourse
 - Falling rates are bad for MBS investors: contraction risk, reinvestment at lower rates.
 - Support tranches carry the most prepayment risk.
 
+## Bond features: indentures, covenants and embedded options
+
+### Basic features
+Issuer, maturity, par value, coupon rate and frequency, currency.
+- **Bullet bonds:** principal at maturity. **Amortizing bonds:** principal repaid over time. **Sinking funds:** principal retired gradually; lowers credit risk but adds reinvestment risk.
+- **Zero-coupon (pure discount)** bonds; **floating-rate notes**; **step-up coupons**; **inflation-linked bonds** (index the principal or coupon); **payment-in-kind (PIK)**.
+
+### Legal and contractual
+- The **indenture** sets out the terms; a **trustee** represents bondholders.
+- **Secured** (backed by collateral) vs **unsecured** (debentures).
+- **Affirmative covenants:** what the issuer must do (pay on time, maintain insurance).
+- **Negative covenants:** limits (on more debt, liens, asset sales, dividends).
+
+### Embedded options
+- **Callable bond:** issuer can redeem early. Investors face reinvestment risk; price is capped.
+  Value of callable = straight bond − call option. Higher yield than an option-free bond.
+- **Putable bond:** investor can sell back. Value = straight bond + put option. Lower yield.
+- **Convertible bond:** investor can convert into shares. Lower coupon; conversion value = conversion ratio × share price.
+- **Contingent convertible (CoCo):** converts automatically if a trigger (low capital ratio) is hit.
+
+### Call protection
+Lockout period; make-whole calls (redeem at PV of remaining payments, little cost to investors).
+
+### Tax and regulation
+Domestic, foreign and **Eurobonds** (issued outside the jurisdiction of the currency). Bearer vs registered.
+
+### Exam traps
+- Callable bonds favor issuers; putable bonds favor investors.
+- A sinking fund lowers credit risk but adds reinvestment risk for investors.
+
+## Fixed-income markets: issuance, trading and repos
+
+### Market segments
+- **Sovereign, non-sovereign (local), quasi-government, supranational** (World Bank), corporate and securitized.
+- **Investment grade vs high yield**; developed vs emerging; money market (≤ 1 year) vs capital market.
+
+### Primary market
+- **Underwritten offering:** bank buys the issue and resells it (bears price risk).
+- **Best-efforts offering:** bank sells on commission.
+- **Auction:** used for government bonds.
+- **Shelf registration:** register once, issue in tranches.
+- **Private placement:** to a few qualified investors.
+
+### Secondary market
+Mostly **over-the-counter dealer** markets; liquidity varies widely. Bid-ask spreads are wider for less liquid issues.
+
+### Short-term funding for banks
+Retail deposits, interbank funds, central bank funds, certificates of deposit, commercial paper.
+
+### Repurchase agreements (repos)
+- A repo is a sale of a security with an agreement to buy it back at a higher price: a collateralized loan.
+- **Repo rate** = interest. **Haircut (repo margin)** = collateral value above the loan.
+- The repo rate is lower when collateral is high quality, the term is short, the collateral is hard to get (special) or delivery to the lender is required.
+- The buyer of the security (cash lender) is doing a **reverse repo**.
+
+### Corporate debt
+Bank loans and syndicated loans, commercial paper (backed by liquidity lines), corporate notes and bonds, medium-term notes.
+
+### Exam traps
+- The higher the credit risk of the collateral, the higher the haircut and repo rate.
+- Eurobonds are named for being outside the currency's home jurisdiction, not for being in euros.
+
+## Arbitrage-free bond valuation with spot rates
+
+### The idea
+Each cash flow should be discounted at the **spot rate** for its timing. A coupon bond is a portfolio of zeros.
+$$P = \frac{C}{(1 + S_1)^1} + \frac{C}{(1 + S_2)^2} + \cdots + \frac{C + FV}{(1 + S_N)^N}$$
+
+If a bond's market price differs from this value, an arbitrage exists: strip or reconstitute.
+
+### Matrix pricing
+For bonds that rarely trade, estimate the yield from comparable bonds (similar credit quality, coupon, maturity), interpolating between maturities, then price the bond.
+
+### Yield spreads
+- Yield of a corporate bond = benchmark yield + spread.
+- Spread compensates for credit risk, liquidity risk and taxes.
+- **G-spread, I-spread, Z-spread, OAS** (see the term structure reading).
+
+### Bonds priced at or between coupon dates
+Full price = PV at the previous coupon date × \( (1 + r)^{t/T} \). Accrued interest = coupon × t/T. Flat price = full − accrued.
+
+### Price behavior
+- Same coupon and maturity: higher yield, lower price.
+- The constant-yield price trajectory pulls premium and discount bonds toward par over time.
+
+### Exam traps
+- Valuing every cash flow at the YTM gives the same price as using spot rates, but YTM is just the single rate that matches; spot rates are the more fundamental inputs.
+- Matrix pricing is also used to set the yield on a new issue.
+
 # Derivatives
 
 ## Forwards and futures: pricing and cost of carry
@@ -1159,6 +1836,90 @@ Because the option can be replicated with the underlying and borrowing, its pric
 - Discount expected payoffs at the risk-free rate, not the expected stock return.
 - For a put, the hedge ratio is negative (buy shares and buy the put to hedge).
 
+## Derivative markets: instruments, uses and risks
+
+### Firm commitments vs contingent claims
+- **Firm commitments:** both parties must perform. Forwards, futures, swaps. Payoff is linear.
+- **Contingent claims:** the holder has a right, not an obligation. Options, credit derivatives (CDS). Payoff is asymmetric.
+
+### Exchange-traded vs OTC
+| | Exchange-traded | OTC |
+| --- | --- | --- |
+| Terms | Standardized | Customized |
+| Counterparty risk | Clearinghouse | Bilateral (often centrally cleared now) |
+| Transparency | High | Lower |
+| Liquidity | Higher | Lower |
+
+### Benefits
+- Transfer and manage risk (hedging).
+- Price discovery and lower transaction costs.
+- Operational advantages: easy shorting, leverage.
+- Market efficiency.
+
+### Risks
+- **Leverage** magnifies losses.
+- **Basis risk** (hedge doesn't track the exposure) and **liquidity risk**.
+- **Counterparty credit risk.**
+- **Systemic risk** from interconnection.
+
+### Hedging and accounting
+Issuers use derivatives for **fair value hedges** (fixed-rate debt), **cash flow hedges** (forecast purchases) and **net investment hedges** (foreign subsidiaries).
+
+### Exam traps
+- Futures and forwards are firm commitments even though one party will lose.
+- A CDS is a contingent claim: payment only if a credit event happens.
+
+## Arbitrage, replication and the cost of carry
+
+### Arbitrage
+- Two assets or portfolios with identical future cash flows must have the same price today (the **law of one price**).
+- A risk-free portfolio must earn the risk-free rate.
+- Arbitrage: buy the cheap, sell the expensive, lock in a riskless profit.
+
+### Replication
+- A forward = long the underlying + borrowing. So:
+$$F_0(T) = S_0(1 + r)^T$$
+- Long asset + short forward = synthetic risk-free bond.
+- Long forward + risk-free bond = synthetic asset.
+
+### Cost of carry
+- **Costs** (storage, insurance) raise the forward price.
+- **Benefits** (dividends, coupons, convenience yield) lower it.
+- With continuous compounding: \( F_0 = S_0 e^{(r + c - i)T} \).
+
+### Cash-and-carry arbitrage
+- If \( F_0 > S_0(1 + r)^T \): buy the asset, borrow, sell the forward.
+- If \( F_0 < S_0(1 + r)^T \): short the asset, lend, buy the forward (reverse cash-and-carry).
+
+### Limits
+Transaction costs, short-sale constraints, and inability to borrow at the risk-free rate let prices sit within a no-arbitrage band.
+
+### Exam traps
+- Forward price isn't a forecast of the future spot price; it's set by carry and no arbitrage.
+- Higher convenience yield lowers the forward price (and can cause backwardation).
+
+## Option value bounds and early exercise
+
+### Lower bounds (European)
+$$c_0 \geq \max\left(0, S_0 - \frac{X}{(1 + r)^T}\right) \qquad p_0 \geq \max\left(0, \frac{X}{(1 + r)^T} - S_0\right)$$
+
+### Upper bounds
+- A call can't be worth more than the underlying: \( c_0 \leq S_0 \).
+- A European put can't be worth more than the PV of the strike: \( p_0 \leq X/(1 + r)^T \). An American put is capped at X.
+
+### American vs European
+- American options are worth **at least** as much as European ones.
+- **Calls on non-dividend-paying stock:** never exercise early, so American = European.
+- **Puts:** early exercise can make sense when deep in the money (earn interest on X sooner).
+- **Dividends** can make early exercise of a call worthwhile just before the ex-dividend date.
+
+### Factors (recap)
+Higher volatility raises both call and put values. Higher rates raise calls and lower puts. Carry benefits lower calls and raise puts.
+
+### Exam traps
+- Lower bound uses the PV of X, not X.
+- An American put's lower bound is max(0, X − S₀), its exercise value.
+
 # Alternative Investments
 
 ## Fee structures: management fees, hurdles and high-water marks
@@ -1267,6 +2028,120 @@ Commodities have low correlation with stocks and bonds and can hedge inflation. 
 ### Exam traps
 - Backwardation = positive roll yield, contango = negative roll yield.
 - Convenience yield is a benefit of holding the physical good.
+
+## Hedge fund strategies
+
+### Main categories
+- **Equity hedge:**
+  - Market neutral (near-zero beta), fundamental long/short, short bias, quantitative directional.
+- **Event-driven:**
+  - **Merger arbitrage:** long the target, short the acquirer (stock deals). Risk: deal breaks.
+  - **Distressed / restructuring:** buy debt of troubled companies.
+  - Activist, special situations.
+- **Relative value:**
+  - Fixed-income arbitrage, **convertible arbitrage** (long convertible, short stock), volatility arbitrage.
+- **Opportunistic:**
+  - **Global macro** (bets on rates, currencies, commodities), **managed futures / CTAs** (often trend-following).
+- **Multi-manager:** multi-strategy funds and **funds of funds** (extra layer of fees, diversification and due diligence).
+
+### Characteristics
+Lightly regulated, use leverage and short selling, lock-up periods, notice periods and redemption limits (gates).
+
+### Return issues
+- **Survivorship and backfill bias** inflate index returns.
+- Illiquid holdings give **smoothed** returns and understated volatility.
+- Returns can have negative skew and fat tails (selling insurance-like strategies).
+
+### Exam traps
+- Funds of funds have a double layer of fees but more diversification.
+- Hedge fund indexes overstate performance because of reporting biases.
+
+## Natural resources and infrastructure
+
+### Natural resources
+- **Commodities:** energy, metals, agriculture. Mostly accessed through futures.
+- **Farmland:** returns from harvests and land value. Harvest timing is fairly flexible.
+- **Timberland:** returns from biological growth, timber prices and land value. Harvest can be delayed when prices are low (a storage-like option). Timberland can be an ESG investment.
+- Real assets can hedge inflation and diversify financial assets.
+
+### Infrastructure
+Long-lived assets that provide essential services.
+- **Economic infrastructure:** transportation (roads, airports), utilities, communications.
+- **Social infrastructure:** schools, hospitals, prisons.
+- **Brownfield:** existing assets with operating history; steadier, lower risk.
+- **Greenfield:** assets to be built; construction risk, higher expected return.
+- Often monopolistic, regulated, with **inelastic demand** and stable cash flows.
+- Public-private partnerships (PPPs) are common.
+
+### Forms of investment
+Direct ownership, funds, listed infrastructure companies and MLPs.
+
+### Risks
+Regulatory and political risk, construction risk (greenfield), operational risk, illiquidity and high capital requirements.
+
+### Exam traps
+- Brownfield is lower risk than greenfield.
+- Timberland's harvest flexibility is a key advantage over farmland.
+
+## Digital assets
+
+### What they are
+Digital assets are created, stored and transmitted electronically. **Cryptocurrencies** are digital assets recorded on a **distributed ledger** (often a blockchain).
+
+### Distributed ledger technology
+- A shared database across a network; each participant has a copy.
+- **Consensus mechanisms:**
+  - **Proof of work:** miners solve puzzles; energy-intensive (Bitcoin).
+  - **Proof of stake:** validators stake coins; more efficient.
+- **Permissionless** (open, anyone can join) vs **permissioned** networks.
+
+### Types
+- **Cryptocurrencies** (Bitcoin), **stablecoins** (pegged to fiat or assets), **altcoins**.
+- **Tokens:** utility tokens, security tokens, **NFTs** (unique, non-fungible items).
+- **Central bank digital currencies (CBDCs).**
+- **Decentralized finance (DeFi):** smart contracts on blockchains.
+
+### Investing in them
+Direct holdings in a digital wallet, crypto funds, futures and ETFs, shares of related companies.
+
+### Characteristics
+- No intrinsic cash flows for most cryptocurrencies, so valuation rests on supply/demand and adoption.
+- Very high volatility, regulatory uncertainty, custody and fraud risks.
+- Correlation with traditional assets has varied; it often rises in stress.
+
+### Exam traps
+- Permissionless and proof of work describe Bitcoin.
+- NFTs are non-fungible: each token is unique.
+
+## Measuring alternative investment performance
+
+### Why it's harder
+Illiquidity, infrequent valuation, appraisal-based or model-based prices, leverage, fees and cash flow timing.
+
+### Private fund measures
+- **IRR:** money-weighted; fits private funds where the GP controls timing of calls and distributions.
+- **Multiple of invested capital (MOIC):** total value / paid-in capital. Ignores time.
+- **DPI:** distributions / paid-in capital (realized). **RVPI:** residual value / paid-in. **TVPI** = DPI + RVPI.
+
+### Fee impact
+Calculate returns **net of** management and incentive fees. Work through:
+1. Ending value before fees.
+2. Management fee (on beginning, ending or average assets — read the question).
+3. Incentive fee, checking the hurdle and high-water mark.
+4. Net return to investors.
+
+### Return smoothing
+Appraisal-based returns lag and smooth market moves, understating volatility and correlation. Sharpe ratios look too good.
+
+### Leverage
+Return on a leveraged position: \( r_L = r + \frac{V_b}{V_c}(r - r_b) \), where \( V_b \) is borrowed and \( V_c \) own capital.
+
+### Redemptions
+Gates, lock-ups and redemption fees protect remaining investors when the fund must sell illiquid assets.
+
+### Exam traps
+- MOIC ignores time; two funds with the same MOIC can have very different IRRs.
+- Smoothed returns make alternatives look like better diversifiers than they are.
 
 # Portfolio Management
 
@@ -1398,3 +2273,97 @@ Calendar or percentage-of-portfolio range rebalancing.
 ### Exam traps
 - Overconfidence has cognitive elements but is classified as **emotional** in the curriculum.
 - The response: moderate (correct) cognitive biases, adapt to emotional ones.
+
+## The portfolio management process and types of investors
+
+### Three steps
+1. **Planning:** understand the client, write the IPS, form capital market expectations.
+2. **Execution:** asset allocation, security analysis, portfolio construction and trading.
+3. **Feedback:** monitor and rebalance; measure and report performance.
+
+### Investor types
+| Investor | Time horizon | Risk tolerance | Liquidity needs |
+| --- | --- | --- | --- |
+| Individual | Varies by age | Varies | Varies |
+| Defined benefit pension | Long | High | Low (higher for mature plans) |
+| Endowment / foundation | Very long | High | Low |
+| Bank | Short | Low | High |
+| Insurance (life) | Long | Low | Low to moderate |
+| Insurance (property & casualty) | Short | Low | High |
+| Sovereign wealth fund | Long | High | Low |
+
+### DB vs DC pensions
+- **Defined benefit:** employer promises a benefit; the employer bears investment risk.
+- **Defined contribution:** employer contributes; the **employee** bears the risk and chooses investments.
+
+### Pooled investments
+- **Mutual funds:** open-end (shares created and redeemed at NAV) and closed-end (fixed shares, trade at premiums or discounts).
+- **ETFs:** trade intraday; creation and redemption by authorized participants keeps prices near NAV; usually tax-efficient.
+- Separately managed accounts, hedge funds, private equity funds.
+
+### Exam traps
+- In a DC plan, the employee bears the investment risk.
+- Closed-end funds can trade away from NAV; open-end funds transact at NAV.
+
+## Risk management: framework, measures and tolerance
+
+### Risk management framework
+Governance, risk identification and measurement, infrastructure, defined policies and processes, monitoring and mitigation, communications, strategic analysis and integration.
+
+### Key ideas
+- Risk management isn't risk minimization: it's taking the **right** risks at the right level.
+- **Risk tolerance:** how much risk the organization is willing to take; set by the governing body.
+- **Risk budgeting:** allocating total risk across activities.
+
+### Financial risks
+- **Market risk:** prices, rates, FX, commodities.
+- **Credit risk:** counterparty fails to pay.
+- **Liquidity risk:** can't trade without a big price impact.
+
+### Non-financial risks
+Settlement, legal, compliance (regulatory), model, tail, **operational** (people, systems, external events), solvency, accounting, tax.
+
+### Measures
+- **Standard deviation**, **beta**, **duration**, option **Greeks** (delta, gamma, vega).
+- **Value at risk (VaR):** the minimum loss at a given probability over a period. Example: 5% one-day VaR of $1 million means a 5% chance of losing at least $1 million in a day. It doesn't say how bad losses can get.
+- **Conditional VaR (expected shortfall):** average loss beyond VaR.
+- **Scenario analysis and stress testing** complement VaR.
+
+### Modifying risk
+Prevent and avoid, accept (self-insure, diversify), **transfer** (insurance), **shift** (derivatives).
+
+### Exam traps
+- VaR is a minimum loss in the tail, not a maximum.
+- Risks interact: one shock can trigger several risk types at once.
+
+## Portfolio planning: asset allocation and ESG
+
+### Strategic asset allocation (SAA)
+- Long-term target weights that meet the IPS objectives and constraints.
+- Asset allocation explains most of the variation in a portfolio's returns over time.
+- **Tactical asset allocation:** short-term deviations from SAA to exploit views.
+- **Security selection:** picking securities within an asset class.
+
+### Defining asset classes
+Homogeneous within a class, low correlation between classes, enough of them to diversify, and investable at reasonable cost.
+
+### Risk budgeting
+Allocates total risk across asset classes or managers; looks at each one's marginal contribution to portfolio risk.
+
+### Core-satellite
+A passive core plus active satellites.
+
+### Rebalancing
+Back to target weights when drift breaches ranges, or on a calendar schedule. Rebalancing is contrarian (sells winners).
+
+### ESG in portfolio construction
+- **Negative screening:** exclude sectors or firms.
+- **Positive screening / best-in-class:** favor leaders on ESG.
+- **ESG integration:** include ESG factors in valuation.
+- **Thematic investing:** focus on themes like clean energy.
+- **Impact investing:** target measurable social or environmental impact plus a return.
+- **Engagement / active ownership:** voting and dialogue.
+
+### Exam traps
+- SAA reflects the IPS, not short-term market views.
+- Negative screening can reduce diversification and change risk exposures.

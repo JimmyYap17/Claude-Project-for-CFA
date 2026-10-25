@@ -430,7 +430,7 @@ document.addEventListener("keydown", (e) => {
 // ---------- refresher readings ----------
 // refreshers.md holds short readings grouped by curriculum topic. Swipe right
 // for a random new one; saved ones sync through users/<uid>/saved.
-const SAVED = "Saved";
+const SAVED = "Saved", NOTES = "My notes";
 let readings = [];
 let saved = {};              // readingId -> {area, title, savedAt}
 let learnFilter = local.get("cfa-learn-topic", "All");
@@ -449,11 +449,11 @@ function parseReadings(text) {
     else if (cur) cur.lines.push(line);
     else if ((m = line.match(/^Weight: (.+)/))) areaWeight[area] = m[1].trim();
   }
-  // "Module:" and "Scope:" lines at the top of a reading are shown apart from the text
+  // "Module:", "Scope:" and "Source:" lines at the top of a reading are shown apart from the text
   return out.map(({ lines, ...r }) => {
     const meta = {};
     while (lines.length) {
-      const m = lines[0].match(/^(Module|Scope): (.+)/);
+      const m = lines[0].match(/^(Module|Scope|Source): (.+)/);
       if (m) meta[m[1].toLowerCase()] = m[2].trim();
       else if (lines[0].trim()) break;
       lines.shift();
@@ -514,14 +514,17 @@ function setRichHtml(el, html) {
   }
 }
 
-const learnPool = () => readings.filter((r) => learnFilter === "All" || (learnFilter === SAVED ? saved[r.id] : r.area === learnFilter));
+const fromNotes = (r) => /^my notes/i.test(r.source || "");
+const learnPool = () => readings.filter((r) => learnFilter === "All"
+  || (learnFilter === SAVED ? saved[r.id] : learnFilter === NOTES ? fromNotes(r) : r.area === learnFilter));
 function renderLearn() {
   const el = $("learnTopics"); el.innerHTML = "";
   const areas = [...new Set(readings.map((r) => r.area))];
   const nSaved = readings.filter((r) => saved[r.id]).length;
-  [["All", readings.length], ...areas.map((a) => [a, readings.filter((r) => r.area === a).length]), [SAVED, nSaved]].forEach(([t, n]) => {
+  const nNotes = readings.filter(fromNotes).length;
+  [["All", readings.length], ...areas.map((a) => [a, readings.filter((r) => r.area === a).length]), ...(nNotes ? [[NOTES, nNotes]] : []), [SAVED, nSaved]].forEach(([t, n]) => {
     const b = document.createElement("button");
-    b.className = "chip" + (t === SAVED ? " saved-chip" : ""); b.setAttribute("aria-pressed", t === learnFilter);
+    b.className = "chip" + (t === SAVED || t === NOTES ? " saved-chip" : ""); b.setAttribute("aria-pressed", t === learnFilter);
     b.textContent = t === SAVED ? "\u2605 Saved" : t;
     const c = document.createElement("span"); c.className = "n"; c.textContent = n; b.append(c);
     b.onclick = () => setLearnFilter(t);
@@ -587,13 +590,13 @@ function showReading() {
   $("rTitle").textContent = r.title;
   $("rModule").textContent = r.module ? "Learning module: " + r.module : "";
   $("rModule").hidden = !r.module;
+  $("rSource").textContent = r.source ? "From " + r.source.replace(/^my notes/i, "my notes") : "";
+  $("rSource").hidden = !r.source;
   $("rScope").textContent = r.scope || "";
   $("rScope").hidden = !r.scope;
-  $("focusInfo").textContent = r.area;
   setRichHtml($("rBody"), mdToHtml(r.body));
   const on = !!saved[r.id];
   $("rSaved").textContent = on ? "\u2605 Saved" : "";
-  $("focusSaved").textContent = on ? "\u2605 Saved" : "Double-tap to save";
   $("rSave").textContent = on ? "\u2605 Saved" : "\u2606 Save";
   $("rSave").setAttribute("aria-pressed", on);
 }
@@ -616,7 +619,7 @@ function toast(text) {
 // Focus mode: only the reading, full screen. Swipe to move, double-tap to save.
 function setFocus(on) {
   document.body.classList.toggle("focus", on);
-  $("focusBar").hidden = !on;
+  $("focusExit").hidden = !on;
   $("reading").scrollTop = 0;
   if (on) $("reading").focus({ preventScroll: true });
   else $("reading").scrollIntoView({ block: "start" });
@@ -647,7 +650,7 @@ function renderSaved() {
 
 fetch("refreshers.md").then((res) => res.text()).then((text) => {
   readings = parseReadings(text);
-  if (learnFilter !== "All" && learnFilter !== SAVED && !readings.some((r) => r.area === learnFilter)) learnFilter = "All";
+  if (![ "All", SAVED, NOTES ].includes(learnFilter) && !readings.some((r) => r.area === learnFilter)) learnFilter = "All";
   if (!readings.some((r) => r.id === learnCurrent)) learnCurrent = null;
   renderLearn();
   if (!learnCurrent) nextReading(false);
@@ -665,42 +668,71 @@ $("rCard").onclick = () => {
 };
 
 // Swipe right for a new topic, left to go back; double-tap to save.
-// Vertical drags scroll.
+// Touch screens use touch events: once a drag is clearly sideways it stops the
+// page scrolling, which iPhone and iPad Safari won't do for pointer events.
 (() => {
   const el = $("reading");
-  let startX = 0, startY = 0, dx = 0, active = false, moved = false;
+  let startX = 0, startY = 0, dx = 0, axis = null, active = false;
   let lastTap = 0, lastX = 0, lastY = 0;
-  el.addEventListener("pointerdown", (e) => {
-    if (e.pointerType === "mouse" && e.button !== 0) return;
-    active = true; moved = false; startX = e.clientX; startY = e.clientY; dx = 0;
-  });
-  el.addEventListener("pointermove", (e) => {
-    if (!active) return;
-    dx = e.clientX - startX;
-    const dy = e.clientY - startY;
-    if (!moved && Math.abs(dx) > 12 && Math.abs(dx) > Math.abs(dy) * 1.5) { moved = true; el.setPointerCapture(e.pointerId); el.classList.add("dragging"); }
-    if (!moved) return;
+  const begin = (x, y, target) => {
+    // let wide tables and formulas scroll sideways instead of swiping
+    const inner = target.closest && target.closest(".r-table, .katex-display");
+    active = !(inner && inner.scrollWidth > inner.clientWidth + 1);
+    startX = x; startY = y; dx = 0; axis = null;
+  };
+  const move = (x, y) => {
+    if (!active) return false;
+    dx = x - startX;
+    const dy = y - startY;
+    if (!axis && (Math.abs(dx) > 10 || Math.abs(dy) > 10)) {
+      axis = Math.abs(dx) > Math.abs(dy) ? "x" : "y";
+      if (axis === "x") el.classList.add("dragging");
+    }
+    if (axis !== "x") return false;
     el.style.transform = `translateX(${dx}px) rotate(${dx / 40}deg)`;
-    $("rTagNext").style.opacity = Math.max(0, Math.min(1, dx / 90));
-    $("rTagBack").style.opacity = learnHistory.length ? Math.max(0, Math.min(1, -dx / 90)) : 0;
-  });
-  const end = (e) => {
+    $("rTagNext").style.opacity = Math.max(0, Math.min(1, dx / 80));
+    $("rTagBack").style.opacity = Math.max(0, Math.min(1, -dx / 80));
+    return true;
+  };
+  const finish = (x, y) => {
     if (!active) return;
     active = false;
     el.classList.remove("dragging");
     $("rTagNext").style.opacity = $("rTagBack").style.opacity = 0;
-    if (!moved) {
-      const now = Date.now();
-      if (now - lastTap < 350 && Math.abs(e.clientX - lastX) < 30 && Math.abs(e.clientY - lastY) < 30) { lastTap = 0; toggleSaved(); }
-      else { lastTap = now; lastX = e.clientX; lastY = e.clientY; }
+    if (axis === "x") {
+      el.style.transform = "";
+      if (dx > 70) nextReading();
+      else if (dx < -70) learnHistory.length ? prevReading() : nextReading(); // nothing to go back to: show a new one
       return;
     }
-    el.style.transform = "";
-    if (dx > 90) nextReading();
-    else if (dx < -90 && learnHistory.length) prevReading();
+    if (axis) return; // a scroll
+    const now = Date.now();
+    if (now - lastTap < 350 && Math.abs(x - lastX) < 30 && Math.abs(y - lastY) < 30) { lastTap = 0; toggleSaved(); }
+    else { lastTap = now; lastX = x; lastY = y; }
   };
-  el.addEventListener("pointerup", end);
-  el.addEventListener("pointercancel", () => { dx = 0; moved = true; lastTap = 0; end(); });
+  const cancel = () => { if (axis === "x") el.style.transform = ""; axis = "y"; finish(0, 0); };
+
+  el.addEventListener("touchstart", (e) => {
+    if (e.touches.length !== 1) { cancel(); return; }
+    begin(e.touches[0].clientX, e.touches[0].clientY, e.target);
+  }, { passive: true });
+  el.addEventListener("touchmove", (e) => {
+    if (e.touches.length === 1 && move(e.touches[0].clientX, e.touches[0].clientY)) e.preventDefault();
+  }, { passive: false });
+  el.addEventListener("touchend", (e) => { const t = e.changedTouches[0]; finish(t.clientX, t.clientY); });
+  el.addEventListener("touchcancel", cancel);
+
+  // mouse and pen
+  el.addEventListener("pointerdown", (e) => {
+    if (e.pointerType === "touch" || e.button !== 0) return;
+    begin(e.clientX, e.clientY, e.target);
+  });
+  el.addEventListener("pointermove", (e) => {
+    if (e.pointerType === "touch" || !active) return;
+    if (move(e.clientX, e.clientY) && !el.hasPointerCapture(e.pointerId)) el.setPointerCapture(e.pointerId);
+  });
+  el.addEventListener("pointerup", (e) => { if (e.pointerType !== "touch") finish(e.clientX, e.clientY); });
+  el.addEventListener("pointercancel", (e) => { if (e.pointerType !== "touch") cancel(); });
   el.addEventListener("dblclick", (e) => e.preventDefault()); // no word selection on double-tap
 })();
 

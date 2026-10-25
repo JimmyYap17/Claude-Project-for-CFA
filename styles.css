@@ -208,7 +208,7 @@ body.focus .reading {
   padding: calc(28px + env(safe-area-inset-top, 0px)) max(20px, env(safe-area-inset-right, 0px)) calc(48px + env(safe-area-inset-bottom, 0px)) max(20px, env(safe-area-inset-left, 0px));
 }
 body.focus .reading > * { width: min(100%, 68ch); justify-self: center; }
-body.focus .reading .meta, body.focus .r-module, body.focus .r-scope, body.focus .reading .hint { display: none !important; }
+body.focus .reading .meta, body.focus .r-module, body.focus .r-source, body.focus .r-scope, body.focus .reading .hint { display: none !important; }
 body.focus .swipe-tag { position: fixed; z-index: 7; top: calc(14px + env(safe-area-inset-top, 0px)); }
 .focus-exit {
   position: fixed; z-index: 6; top: calc(10px + env(safe-area-inset-top, 0px)); right: max(10px, env(safe-area-inset-right, 0px));
@@ -224,3 +224,4 @@ body.focus .swipe-tag { position: fixed; z-index: 7; top: calc(14px + env(safe-a
 @media (prefers-color-scheme: dark) { .r-scope::before { color: #D9AE52; } .r-scope { border-left-color: #D9AE52; } }
 body.focus .r-title { padding-right: 40px; }
 body.focus .reading:focus { outline: none; }
+.r-source { color: var(--accent); margin-top: -8px; }

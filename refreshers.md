@@ -5,6 +5,7 @@ Refresher readings for the Refresher tab.
   ## Title      starts a reading (its id is made from the title, so renaming one un-saves it)
   Module: …     first line of a reading: the official learning module(s) it covers
   Scope: …      optional, after Module: a note when part of the reading goes beyond Level I
+  Source: …     optional: where the reading came from ("My notes N001, N002" puts it under the My notes chip)
   ### Heading   a section inside a reading
   - item / 1. item, **bold**, $$ display formula $$ on its own line, \( inline formula \)
 -->
@@ -821,6 +822,66 @@ Risk-off moves: safe-haven currencies and government bonds rally, equities and E
 - Know the archetype quadrant: cooperation plus nationalism is bilateralism.
 - High-velocity risks call for liquidity and hedging; slow thematic risks feed into long-run strategy.
 
+## Fiscal vs monetary policy, Ricardian equivalence and the Fed's floor
+
+Module: Fiscal Policy; Monetary Policy
+Source: My notes N029, N033, N034
+
+### Who does what
+- **Monetary policy:** the central bank. Policy rate, open market operations, quantitative easing.
+- **Fiscal policy:** the government. Spending and taxes.
+- Not every central bank targets a rate: the **Monetary Authority of Singapore** uses the **exchange rate** as its main tool.
+
+### Policy mix
+| Fiscal | Monetary | Result |
+| --- | --- | --- |
+| Expansionary | Tight | Higher rates; public sector share grows |
+| Tight | Expansionary | Lower rates; private sector share grows |
+| Expansionary | Expansionary | Strong boost to demand |
+| Tight | Tight | Demand falls |
+
+### Judging fiscal stance
+**Automatic stabilizers** (taxes, unemployment benefits) widen the deficit in recessions without any new law. So judge the stance with the **structural** (full-employment) deficit, not the headline one.
+
+### Are deficits a problem?
+- **Concerns:** crowding out of private investment, higher future taxes, risk the central bank ends up financing the debt (monetization).
+- **Defenses:** Keynesian support in a slump, funding productive investment.
+
+### Ricardian equivalence
+A debt-financed tax cut makes people expect higher taxes later, so they **save the whole cut**. Aggregate demand and interest rates don't change.
+It fails when people have short horizons, can't borrow, face uncertainty, or aren't fully rational.
+
+### How the Fed sets a floor under short rates
+- **Interest on reserve balances (IORB):** banks won't lend below what the Fed pays them.
+- **Overnight reverse repo (ON RRP):** the Fed borrows cash from money market funds and other non-banks at a set rate, so they won't lend below it either.
+- Fed **repo adds** liquidity; **reverse repo drains** it.
+- US reserve requirements have been **0% since 2020**, so they're no longer an active tool.
+
+### Exam traps
+- "If Ricardian equivalence holds" → no effect on aggregate demand.
+- Use the structural deficit to judge whether policy is expansionary.
+
+## Forward exchange rates: a no-arbitrage price, not a forecast
+
+Module: Exchange Rate Calculations; Capital Flows and the FX Market
+Source: My notes N043
+
+### Covered interest parity
+The forward rate comes from the spot rate and the two interest rates. It's what stops riskless arbitrage, not anyone's prediction.
+$$F_{p/b} = S_{p/b} \times \frac{1 + i_{price}}{1 + i_{base}}$$
+(scale each rate by days/360 for periods under a year).
+
+- The **price currency's** rate goes on **top**, the base currency's on the bottom.
+- The currency with the **higher interest rate trades at a forward discount**.
+- **Forward points** = (F − S) × 10,000.
+
+### Uncovered interest parity
+The forecast version: the high-rate currency should depreciate by the rate gap. It often fails in practice, which is why the **carry trade** (borrow low-yield, invest high-yield) can earn money, with crash risk.
+
+### Exam traps
+- Putting the base currency's rate on top flips the answer.
+- Covered parity always holds (arbitrage); uncovered parity often doesn't.
+
 # Financial Statement Analysis
 
 Weight: 11–14%
@@ -1542,6 +1603,152 @@ Debt magnifies ROE when the return on assets exceeds the after-tax cost of debt;
 - DOL is not constant: it's highest near the breakeven point and falls as sales grow.
 - Firms with high operating leverage usually carry less debt to keep total risk manageable.
 
+## Business risk, operating leverage and how much debt a firm can carry
+
+Module: Capital Structure; Business Models
+Source: My notes N001, N007, N016
+
+### Business risk
+**Business risk = sales risk + operating risk.**
+- **Sales risk:** how uncertain revenue is.
+- **Operating risk:** how the cost structure turns revenue changes into profit changes.
+
+### Operating leverage
+High **fixed** costs mean a small change in revenue causes a large swing in operating income.
+$$DOL = \frac{\%\Delta EBIT}{\%\Delta \text{Sales}} \qquad DTL = DOL \times DFL$$
+More earnings variability means a **higher required return**. Variable costs act as a cushion because they fall when revenue falls.
+
+### Debt capacity
+- **Predictable revenue** (subscriptions) supports **more** debt than pay-per-use revenue.
+- **High fixed operating costs** support **less** debt: operating and financial leverage compound (DTL = DOL × DFL).
+- Predictable **costs** aren't the same as predictable **cash flow**.
+
+### Across the life cycle
+| Stage | Typical financing |
+| --- | --- |
+| Start-up | Equity; little debt capacity |
+| Growth | Secured debt, convertible debt |
+| Mature (stable free cash flow) | Unsecured debt, more leverage, dividends and buybacks |
+
+Short-term debt is cheaper but carries **rollover risk**; use it mainly for working capital.
+
+### Exam traps
+- Volatile revenue with mostly variable costs isn't necessarily riskier than stable revenue with high fixed costs.
+- "High fixed costs are predictable, so the firm can borrow more" sounds logical but is wrong.
+- Convertible debt points to the growth stage, not maturity.
+
+## WACC in practice: marginal costs, market weights and preferred stock
+
+Module: Capital Structure
+Source: My notes N002, N003, N012, N014, N015, N017, N018
+Scope: Flotation cost and marginal cost of capital schedules get more depth at Level II; know the rules below.
+
+$$WACC = w_d\,r_d(1 - t) + w_p\,r_p + w_e\,r_e$$
+
+### The rules
+- Use **marginal**, forward-looking costs, never historical ones.
+- Weights use **market values**, not face or book values.
+- **Cost of debt** = YTM. If no YTM is given, use annual interest ÷ **market** value (current yield). If a cost is already after tax, don't adjust it again.
+- **Cost of preferred** = dividend ÷ **market price**. **No (1 − t)**: preferred dividends come out of after-tax profit, so there's no tax shield.
+
+### Worked examples from my notes
+- Interest 0.84 on a bond worth 12.30 (face 10): pre-tax \( r_d = 0.84 / 12.30 = 6.83\% \); after tax at 40%, **4.10%**. Using face value (8.40%) is the trap.
+- Weights in a 3 : 1 : 5 ratio → 3/9, 1/9, 5/9. Do one division at the end: \( (3 \times 3.6 + 1 \times 7 + 5 \times 10) / 9 = 7.53\% \).
+
+### Marginal cost of capital schedule
+Raise each source up to its limit before its cost steps up. Example: $50M debt + $50M preferred + $200M equity = $300M at
+$$\frac{4.76 + 10}{6} + 13 \times \frac{2}{3} \approx 11.13\%$$
+(after-tax debt 4.76%). Forgetting the tax on debt gives 11.50%.
+
+### WACC as the hurdle rate
+- Accept projects with **IRR > WACC**.
+- Discount NPV at the WACC. A lower rate overstates NPV and accepts bad projects.
+
+### Flotation costs
+Issuance fees, largest for equity. The **CFA-preferred** treatment: deduct the dollar cost as a **time-0 outflow** in the project's NPV, not by raising the cost of capital (a one-time cost shouldn't hit every future cash flow). The alternative formula is \( r_e = \frac{D_1}{P_0(1 - f)} + g \).
+
+### Exam traps
+- Historical costs and face-value weights are distractors.
+- Never apply (1 − t) to preferred, even when a tax rate is given.
+- "CFA-recommended treatment" of flotation → don't adjust the cost of capital.
+
+## Capital investment decisions: NPV, IRR, PI and project types
+
+Module: Capital Investments and Capital Allocation
+Source: My notes N005, N006, N010, N011, N012
+
+### Choosing between projects
+- **Mutually exclusive, no capital limit → highest NPV.** NPV is the dollar value added and assumes reinvestment at the required return.
+- **IRR** assumes reinvestment at the IRR and ignores scale. NPV and IRR conflict when projects differ in **scale or timing** of cash flows.
+- **Payback** ignores the time value of money and everything after the payback date.
+
+### Profitability index
+$$PI = \frac{PV \text{ of future cash flows}}{\text{Initial investment}} = 1 + \frac{NPV}{\text{Initial investment}}$$
+Accept if **PI > 1** (the same decision as NPV > 0). Most useful for **ranking under capital rationing**.
+
+### Types of capital projects
+| Type | What it is |
+| --- | --- |
+| **Going concern** | Maintain or improve the existing business: same products and markets |
+| **Regulatory / compliance** | Required by law; done even with negative NPV |
+| **Expansion** | New products, markets or capacity |
+| **Other** | High-risk or unrelated to the core business |
+
+Diversifying the company isn't a reason to accept a negative-NPV project.
+
+### Real options
+- **Timing:** delay or stage the investment.
+- **Sizing:** abandon or expand.
+- **Flexibility:** price-setting or **production-flexibility** (switching formats or inputs).
+- **Fundamental:** payoff tied to an underlying price (a mine and the metal price).
+
+$$\text{Project NPV} = \text{NPV without options} + \text{option value} - \text{option cost}$$
+
+### Exam traps
+- A higher IRR or shorter payback is a distractor for mutually exclusive projects.
+- PI's numerator excludes the initial outlay; its threshold is 1, not a percentage.
+- An efficiency upgrade with no new products or markets is **going concern**, not expansion.
+- "Despite a negative NPV" → regulatory.
+
+## Liquidity sources and working capital policy
+
+Module: Working Capital and Liquidity
+Source: My notes N008, N009
+
+### Primary vs secondary sources of liquidity
+- **Primary** (normal operations): cash and marketable securities, **trade credit**, bank lines of credit, cash flow management.
+- **Secondary** (change how the business runs, signal stress): cut dividends, **delay capex**, issue equity, renegotiate contracts, sell assets, file for bankruptcy.
+
+Test: would a healthy firm do this routinely? If not, it's secondary.
+
+### Working capital trade-offs
+- **Looser credit terms:** more sales, but **higher DSO** and more bad debts.
+- **More inventory:** fewer stockouts, but higher holding and obsolescence costs.
+- **Permanent** working capital (the base level) → fund with long-term sources. **Variable** (seasonal) working capital → fund short-term.
+
+### Exam traps
+- Delaying capex feels routine but is a **secondary** source.
+- Accommodative credit **increases** DSO.
+
+## Business structures, taxation and pricing strategies
+
+Module: Organizational Forms, Corporate Issuer Features, and Ownership; Business Models
+Source: My notes N004, N013
+
+### Taxation by legal form
+- **Sole proprietorships and partnerships** are **pass-through**: income is taxed at the owners' personal rates in the year it's **earned**, whether or not it's paid out.
+- **Corporations** face **double taxation**: corporate tax on profit, then tax on dividends when they're paid.
+
+### Pricing strategies
+- **Price discrimination:** charging different prices by willingness to pay. Forms: tiered pricing, dynamic pricing, auctions.
+- **Complementary-product strategies** (not price discrimination):
+  - **Razors and blades:** cheap base product, profitable consumables.
+  - **Bundling:** selling products together.
+
+### Exam traps
+- "Taxed when distributed" is corporate dividend logic wrongly applied to partnerships.
+- Razors-and-blades and bundling aren't price discrimination.
+
 # Equity Investments
 
 Weight: 11–14%
@@ -1786,6 +1993,24 @@ Identify material ESG factors (emissions, labor practices, governance) and how t
 ### Exam traps
 - Growth from acquisitions isn't the same as organic growth.
 - Rising revenue with falling margins can signal weak pricing power.
+
+## Enterprise value and matching multiples
+
+Module: Equity Valuation: Concepts and Basic Tools
+Source: My notes N019
+
+### Enterprise value
+EV is the value of the business to **all** capital providers: roughly what an acquirer would pay to take it over.
+$$EV = \text{Market cap} + \text{Debt} + \text{Preferred} + \text{Minority interest} - \text{Cash}$$
+
+### Match the numerator and denominator
+- **EV** (all capital) pairs with **pre-interest** measures: EBITDA, EBIT, sales.
+- **Equity value** (shareholders only) pairs with **post-interest** measures: net income, EPS, book value.
+- **EV/EBITDA** compares firms with different leverage, because EBITDA comes before interest.
+
+### Exam traps
+- EV/net income is a mismatch: net income is after interest paid to the debt holders included in EV.
+- Remember to subtract cash.
 
 # Fixed Income
 
@@ -2110,6 +2335,200 @@ Debt/GDP, deficit/GDP, interest/revenue, real GDP growth, per-capita income, cur
 ### Exam traps
 - Revenue bonds carry more risk than general obligation bonds from the same issuer.
 - Unlike sovereigns, local governments usually can't print money and often face balanced-budget rules.
+
+## Bond prices, yields and the price–yield relationship
+
+Module: Fixed-Income Bond Valuation: Prices and Yields; Interest Rate Risk and Return
+Source: My notes N020, N021, N024, N025, N037, N038
+
+### Price and yield
+- Coupon > YTM → **premium**. Coupon < YTM → **discount**. Equal → **par**.
+- **YTM** is the bond's IRR: the rate that sets the PV of its cash flows equal to the price. It assumes you hold to maturity, there's no default, and coupons are reinvested at the YTM.
+- **Current yield** = coupon ÷ price; it ignores the pull to par.
+- The **cost of debt is the YTM**, not the coupon.
+
+Calculator: N, PV (−price), PMT, FV → CPT I/Y. Semi-annual: N × 2, PMT ÷ 2, then I/Y × 2.
+
+### Full vs flat price
+- **Full (dirty, invoice) price** = what the buyer pays. **Flat (clean, quoted) price** = full − accrued interest. Quotes use flat prices to remove the sawtooth from accrual.
+$$PV_{full} = PV_{\text{last coupon}} \times (1 + r)^{t/T} \qquad AI = \frac{t}{T} \times \text{coupon}$$
+- Day counts: actual/actual for government bonds, 30/360 for corporates.
+
+### Price sensitivity
+Prices are more sensitive with **longer maturity**, **lower coupon** and **lower yield level**.
+$$\%\Delta P \approx -D \times \Delta y + \tfrac{1}{2} \times C \times (\Delta y)^2$$
+
+**Example (annual coupons):** a 30-year 4.625% bond priced at 100.
+| Yield | Coupon bond | 30-year zero |
+| --- | --- | --- |
+| 5.625% (+1%) | 85.665 (−14.34%) | −24.83% |
+| 3.625% (−1%) | 118.107 (+18.11%) | +33.39% |
+
+The zero moves more (lowest coupon), and gains exceed losses for the same yield change: **convexity**.
+
+### Reinvestment and horizon value
+- Horizon value = FV of reinvested coupons + face. Realized return = YTM only if coupons are reinvested at the YTM.
+- Interest-on-interest is a big share of the return on long bonds.
+- At the **Macaulay duration**, price risk and reinvestment risk roughly offset.
+
+### Exam traps
+- WACC uses market values of debt, not face.
+- "Invoice price" means the full price; use the periodic rate for semi-annual bonds.
+
+## Callable and putable bonds: who holds the option
+
+Module: Fixed-Income Instrument Features; Yield and Yield Spread Measures for Fixed-Rate Bonds
+Source: My notes N022, N039, N040, N042
+
+### Positions
+| Bond | Investor holds | Issuer holds | Yield vs straight bond |
+| --- | --- | --- | --- |
+| Callable | Long bond + **short call** | Long call | **Higher**; upside capped |
+| Putable | Long bond + **long put** | Short put | **Lower**; downside floored |
+
+Whoever holds the right is long the option.
+$$\text{Callable} = \text{Straight} - \text{Call} \qquad \text{Putable} = \text{Straight} + \text{Put}$$
+
+### When bonds get called
+Calls happen when **rates or spreads fall**: the issuer refinances cheaper. A callable bond trading at a **discount** is rarely called: market rates are above the coupon, and the call price (≥ par) is above market value, so the call is out of the money. As rates fall, callable prices flatten near the call price: **price compression** (negative convexity).
+
+### Yield to call and yield to worst
+- **YTM:** N = full term, FV = par.
+- **YTC:** N = periods to the call date, FV = **call price**.
+- **Yield to worst** = the lowest of the YTM and every YTC. For a discount callable it's usually the YTM; for a premium callable, usually a YTC.
+
+Example: N = 12, PMT = 1.25, FV = 100, PV = −98.90 → I/Y = 1.3499% per half-year → YTM ≈ **2.70%**.
+
+### Z-spread and OAS
+- **Z-spread:** the constant spread added to every spot rate so the PV equals the price.
+- **OAS** = Z-spread − option value (in basis points).
+  - Callable: OAS < Z-spread. Putable: OAS > Z-spread.
+  - Higher volatility raises option value: **callable OAS falls**, **putable OAS rises**.
+- Compare bonds with different options on **OAS**.
+
+## Yield spreads: benchmarks, G, I, Z and credit spread drivers
+
+Module: Yield and Yield Spread Measures for Fixed-Rate Bonds; Credit Risk
+Source: My notes N026, N031, N035, N041
+
+### What's in a yield
+Yield = real rate + expected inflation (together the **nominal risk-free** rate) + credit premium + liquidity premium.
+- A change in the **risk-free rate** hits all bonds: interest rate risk.
+- A change in the **spread** is issuer-specific: credit risk.
+- CAPM uses the same base: \( r_e = r_f + \beta(E(R_m) - r_f) \).
+
+### Benchmarks
+- **On-the-run** = the newest government issue at each maturity: most liquid, slightly higher price and lower yield. Used for the benchmark yield curve. Often "special" in the repo market.
+- A government coupon bond's YTM is a **par rate**, not a spot rate.
+
+### Spread measures
+| Spread | Over | Notes |
+| --- | --- | --- |
+| **G-spread** | Government bond YTM (par rate), same maturity | Interpolate if maturities don't match |
+| **I-spread** | Swap rate | |
+| **Z-spread** | Each spot rate | Constant spread across the spot curve |
+| **OAS** | Z-spread less option value | For bonds with embedded options |
+
+### Credit spread drivers
+Spread ≈ expected loss + uncertainty + liquidity.
+$$EL = PD \times LGD \qquad LGD = 1 - \text{recovery rate} \qquad \%\Delta P \approx -\text{SpreadDur} \times \Delta\text{spread}$$
+- Spreads **widen** with a credit cycle downturn, downgrades, illiquidity, heavy new supply, and flights to quality.
+- **Investment-grade** prices move mostly with rates; **high-yield** prices move mostly with spreads.
+- **Fallen angels** (cut to high yield) suffer forced selling.
+
+### Exam traps
+- Don't use spot rates for a G-spread; that's the Z-spread.
+- If spreads widen after a callable is issued, the call is out of the money and the issuer paid for it for nothing.
+
+## Covenants, high-yield structure and municipal bonds
+
+Module: Fixed-Income Instrument Features; Fixed-Income Markets for Corporate Issuers; Credit Analysis for Government Issuers
+Source: My notes N023, N030, N036
+
+### Covenants
+- **Affirmative:** what the issuer must do (pay on time, insure assets, report).
+- **Negative:** what it can't do (extra debt, dividends, asset sales, **negative pledges**).
+- **Maintenance** covenants are tested every period (typical of loans). **Incurrence** covenants are tested only when the issuer takes an action (typical of bonds).
+- A breach is a **technical default**. More covenants → lower yield.
+- The four Cs of credit: capacity, collateral, covenants, character.
+
+### High-yield debt structure
+High-yield issuers want the flexibility to refinance or repay as their credit improves:
+- **Leveraged loans:** floating rate, prepayable, secured and senior, with maintenance covenants.
+- **Callable bonds** with call protection, plus **equity clawbacks** (redeem some bonds with IPO proceeds).
+- **Sinking funds:** retire debt gradually; less credit risk, more reinvestment risk.
+- Flexibility costs a higher yield.
+
+### Municipal bonds
+- **General obligation (GO):** backed by full taxing power; lower risk; often need voter approval.
+- **Revenue bonds:** backed only by a project's revenue; higher yield; analyzed like a business.
+- US munis are usually tax-exempt.
+$$\text{Tax-equivalent yield} = \frac{\text{Muni yield}}{1 - t} \qquad DSCR = \frac{\text{Net revenue}}{\text{Debt service}}$$
+
+### Exam traps
+- Secured loans rank above high-yield bonds, so the bonds have lower recovery.
+- Incurrence covenants aren't checked every quarter.
+
+## Money markets: T-bills, CP, CDs, repos and yield conventions
+
+Module: Fixed-Income Issuance and Trading; Yield and Yield Spread Measures for Floating-Rate Instruments
+Source: My notes N027, N028, N032, N045, N046, N047
+
+### Money vs capital markets
+- **Money market:** ≤ 1 year, for liquidity management (T-bills, commercial paper, repos, CDs, bankers' acceptances). Uses **simple interest**: a single cash flow over a short horizon.
+- **Capital market:** > 1 year, long-term funding (bonds, equity).
+
+### US Treasuries
+- **T-bills:** ≤ 1 year, zero-coupon, quoted on a discount basis; the short-term risk-free proxy.
+- **T-notes** 2–10 years and **T-bonds** 20–30 years: semi-annual coupons.
+- **TIPS:** principal indexed to CPI.
+
+### Instruments
+- **Commercial paper:** short-term unsecured debt of high-quality firms; cheaper than bank loans. US CP ≤ 270 days on a discount basis; Eurocommercial paper ≤ 364 days, often add-on. Rollover risk → **backup lines of credit**.
+- **Certificates of deposit:** fixed-term bank deposits with add-on interest. Non-negotiable (penalty to withdraw early) or negotiable (large, tradable). Large CDs exceed deposit insurance. **Eurodollar CD** = a USD CD issued outside the US.
+- **Repos:** sell a security and agree to buy it back higher, a secured short-term loan. The borrower keeps the price exposure (it finances a long position). A **reverse repo** lends cash and can source securities for shorting. **Haircut** = lending less than the collateral's value.
+$$\text{Repurchase price} = \text{Price} \times \left(1 + \text{repo rate} \times \frac{\text{days}}{360}\right)$$
+Repo rates are higher with riskier collateral, longer terms, weaker counterparties, abundant collateral, higher rates generally, and no delivery. **"Special"** (scarce) collateral → lower rate.
+
+### Yield conventions
+$$PV = FV\left(1 - \frac{\text{Days}}{\text{Year}} \times DR\right) \qquad PV = \frac{FV}{1 + \frac{\text{Days}}{\text{Year}} \times AOR}$$
+- **Discount rate** (T-bills, CP, BAs): interest on face, deducted upfront; understates the return.
+- **Add-on rate** (CDs, repos): interest on PV, added at maturity.
+- **Bond-equivalent yield** = add-on rate on a 365-day year.
+- Ranking for the same instrument: **discount < add-on (360) < BEY (365)**. Always convert through the price before comparing.
+
+## Spot, forward and par curves (including negative rates)
+
+Module: The Term Structure of Interest Rates: Spot, Par, and Forward Curves
+Source: My notes N044, N048, N049
+
+### Notation
+"AyBy" or f(A, B) = the B-year rate starting in A years. So a 5-year rate starting in 2 years is **2y5y**, built from S₂ and S₇.
+$$(1 + S_{A+B})^{A+B} = (1 + S_A)^A \times (1 + f_{A,B})^B$$
+Approximation: \( f_{A,B} \approx \frac{(A + B)S_{A+B} - A \cdot S_A}{B} \).
+
+### How the curves relate
+- A spot rate is the **geometric average** of the forwards up to that date; a forward is the **marginal** rate.
+- **Upward-sloping:** forward > spot > par. **Inverted:** forward < spot < par. **Flat:** all equal.
+- These rules hold whether rates are positive or negative.
+
+### Par curve
+Par bonds (coupon = YTM, price 100) avoid the tax and coupon effects of premium and discount bonds. The par curve is used:
+- As the benchmark for **G-spreads**.
+- To set **coupons on new issues**.
+- To **bootstrap** spot rates.
+$$\text{Par rate} = \frac{1 - DF_N}{\sum DF_i}$$
+
+### Zero and negative rates
+\( DF = 1/(1 + S)^t \).
+- Spot rate 0 → DF = 1: no time value.
+- Negative spot rate → DF > 1: you pay more than face, a guaranteed nominal loss.
+- Investors accept it because of QE, safety, deflation, the cost of holding cash, regulation, or bets on FX or capital gains.
+- To minimize the premium, set the coupon at the par rate; if the par rate is negative, the coupon floors at 0%.
+
+### Exam traps
+- Mixing up which spot rates make a forward: 2y5y uses S₂ and S₇.
+- An upward-sloping spot curve means forwards sit **above** spots.
 
 # Derivatives
 

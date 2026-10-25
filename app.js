@@ -430,7 +430,7 @@ document.addEventListener("keydown", (e) => {
 // ---------- refresher readings ----------
 // refreshers.md holds short readings grouped by curriculum topic. Swipe right
 // for a random new one; saved ones sync through users/<uid>/saved.
-const SAVED = "Saved";
+const SAVED = "Saved", NOTES = "My notes";
 let readings = [];
 let saved = {};              // readingId -> {area, title, savedAt}
 let learnFilter = local.get("cfa-learn-topic", "All");
@@ -449,11 +449,11 @@ function parseReadings(text) {
     else if (cur) cur.lines.push(line);
     else if ((m = line.match(/^Weight: (.+)/))) areaWeight[area] = m[1].trim();
   }
-  // "Module:" and "Scope:" lines at the top of a reading are shown apart from the text
+  // "Module:", "Scope:" and "Source:" lines at the top of a reading are shown apart from the text
   return out.map(({ lines, ...r }) => {
     const meta = {};
     while (lines.length) {
-      const m = lines[0].match(/^(Module|Scope): (.+)/);
+      const m = lines[0].match(/^(Module|Scope|Source): (.+)/);
       if (m) meta[m[1].toLowerCase()] = m[2].trim();
       else if (lines[0].trim()) break;
       lines.shift();
@@ -514,14 +514,17 @@ function setRichHtml(el, html) {
   }
 }
 
-const learnPool = () => readings.filter((r) => learnFilter === "All" || (learnFilter === SAVED ? saved[r.id] : r.area === learnFilter));
+const fromNotes = (r) => /^my notes/i.test(r.source || "");
+const learnPool = () => readings.filter((r) => learnFilter === "All"
+  || (learnFilter === SAVED ? saved[r.id] : learnFilter === NOTES ? fromNotes(r) : r.area === learnFilter));
 function renderLearn() {
   const el = $("learnTopics"); el.innerHTML = "";
   const areas = [...new Set(readings.map((r) => r.area))];
   const nSaved = readings.filter((r) => saved[r.id]).length;
-  [["All", readings.length], ...areas.map((a) => [a, readings.filter((r) => r.area === a).length]), [SAVED, nSaved]].forEach(([t, n]) => {
+  const nNotes = readings.filter(fromNotes).length;
+  [["All", readings.length], ...areas.map((a) => [a, readings.filter((r) => r.area === a).length]), ...(nNotes ? [[NOTES, nNotes]] : []), [SAVED, nSaved]].forEach(([t, n]) => {
     const b = document.createElement("button");
-    b.className = "chip" + (t === SAVED ? " saved-chip" : ""); b.setAttribute("aria-pressed", t === learnFilter);
+    b.className = "chip" + (t === SAVED || t === NOTES ? " saved-chip" : ""); b.setAttribute("aria-pressed", t === learnFilter);
     b.textContent = t === SAVED ? "\u2605 Saved" : t;
     const c = document.createElement("span"); c.className = "n"; c.textContent = n; b.append(c);
     b.onclick = () => setLearnFilter(t);
@@ -587,6 +590,8 @@ function showReading() {
   $("rTitle").textContent = r.title;
   $("rModule").textContent = r.module ? "Learning module: " + r.module : "";
   $("rModule").hidden = !r.module;
+  $("rSource").textContent = r.source ? "From " + r.source.replace(/^my notes/i, "my notes") : "";
+  $("rSource").hidden = !r.source;
   $("rScope").textContent = r.scope || "";
   $("rScope").hidden = !r.scope;
   setRichHtml($("rBody"), mdToHtml(r.body));
@@ -645,7 +650,7 @@ function renderSaved() {
 
 fetch("refreshers.md").then((res) => res.text()).then((text) => {
   readings = parseReadings(text);
-  if (learnFilter !== "All" && learnFilter !== SAVED && !readings.some((r) => r.area === learnFilter)) learnFilter = "All";
+  if (![ "All", SAVED, NOTES ].includes(learnFilter) && !readings.some((r) => r.area === learnFilter)) learnFilter = "All";
   if (!readings.some((r) => r.id === learnCurrent)) learnCurrent = null;
   renderLearn();
   if (!learnCurrent) nextReading(false);

@@ -114,7 +114,8 @@ function listen() {
 // ---------- card inbox ----------
 // Claude (or anything holding the inbox key) drops cards into inbox/<key>/cards;
 // this moves each one into the signed-in user's deck.
-let inboxKey = null, inboxUnsub = null;
+let inboxKey = null, inboxUnsub = null, inboxAdded = 0;
+const inboxMoving = new Set();   // inbox card ids in a batch that hasn't committed yet
 const settingsDoc = () => fb.doc(fb.db, "users", uid, "settings", "inbox");
 function newInboxKey() {
   const b = new Uint8Array(18); crypto.getRandomValues(b);
@@ -137,20 +138,27 @@ function watchInbox() {
   $("inboxKey").textContent = inboxKey;
   const col = fb.collection(fb.db, "inbox", inboxKey, "cards");
   inboxUnsub = fb.onSnapshot(col, (snap) => {
-    const docs = snap.docs.filter((d) => !d.metadata || !d.metadata.hasPendingWrites);
+    const docs = snap.docs.filter((d) => (!d.metadata || !d.metadata.hasPendingWrites) && !inboxMoving.has(d.id));
     if (!docs.length) return;
-    const b = fb.writeBatch(fb.db);
-    docs.forEach((d) => {
-      const c = d.data();
-      b.set(fb.doc(cardsCol(), d.id), {
-        topic: String(c.topic || "General").trim(), front: String(c.front || "").trim(), back: String(c.back || "").trim(),
-        createdAt: Date.now(), updatedAt: Date.now(),
+    // A Firestore batch holds at most 500 writes and each card takes two
+    // (add to the deck, remove from the inbox), so move them 200 at a time.
+    for (let i = 0; i < docs.length; i += 200) {
+      const chunk = docs.slice(i, i + 200);
+      const b = fb.writeBatch(fb.db);
+      chunk.forEach((d) => {
+        inboxMoving.add(d.id);
+        const c = d.data();
+        b.set(fb.doc(cardsCol(), d.id), {
+          topic: String(c.topic || "General").trim(), front: String(c.front || "").trim(), back: String(c.back || "").trim(),
+          createdAt: Date.now(), updatedAt: Date.now(),
+        });
+        b.delete(d.ref);
       });
-      b.delete(d.ref);
-    });
-    b.commit().then(() => {
-      msg("inboxMsg", "Added " + docs.length + (docs.length === 1 ? " card" : " cards") + " from Claude.");
-    }).catch((e) => console.error(e));
+      b.commit().then(() => {
+        inboxAdded += chunk.length;
+        msg("inboxMsg", "Added " + inboxAdded + (inboxAdded === 1 ? " card" : " cards") + " from Claude.");
+      }).catch((e) => console.error(e)).finally(() => chunk.forEach((d) => inboxMoving.delete(d.id)));
+    }
   }, (e) => {
     console.error(e);
     msg("inboxMsg", e.code === "permission-denied" ? "The inbox needs the updated Firestore rules from the README." : "The inbox stopped. Reload the app.", true);

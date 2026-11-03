@@ -80,16 +80,3 @@ A new deck is empty. Tap **Load 20 example cards** to try the app, then delete t
 python3 -m http.server 8000
 # then open http://localhost:8000
 ```
-
-## Trip Planner (`trip/`)
-
-A second Home Screen app that lives in this repo: day plans with a leave-by timer, a ticket wallet for QR/barcode screenshots, AMap links and a booking tracker, shared between two phones through the same Firebase project.
-
-**App address:** https://jimmyyap17.github.io/Claude-Project-for-CFA/trip/
-
-- **Install:** open the address in Safari, then **Share → Add to Home Screen**. It installs as **Trip**, separate from CFA Cards.
-- **Sign in:** pick a username and password just for the trip (not your CFA one) and use the same pair on both phones. Everything you add is stored under that shared account. Signing in here doesn't sign you out of CFA Cards.
-- **Unlock:** the first time, enter the trip passphrase. The account remembers it, so the second phone doesn't ask.
-- **Private itinerary:** this repository is public, so the itinerary is committed only as `trip/plan.enc.json`, encrypted with the passphrase (AES-256-GCM). Tickets, booking refs, ticks and addresses live in Firestore under your account, protected by the existing rules. No Firebase console changes are needed.
-- **Offline:** the app, the plan and your tickets are kept on the phone, so they open without signal. Syncing with the other phone needs a connection that reaches Google (roaming or a travel eSIM in China).
-- **Updating the plan:** ask Claude in a session on this repo and give it the passphrase. It edits the plan with `scripts/trip_plan.py` and pushes; the app picks it up next time it opens online.

@@ -14,13 +14,3 @@ When the user asks for a card ("create a card under Corporate Issuers: Entrenchm
 ## Adding refresher readings
 
 When the user asks for a new refresher topic, add it to `refreshers.md` under the matching `# Area` heading (one of the ten topic names above). Start it with `## Title`, then a `Module:` line naming the official CFA Institute Level I learning module(s) it covers (add a `Scope:` line if any part goes beyond Level I; for readings built from the user's own study notes, add `Source: My notes N001, N002` with the note IDs), then use `### ` section headings, `-` lists, `| tables |` and `**bold**`, and the same formula delimiters as cards. End with an `### Exam traps` section. The reading's id comes from its title, so don't rename existing titles (that drops them from users' saved lists). Bump `CACHE` in `sw.js`, then commit and push; the app picks it up on next open.
-
-## Trip planner (`trip/`)
-
-The itinerary is in `trip/plan.enc.json`, encrypted because the repo is public. To change it, ask the user for the trip passphrase if you don't have it this session, then:
-
-1. `TRIP_KEY=<passphrase> python3 scripts/trip_plan.py decrypt <scratch path outside the repo>/plan.json`
-2. Edit that JSON (days → items with `at`/`t`/`what`/`info`/`place`/`bk`/`go`/`fixed`; `places`, `bookings`, `checklist`, etc.). Keep existing ids for places, bookings, checklist and ideas: the app stores the user's refs, ticks and tickets against them.
-3. `TRIP_KEY=<passphrase> python3 scripts/trip_plan.py encrypt <same path>`, bump `CACHE` in `trip/sw.js`, commit and push.
-
-Never commit the plaintext plan or the passphrase, and never write trip details (names, hotels, dates, flights) anywhere else in the repo.
